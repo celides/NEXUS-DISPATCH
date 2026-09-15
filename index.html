@@ -1,2 +1,401 @@
-html
-<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>NEXUS DISPATCH · Multi-Platform Content Deployment Studio</title><meta name="description" content="Estudio de despliegue multiplataforma. Prepara tu contenido una vez y publícalo en todas tus redes."><script src="https://cdn.tailwindcss.com"></script><link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"><style>body{font-family:'Inter',sans-serif;background:#05060a;color:#e5e7eb;overflow-x:hidden}.font-tech{font-family:'Orbitron',sans-serif;letter-spacing:.05em}.aurora{background:radial-gradient(circle at 20% 20%,rgba(20,184,166,.15),transparent 50%),radial-gradient(circle at 80% 80%,rgba(139,92,246,.15),transparent 50%),radial-gradient(circle at 50% 50%,rgba(236,72,153,.08),transparent 60%)}.glass{background:rgba(15,17,26,.7);backdrop-filter:blur(20px);border:1px solid rgba(20,184,166,.2);box-shadow:0 0 40px rgba(20,184,166,.08),inset 0 1px 0 rgba(255,255,255,.05)}.glow-line{height:1px;background:linear-gradient(90deg,transparent,rgba(20,184,166,.8),transparent)}.btn-platform{transition:all .3s cubic-bezier(.4,0,.2,1)}.btn-platform:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(20,184,166,.3)}.pulse-dot{animation:pulse 2s infinite}@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.2)}}.scan-line::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(20,184,166,.6),transparent);animation:scan 3s linear infinite}@keyframes scan{0%{top:0}100%{top:100%}}.fade-in{animation:fadeIn .6s ease-out}@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}textarea,input{font-family:'Inter',sans-serif}::selection{background:#14b8a6;color:#000}::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:#0a0c12}::-webkit-scrollbar-thumb{background:#14b8a6;border-radius:4px}</style></head><body class="min-h-screen aurora"><header class="border-b border-teal-900/40 bg-black/60 backdrop-blur-xl py-4 px-6 sticky top-0 z-50"><div class="max-w-6xl mx-auto flex justify-between items-center"><div class="flex items-center space-x-3"><div class="relative"><div class="w-3 h-3 bg-teal-400 rounded-full pulse-dot"></div><div class="absolute inset-0 w-3 h-3 bg-teal-400 rounded-full animate-ping opacity-75"></div></div><div><span class="font-tech text-teal-400 tracking-widest text-base font-bold">NEXUS DISPATCH</span><span class="hidden sm:inline text-xs text-slate-500 font-tech ml-3">// v1.0</span></div></div><div class="flex items-center space-x-4"><span class="hidden md:inline text-[10px] text-slate-500 font-tech tracking-widest">MULTI-PLATFORM DEPLOYMENT STUDIO</span><div class="w-2 h-2 bg-emerald-400 rounded-full"></div></div></div></header><main class="max-w-4xl mx-auto px-4 py-10 w-full"><div class="text-center mb-10 fade-in"><h1 class="font-tech text-3xl sm:text-4xl font-black text-white mb-3 tracking-tight">CONTENT <span class="text-teal-400">DEPLOYMENT</span> STUDIO</h1><p class="text-slate-400 text-sm max-w-xl mx-auto">Prepara tu pieza una sola vez. NEXUS DISPATCH abrirá cada plataforma con el contenido listo para publicar. Tú solo confirmas.</p><div class="glow-line mt-6 max-w-xs mx-auto"></div></div><div class="glass rounded-2xl p-6 sm:p-8 relative overflow-hidden scan-line fade-in"><div class="absolute top-4 right-4 flex items-center space-x-2 text-[10px] font-tech text-slate-600"><span>SESSION ACTIVE</span><span class="w-1.5 h-1.5 bg-emerald-400 rounded-full pulse-dot"></span></div><div class="mb-6"><label class="block text-[11px] uppercase tracking-widest text-teal-400 font-tech mb-2">01 · Archivo Master de Video</label><div id="dropZone" class="border-2 border-dashed border-slate-700 hover:border-teal-500/60 rounded-xl p-6 text-center transition cursor-pointer bg-black/30"><input type="file" id="videoFile" accept="video/mp4,video/quicktime,video/webm" class="hidden"><div id="dropContent"><svg class="w-10 h-10 mx-auto text-slate-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.9A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg><p class="text-sm text-slate-400">Arrastra tu video aquí o <span class="text-teal-400 font-medium">explora archivos</span></p><p class="text-[10px] text-slate-600 mt-2 font-tech">MP4 · MOV · WEBM — MÁX 100MB</p></div><div id="fileInfo" class="hidden"><div class="flex items-center justify-center space-x-3"><div class="w-10 h-10 bg-teal-500/20 rounded-lg flex items-center justify-center"><svg class="w-5 h-5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div><div class="text-left"><p id="fileName" class="text-sm text-white font-medium truncate max-w-[200px]"></p><p id="fileSize" class="text-[10px] text-slate-500 font-tech"></p></div><button type="button" id="removeFile" class="text-slate-500 hover:text-red-400 transition text-xs">✕</button></div></div></div></div><div class="mb-6"><label class="block text-[11px] uppercase tracking-widest text-teal-400 font-tech mb-2">02 · Título de la Pieza</label><input type="text" id="videoTitle" maxlength="100" class="w-full bg-black/50 border border-slate-700 focus:border-teal-500 rounded-xl px-4 py-3 text-white placeholder-slate-600 outline-none transition" placeholder="Ej. Título del contenido a desplegar"><p class="text-right text-[10px] text-slate-600 mt-1 font-tech"><span id="titleCount">0</span>/100</p></div><div class="mb-6"><label class="block text-[11px] uppercase tracking-widest text-teal-400 font-tech mb-2">03 · Descripción / Copy</label><textarea id="videoDesc" rows="4" maxlength="2200" class="w-full bg-black/50 border border-slate-700 focus:border-teal-500 rounded-xl px-4 py-3 text-white placeholder-slate-600 outline-none transition resize-none" placeholder="Escribe aquí el texto que acompañará al video. Incluye el llamado a la acción."></textarea><p class="text-right text-[10px] text-slate-600 mt-1 font-tech"><span id="descCount">0</span>/2200</p></div><div class="mb-6"><label class="block text-[11px] uppercase tracking-widest text-teal-400 font-tech mb-2">04 · Hashtags Base</label><input type="text" id="hashtags" class="w-full bg-black/50 border border-slate-700 focus:border-teal-500 rounded-xl px-4 py-3 text-white placeholder-slate-600 outline-none transition" placeholder="#contenido #creadores #viral"><div class="flex flex-wrap gap-1.5 mt-3" id="quickTags"></div></div><div class="mb-6"><label class="block text-[11px] uppercase tracking-widest text-teal-400 font-tech mb-2">05 · Plataformas de Destino</label><div class="grid grid-cols-2 sm:grid-cols-3 gap-3"><button type="button" data-platform="tiktok" class="platform-btn btn-platform bg-black/40 border border-slate-800 hover:border-teal-500/60 rounded-xl p-3 text-left flex items-center space-x-3"><div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-slate-700"><svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/></svg></div><div><p class="text-sm font-medium">TikTok</p><p class="text-[10px] text-slate-500 font-tech">REELS</p></div><div class="check ml-auto w-4 h-4 border-2 border-slate-700 rounded flex items-center justify-center"><svg class="w-3 h-3 text-black hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div></button><button type="button" data-platform="youtube" class="platform-btn btn-platform bg-black/40 border border-slate-800 hover:border-teal-500/60 rounded-xl p-3 text-left flex items-center space-x-3"><div class="w-8 h-8 bg-red-600/20 rounded-lg flex items-center justify-center border border-red-600/30"><svg class="w-4 h-4 text-red-500" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></div><div><p class="text-sm font-medium">YouTube</p><p class="text-[10px] text-slate-500 font-tech">SHORTS</p></div><div class="check ml-auto w-4 h-4 border-2 border-slate-700 rounded flex items-center justify-center"><svg class="w-3 h-3 text-black hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div></button><button type="button" data-platform="facebook" class="platform-btn btn-platform bg-black/40 border border-slate-800 hover:border-teal-500/60 rounded-xl p-3 text-left flex items-center space-x-3"><div class="w-8 h-8 bg-blue-600/20 rounded-lg flex items-center justify-center border border-blue-600/30"><svg class="w-4 h-4 text-blue-500" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div><div><p class="text-sm font-medium">Facebook</p><p class="text-[10px] text-slate-500 font-tech">REELS</p></div><div class="check ml-auto w-4 h-4 border-2 border-slate-700 rounded flex items-center justify-center"><svg class="w-3 h-3 text-black hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div></button><button type="button" data-platform="instagram" class="platform-btn btn-platform bg-black/40 border border-slate-800 hover:border-teal-500/60 rounded-xl p-3 text-left flex items-center space-x-3"><div class="w-8 h-8 bg-gradient-to-br from-purple-600/30 via-pink-600/30 to-orange-500/30 rounded-lg flex items-center justify-center border border-pink-500/30"><svg class="w-4 h-4 text-pink-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></div><div><p class="text-sm font-medium">Instagram</p><p class="text-[10px] text-slate-500 font-tech">REELS</p></div><div class="check ml-auto w-4 h-4 border-2 border-slate-700 rounded flex items-center justify-center"><svg class="w-3 h-3 text-black hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div></button><button type="button" data-platform="threads" class="platform-btn btn-platform bg-black/40 border border-slate-800 hover:border-teal-500/60 rounded-xl p-3 text-left flex items-center space-x-3"><div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-slate-600"><svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.964-.065-1.19.408-2.285 1.33-3.082.88-.76 2.119-1.207 3.583-1.291a13.853 13.853 0 013.02.142c-.126-.742-.375-1.332-.75-1.757-.513-.586-1.308-.883-2.359-.89h-.029c-.844 0-1.992.232-2.721 1.32L7.734 7.847c.98-1.454 2.568-2.256 4.478-2.256h.044c3.194.02 5.097 1.975 5.287 5.388.108.046.216.094.321.142 1.49.7 2.58 1.761 3.154 3.07.797 1.82.871 4.79-1.548 7.158-1.85 1.81-4.094 2.628-7.277 2.65Zm1.003-11.69c-.242 0-.487.007-.739.021-1.836.103-2.98.946-2.916 2.143.067 1.256 1.452 1.839 2.784 1.767 1.224-.065 2.818-.543 3.086-3.71a10.5 10.5 0 00-2.215-.221z"/></svg></div><div><p class="text-sm font-medium">Threads</p><p class="text-[10px] text-slate-500 font-tech">POST</p></div><div class="check ml-auto w-4 h-4 border-2 border-slate-700 rounded flex items-center justify-center"><svg class="w-3 h-3 text-black hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div></button><button type="button" data-platform="kwai" class="platform-btn btn-platform bg-black/40 border border-slate-800 hover:border-teal-500/60 rounded-xl p-3 text-left flex items-center space-x-3"><div class="w-8 h-8 bg-orange-500/20 rounded-lg flex items-center justify-center border border-orange-500/30"><svg class="w-4 h-4 text-orange-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15v-4H8l4-6v4h3l-4 6z"/></svg></div><div><p class="text-sm font-medium">Kwai</p><p class="text-[10px] text-slate-500 font-tech">VIDEO</p></div><div class="check ml-auto w-4 h-4 border-2 border-slate-700 rounded flex items-center justify-center"><svg class="w-3 h-3 text-black hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div></button></div><p class="text-[10px] text-slate-500 mt-3 font-tech">CLIC PARA ALTERNAR · SELECCIONA LAS PLATAFORMAS DE TU PREFERENCIA</p></div><button id="deployBtn" class="w-full bg-gradient-to-r from-teal-500 via-emerald-500 to-teal-600 hover:from-teal-400 hover:via-emerald-400 hover:to-teal-500 text-black font-tech font-bold py-4 px-8 rounded-xl transition duration-300 shadow-lg shadow-teal-500/20 tracking-widest uppercase text-sm">⚡ DESPLEGAR PIEZA</button><div id="consoleLog" class="hidden mt-6 bg-black/80 border border-teal-500/30 rounded-xl p-4 font-tech text-xs text-teal-300 space-y-1.5 max-h-60 overflow-y-auto"></div></div><div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8 fade-in"><div class="glass rounded-xl p-4 text-center"><p class="font-tech text-2xl font-bold text-teal-400" id="statVideos">0</p><p class="text-[10px] text-slate-500 uppercase tracking-widest font-tech mt-1">Piezas Preparadas</p></div><div class="glass rounded-xl p-4 text-center"><p class="font-tech text-2xl font-bold text-emerald-400" id="statPlatforms">6</p><p class="text-[10px] text-slate-500 uppercase tracking-widest font-tech mt-1">Plataformas</p></div><div class="glass rounded-xl p-4 text-center"><p class="font-tech text-2xl font-bold text-purple-400" id="statGoal">∞</p><p class="text-[10px] text-slate-500 uppercase tracking-widest font-tech mt-1">Alcance Potencial</p></div></div></main><footer class="border-t border-slate-900 py-6 mt-12 text-center"><p class="text-[10px] text-slate-600 font-tech tracking-widest">NEXUS DISPATCH · MULTI-PLATFORM CONTENT DEPLOYMENT STUDIO</p><p class="text-[10px] text-slate-700 mt-2 max-w-md mx-auto px-4">Herramienta de distribución de contenido. Compatible con cualquier tipo de creador, marca o proyecto.</p></footer><script>const $=id=>document.getElementById(id);const state={file:null,platforms:new Set(['tiktok','youtube','facebook','instagram']),prepared:0};const quickTags=['#contenido','#creadores','#viral','#fyp','#parati','#reels','#shorts'];quickTags.forEach(t=>{const b=document.createElement('button');b.type='button';b.className='text-[10px] font-tech bg-teal-500/10 hover:bg-teal-500/30 border border-teal-500/30 text-teal-300 px-2.5 py-1 rounded-full transition';b.textContent=t;b.onclick=()=>{const i=$('hashtags');i.value=(i.value.trim()+' '+t).trim();};$('quickTags').appendChild(b);});const dropZone=$('dropZone'),fileInput=$('videoFile');dropZone.onclick=()=>fileInput.click();['dragover','dragenter'].forEach(e=>dropZone.addEventListener(e,ev=>{ev.preventDefault();dropZone.classList.add('border-teal-500','bg-teal-500/5');}));['dragleave','drop'].forEach(e=>dropZone.addEventListener(e,ev=>{ev.preventDefault();dropZone.classList.remove('border-teal-500','bg-teal-500/5');}));dropZone.addEventListener('drop',ev=>{if(ev.dataTransfer.files[0])handleFile(ev.dataTransfer.files[0]);});fileInput.onchange=e=>{if(e.target.files[0])handleFile(e.target.files[0]);};function handleFile(f){const max=100*1024*1024;if(f.size>max){alert('El archivo supera los 100MB. Comprime el video antes de continuar.');return;}state.file=f;$('dropContent').classList.add('hidden');$('fileInfo').classList.remove('hidden');$('fileName').textContent=f.name;$('fileSize').textContent=(f.size/1024/1024).toFixed(2)+' MB · '+f.type;} $('removeFile').onclick=e=>{e.stopPropagation();state.file=null;fileInput.value='';$('dropContent').classList.remove('hidden');$('fileInfo').classList.add('hidden');};$('videoTitle').oninput=e=>$('titleCount').textContent=e.target.value.length;$('videoDesc').oninput=e=>$('descCount').textContent=e.target.value.length;document.querySelectorAll('.platform-btn').forEach(btn=>{btn.onclick=()=>{const p=btn.dataset.platform;const check=btn.querySelector('.check');const svg=check.querySelector('svg');if(state.platforms.has(p)){state.platforms.delete(p);btn.classList.remove('border-teal-500','bg-teal-500/10');check.classList.remove('bg-teal-500','border-teal-500');svg.classList.add('hidden');}else{state.platforms.add(p);btn.classList.add('border-teal-500','bg-teal-500/10');check.classList.add('bg-teal-500','border-teal-500');svg.classList.remove('hidden');}};});document.querySelectorAll('.platform-btn').forEach(btn=>{if(state.platforms.has(btn.dataset.platform)){btn.classList.add('border-teal-500','bg-teal-500/10');const c=btn.querySelector('.check');c.classList.add('bg-teal-500','border-teal-500');c.querySelector('svg').classList.remove('hidden');}});const platformUrls={tiktok:'https://www.tiktok.com/upload',youtube:'https://www.youtube.com/upload',facebook:'https://www.facebook.com/reels/create',instagram:'https://www.instagram.com/',threads:'https://www.threads.net/',kwai:'https://www.kwai.com/'};function log(msg,color='text-teal-300'){const c=$('consoleLog');c.classList.remove('hidden');const p=document.createElement('p');p.className=color;p.textContent='> '+msg;c.appendChild(p);c.scrollTop=c.scrollHeight;} $('deployBtn').onclick=async()=>{const title=$('videoTitle').value.trim();const desc=$('videoDesc').value.trim();const tags=$('hashtags').value.trim();if(!state.file){alert('Selecciona primero un archivo de video.');return;}if(!title){alert('El título es obligatorio.');return;}if(state.platforms.size===0){alert('Selecciona al menos una plataforma.');return;} $('consoleLog').innerHTML='';log('Inicializando protocolo NEXUS DISPATCH...');await sleep(300);log('Empaquetando: "'+title+'"');await sleep(300);const fullText=[title,desc,tags].filter(Boolean).join('\n\n');log('Copy preparado ('+fullText.length+' caracteres)');await sleep(300);log('Abriendo '+state.platforms.size+' plataformas en pestañas nuevas...','text-emerald-400');await sleep(400);const list=[...state.platforms];list.forEach((p,i)=>{setTimeout(()=>{const w=window.open(platformUrls[p],'_blank');if(!w)log('⚠ Bloqueador de pop-ups detectado para '+p,'text-yellow-400');else log('✓ '+p.toUpperCase()+' abierto');},i*250);});try{await navigator.clipboard.writeText(fullText);log('✓ Texto copiado al portapapeles — pégalo en cada plataforma','text-emerald-400');}catch(e){log('⚠ Copia manualmente el texto (el navegador bloqueó el portapapeles)','text-yellow-400');}await sleep(list.length*250+400);log('ARCHIVO DE VIDEO EN TU DISCO LOCAL: '+state.file.name,'text-purple-400');log('PÉGALO EN CADA PLATAFORMA DESDE EL SELECTOR DE ARCHIVOS','text-purple-400');state.prepared++;$('statVideos').textContent=state.prepared;log('✓ SESIÓN COMPLETADA. Confirma la publicación en cada pestaña.','text-emerald-400 font-bold');};function sleep(ms){return new Promise(r=>setTimeout(r,ms));}</script></body></html>
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>NEXUS DISPATCH · Multi-Platform Content Deployment Studio</title><meta name="description" content="Estudio de despliegue multiplataforma. Genera títulos y descripciones con neuroventas, y publica en todas tus redes."><script src="https://cdn.tailwindcss.com"></script><link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"><style>body{font-family:'Inter',sans-serif;background:#05060a;color:#e5e7eb;overflow-x:hidden}.font-tech{font-family:'Orbitron',sans-serif;letter-spacing:.05em}.aurora{background:radial-gradient(circle at 20% 20%,rgba(20,184,166,.15),transparent 50%),radial-gradient(circle at 80% 80%,rgba(139,92,246,.15),transparent 50%),radial-gradient(circle at 50% 50%,rgba(236,72,153,.08),transparent 60%)}.glass{background:rgba(15,17,26,.7);backdrop-filter:blur(20px);border:1px solid rgba(20,184,166,.2);box-shadow:0 0 40px rgba(20,184,166,.08),inset 0 1px 0 rgba(255,255,255,.05)}.glow-line{height:1px;background:linear-gradient(90deg,transparent,rgba(20,184,166,.8),transparent)}.btn-platform{transition:all .3s cubic-bezier(.4,0,.2,1)}.btn-platform:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(20,184,166,.3)}.pulse-dot{animation:pulse 2s infinite}@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.2)}}.scan-line::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(20,184,166,.6),transparent);animation:scan 3s linear infinite}@keyframes scan{0%{top:0}100%{top:100%}}.fade-in{animation:fadeIn .6s ease-out}@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}textarea,input{font-family:'Inter',sans-serif}::selection{background:#14b8a6;color:#000}::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:#0a0c12}::-webkit-scrollbar-thumb{background:#14b8a6;border-radius:4px}.gen-option:hover{background:rgba(20,184,166,.15);border-color:rgba(20,184,166,.6);cursor:pointer}.account-chip{transition:all .2s}.account-chip:hover{border-color:rgba(20,184,166,.6);background:rgba(20,184,166,.05)}</style></head><body class="min-h-screen aurora"><header class="border-b border-teal-900/40 bg-black/60 backdrop-blur-xl py-4 px-6 sticky top-0 z-50"><div class="max-w-6xl mx-auto flex justify-between items-center"><div class="flex items-center space-x-3"><div class="relative"><div class="w-3 h-3 bg-teal-400 rounded-full pulse-dot"></div><div class="absolute inset-0 w-3 h-3 bg-teal-400 rounded-full animate-ping opacity-75"></div></div><div><span class="font-tech text-teal-400 tracking-widest text-base font-bold">NEXUS DISPATCH</span><span class="hidden sm:inline text-xs text-slate-500 font-tech ml-3">// v2.0</span></div></div><div class="flex items-center space-x-4"><span class="hidden md:inline text-[10px] text-slate-500 font-tech tracking-widest">MULTI-PLATFORM DEPLOYMENT STUDIO</span><div class="w-2 h-2 bg-emerald-400 rounded-full"></div></div></div></header><main class="max-w-4xl mx-auto px-4 py-10 w-full"><div class="text-center mb-10 fade-in"><h1 class="font-tech text-3xl sm:text-4xl font-black text-white mb-3 tracking-tight">CONTENT <span class="text-teal-400">DEPLOYMENT</span> STUDIO</h1><p class="text-slate-400 text-sm max-w-xl mx-auto">Prepara tu pieza una sola vez. Genera títulos y descripciones con neuroventas, y despliega en todas las plataformas.</p><div class="glow-line mt-6 max-w-xs mx-auto"></div></div><div class="glass rounded-2xl p-6 sm:p-8 relative overflow-hidden scan-line fade-in"><div class="absolute top-4 right-4 flex items-center space-x-2 text-[10px] font-tech text-slate-600"><span>SESSION ACTIVE</span><span class="w-1.5 h-1.5 bg-emerald-400 rounded-full pulse-dot"></span></div><div class="mb-6"><label class="block text-[11px] uppercase tracking-widest text-teal-400 font-tech mb-2">01 · Archivo Master de Video</label><div id="dropZone" class="border-2 border-dashed border-slate-700 hover:border-teal-500/60 rounded-xl p-6 text-center transition cursor-pointer bg-black/30"><input type="file" id="videoFile" accept="video/mp4,video/quicktime,video/webm" class="hidden"><div id="dropContent"><svg class="w-10 h-10 mx-auto text-slate-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.9A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg><p class="text-sm text-slate-400">Arrastra tu video aquí o <span class="text-teal-400 font-medium">explora archivos</span></p><p class="text-[10px] text-slate-600 mt-2 font-tech">MP4 · MOV · WEBM — MÁX 100MB</p></div><div id="fileInfo" class="hidden"><div class="flex items-center justify-center space-x-3"><div class="w-10 h-10 bg-teal-500/20 rounded-lg flex items-center justify-center"><svg class="w-5 h-5 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div><div class="text-left"><p id="fileName" class="text-sm text-white font-medium truncate max-w-[200px]"></p><p id="fileSize" class="text-[10px] text-slate-500 font-tech"></p></div><button type="button" id="removeFile" class="text-slate-500 hover:text-red-400 transition text-xs">✕</button></div></div></div></div><div class="mb-6"><div class="flex items-center justify-between mb-2"><label class="block text-[11px] uppercase tracking-widest text-teal-400 font-tech">02 · Título de la Pieza</label><button type="button" id="genTitleBtn" class="text-[10px] font-tech bg-teal-500/20 hover:bg-teal-500/40 border border-teal-500/50 text-teal-300 px-3 py-1.5 rounded-lg transition">🎲 GENERAR 5 TÍTULOS</button></div><input type="text" id="videoTitle" maxlength="100" class="w-full bg-black/50 border border-slate-700 focus:border-teal-500 rounded-xl px-4 py-3 text-white placeholder-slate-600 outline-none transition" placeholder="Ej. Lo que tu mente proyecta en una pintura revela TODO"><p class="text-right text-[10px] text-slate-600 mt-1 font-tech"><span id="titleCount">0</span>/100</p><div id="titleOptions" class="hidden mt-3 space-y-2"></div></div><div class="mb-6"><div class="flex items-center justify-between mb-2"><label class="block text-[11px] uppercase tracking-widest text-teal-400 font-tech">03 · Descripción / Copy</label><button type="button" id="genDescBtn" class="text-[10px] font-tech bg-teal-500/20 hover:bg-teal-500/40 border border-teal-500/50 text-teal-300 px-3 py-1.5 rounded-lg transition">🎲 GENERAR DESCRIPCIÓN</button></div><textarea id="videoDesc" rows="5" maxlength="2200" class="w-full bg-black/50 border border-slate-700 focus:border-teal-500 rounded-xl px-4 py-3 text-white placeholder-slate-600 outline-none transition resize-none" placeholder="Escribe aquí el texto que acompañará al video. O pulsa GENERAR DESCRIPCIÓN para una propuesta automática basada en el Método Celidiano."></textarea><p class="text-right text-[10px] text-slate-600 mt-1 font-tech"><span id="descCount">0</span>/2200</p></div><div class="mb-6"><div class="flex items-center justify-between mb-2"><label class="block text-[11px] uppercase tracking-widest text-teal-400 font-tech">04 · Hashtags Base</label><button type="button" id="genTagsBtn" class="text-[10px] font-tech bg-teal-500/20 hover:bg-teal-500/40 border border-teal-500/50 text-teal-300 px-3 py-1.5 rounded-lg transition">🎲 GENERAR HASHTAGS</button></div><input type="text" id="hashtags" class="w-full bg-black/50 border border-slate-700 focus:border-teal-500 rounded-xl px-4 py-3 text-white placeholder-slate-600 outline-none transition" placeholder="#MetodoCelidiano #Metapareidolia #Arteterapia"><div class="flex flex-wrap gap-1.5 mt-3" id="quickTags"></div></div><div class="mb-6"><label class="block text-[11px] uppercase tracking-widest text-teal-400 font-tech mb-2">05 · Plataformas de Destino</label><div class="grid grid-cols-2 sm:grid-cols-3 gap-3"><div class="platform-group" data-platform="tiktok"><button type="button" class="platform-btn btn-platform w-full bg-black/40 border border-slate-800 hover:border-teal-500/60 rounded-xl p-3 text-left flex items-center space-x-3"><div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-slate-700"><svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/></svg></div><div><p class="text-sm font-medium">TikTok</p><p class="text-[10px] text-slate-500 font-tech">REELS</p></div><div class="check ml-auto w-4 h-4 border-2 border-slate-700 rounded flex items-center justify-center"><svg class="w-3 h-3 text-black hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div></button></div><div class="platform-group" data-platform="youtube"><button type="button" class="platform-btn btn-platform w-full bg-black/40 border border-slate-800 hover:border-teal-500/60 rounded-xl p-3 text-left flex items-center space-x-3"><div class="w-8 h-8 bg-red-600/20 rounded-lg flex items-center justify-center border border-red-600/30"><svg class="w-4 h-4 text-red-500" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></div><div><p class="text-sm font-medium">YouTube</p><p class="text-[10px] text-slate-500 font-tech">SHORTS</p></div><div class="check ml-auto w-4 h-4 border-2 border-slate-700 rounded flex items-center justify-center"><svg class="w-3 h-3 text-black hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div></button><div class="accounts-list mt-2 space-y-1.5" data-platform="youtube"></div><button type="button" class="add-account-btn mt-1.5 w-full text-[10px] font-tech text-teal-400/70 hover:text-teal-300 border border-dashed border-slate-700 hover:border-teal-500/50 rounded-lg py-1.5 transition" data-platform="youtube">+ AÑADIR CUENTA</button></div><div class="platform-group" data-platform="facebook"><button type="button" class="platform-btn btn-platform w-full bg-black/40 border border-slate-800 hover:border-teal-500/60 rounded-xl p-3 text-left flex items-center space-x-3"><div class="w-8 h-8 bg-blue-600/20 rounded-lg flex items-center justify-center border border-blue-600/30"><svg class="w-4 h-4 text-blue-500" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></div><div><p class="text-sm font-medium">Facebook</p><p class="text-[10px] text-slate-500 font-tech">REELS</p></div><div class="check ml-auto w-4 h-4 border-2 border-slate-700 rounded flex items-center justify-center"><svg class="w-3 h-3 text-black hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div></button><div class="accounts-list mt-2 space-y-1.5" data-platform="facebook"></div><button type="button" class="add-account-btn mt-1.5 w-full text-[10px] font-tech text-teal-400/70 hover:text-teal-300 border border-dashed border-slate-700 hover:border-teal-500/50 rounded-lg py-1.5 transition" data-platform="facebook">+ AÑADIR CUENTA</button></div><div class="platform-group" data-platform="instagram"><button type="button" class="platform-btn btn-platform w-full bg-black/40 border border-slate-800 hover:border-teal-500/60 rounded-xl p-3 text-left flex items-center space-x-3"><div class="w-8 h-8 bg-gradient-to-br from-purple-600/30 via-pink-600/30 to-orange-500/30 rounded-lg flex items-center justify-center border border-pink-500/30"><svg class="w-4 h-4 text-pink-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></div><div><p class="text-sm font-medium">Instagram</p><p class="text-[10px] text-slate-500 font-tech">REELS</p></div><div class="check ml-auto w-4 h-4 border-2 border-slate-700 rounded flex items-center justify-center"><svg class="w-3 h-3 text-black hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div></button><div class="accounts-list mt-2 space-y-1.5" data-platform="instagram"></div><button type="button" class="add-account-btn mt-1.5 w-full text-[10px] font-tech text-teal-400/70 hover:text-teal-300 border border-dashed border-slate-700 hover:border-teal-500/50 rounded-lg py-1.5 transition" data-platform="instagram">+ AÑADIR CUENTA</button></div><div class="platform-group" data-platform="threads"><button type="button" class="platform-btn btn-platform w-full bg-black/40 border border-slate-800 hover:border-teal-500/60 rounded-xl p-3 text-left flex items-center space-x-3"><div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center border border-slate-600"><svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="currentColor"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.964-.065-1.19.408-2.285 1.33-3.082.88-.76 2.119-1.207 3.583-1.291a13.853 13.853 0 013.02.142c-.126-.742-.375-1.332-.75-1.757-.513-.586-1.308-.883-2.359-.89h-.029c-.844 0-1.992.232-2.721 1.32L7.734 7.847c.98-1.454 2.568-2.256 4.478-2.256h.044c3.194.02 5.097 1.975 5.287 5.388.108.046.216.094.321.142 1.49.7 2.58 1.761 3.154 3.07.797 1.82.871 4.79-1.548 7.158-1.85 1.81-4.094 2.628-7.277 2.65Zm1.003-11.69c-.242 0-.487.007-.739.021-1.836.103-2.98.946-2.916 2.143.067 1.256 1.452 1.839 2.784 1.767 1.224-.065 2.818-.543 3.086-3.71a10.5 10.5 0 00-2.215-.221z"/></svg></div><div><p class="text-sm font-medium">Threads</p><p class="text-[10px] text-slate-500 font-tech">POST</p></div><div class="check ml-auto w-4 h-4 border-2 border-slate-700 rounded flex items-center justify-center"><svg class="w-3 h-3 text-black hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div></button></div><div class="platform-group" data-platform="kwai"><button type="button" class="platform-btn btn-platform w-full bg-black/40 border border-slate-800 hover:border-teal-500/60 rounded-xl p-3 text-left flex items-center space-x-3"><div class="w-8 h-8 bg-orange-500/20 rounded-lg flex items-center justify-center border border-orange-500/30"><svg class="w-4 h-4 text-orange-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15v-4H8l4-6v4h3l-4 6z"/></svg></div><div><p class="text-sm font-medium">Kwai</p><p class="text-[10px] text-slate-500 font-tech">VIDEO</p></div><div class="check ml-auto w-4 h-4 border-2 border-slate-700 rounded flex items-center justify-center"><svg class="w-3 h-3 text-black hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg></div></button></div></div><p class="text-[10px] text-slate-500 mt-3 font-tech">CLIC PARA ALTERNAR · AÑADE CUENTAS CON EL BOTÓN "+" DE CADA PLATAFORMA</p></div><div class="flex gap-3 mb-4"><button type="button" id="copyBtn" class="flex-1 bg-slate-800/80 hover:bg-slate-700 border border-slate-700 hover:border-teal-500/50 text-white font-tech font-medium py-3 px-4 rounded-xl transition duration-200 tracking-wider uppercase text-xs">📋 COPIAR TODO</button></div><button id="deployBtn" class="w-full bg-gradient-to-r from-teal-500 via-emerald-500 to-teal-600 hover:from-teal-400 hover:via-emerald-400 hover:to-teal-500 text-black font-tech font-bold py-4 px-8 rounded-xl transition duration-300 shadow-lg shadow-teal-500/20 tracking-widest uppercase text-sm">⚡ DESPLEGAR PIEZA</button><div id="consoleLog" class="hidden mt-6 bg-black/80 border border-teal-500/30 rounded-xl p-4 font-tech text-xs text-teal-300 space-y-1.5 max-h-60 overflow-y-auto"></div></div><div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8 fade-in"><div class="glass rounded-xl p-4 text-center"><p class="font-tech text-2xl font-bold text-teal-400" id="statVideos">0</p><p class="text-[10px] text-slate-500 uppercase tracking-widest font-tech mt-1">Piezas Preparadas</p></div><div class="glass rounded-xl p-4 text-center"><p class="font-tech text-2xl font-bold text-emerald-400" id="statPlatforms">6</p><p class="text-[10px] text-slate-500 uppercase tracking-widest font-tech mt-1">Plataformas</p></div><div class="glass rounded-xl p-4 text-center"><p class="font-tech text-2xl font-bold text-purple-400" id="statAccounts">0</p><p class="text-[10px] text-slate-500 uppercase tracking-widest font-tech mt-1">Cuentas Activas</p></div></div></main><footer class="border-t border-slate-900 py-6 mt-12 text-center"><p class="text-[10px] text-slate-600 font-tech tracking-widest">NEXUS DISPATCH · MULTI-PLATFORM CONTENT DEPLOYMENT STUDIO</p><p class="text-[10px] text-slate-700 mt-2 max-w-md mx-auto px-4">Motor de copy con neuroventas basado en el cerebro RAG del Método Celidiano. © 2026</p></footer><script>
+// ========== CONSTANTES DEL CEREBRO RAG ==========
+const BRAIN = {
+  // Frases ancla de marca (Sección 5)
+  anchor: [
+    "El inconsciente no sabe mentir",
+    "La verdadera arquitectura de la mente",
+    "Un espejo neuro-visual exacto",
+    "Lo que tomaría años en terapia, en una sola sesión",
+    "Decodifica lo que tu mente proyecta",
+    "Ciencia aplicada al arte",
+    "Tu inconsciente habla — ¿estás listo para escucharlo?"
+  ],
+  // Ganchos de curiosidad (Sección 5 + 8)
+  hooks: [
+    "¿Qué proyecta tu mente sin que lo sepas?",
+    "Hay algo en esta pintura que tu inconsciente ya vio",
+    "El arte que te hace descubrirte a ti mismo",
+    "¿Qué ves primero en esta imagen?",
+    "Tu cerebro acaba de revelar algo sobre ti mismo",
+    "La neurociencia dice que lo que ves aquí no es accidental",
+    "Esto no es arte. Es un espejo de tu inconsciente",
+    "En 30 segundos vas a saber algo sobre ti que no sabías",
+    "Lo que proyectas en esta pintura lleva años guardado",
+    "Hay algo que tu mente no puede ocultar cuando ve esto"
+  ],
+  // Títulos de ejemplo (Sección 8)
+  titles: [
+    "Lo que tu mente proyecta en una pintura revela TODO",
+    "El test psicológico más poderoso que existe (no es Rorschach)",
+    "¿Qué ves en esta pintura? Tu respuesta lo dice TODO",
+    "Descubrí mi bloqueo emocional viendo una pintura abstracta",
+    "La ciencia detrás de lo que tu inconsciente proyecta",
+    "Por qué el arte abstracto puede leer tu mente",
+    "Una sola sesión reveló lo que años de terapia no pudieron",
+    "El inconsciente no sabe mentir — Método Celidiano",
+    "3 fases cronométricas que revelan tu arquitectura emocional",
+    "25 elementos proyectivos: tu inconsciente en una pintura"
+  ],
+  // Frases de autoridad (Sección 5)
+  authority: [
+    "11 años de investigación y práctica documentada",
+    "Metodología con respaldo neurocientífico",
+    "Basado en el paper: Cronodinámica de la Conectividad Funcional Cerebral (2024)",
+    "El sistema más avanzado de arteterapia proyectiva en México",
+    "Diseñado por un Licenciado en Artes Visuales e Investigador en Percepción Neuro-Visual"
+  ],
+  // Identidad y tribu (Sección 5)
+  tribe: [
+    "Para mentes exigentes que buscan claridad absoluta",
+    "Para líderes, ejecutivos y visionarios",
+    "Para quienes ya agotaron la terapia convencional",
+    "Para quienes saben que hay algo más profundo"
+  ],
+  // Aversión a la pérdida (Sección 5)
+  loss: [
+    "¿Cuánto tiempo más vas a postergar conocerte a ti mismo?",
+    "Precio de lanzamiento — termina pronto",
+    "Solo quedan lugares esta semana",
+    "No sigas cargando lo que podrías soltar hoy"
+  ],
+  // CTAs (Sección 3)
+  ctas: [
+    "Agenda tu sesión por WhatsApp en la bio",
+    "Link en bio para tu primera sesión",
+    "Escríbeme 'ARTE' y te cuento cómo funciona",
+    "Sesión privada en línea con Adriana Ayala Gutiérrez",
+    "WhatsApp: +52 449 400 8788"
+  ],
+  // Cuerpo de descripción (Sección 2 y 3)
+  body: [
+    "La Metapareidolia Pictórica es una metodología de diagnóstico proyectivo que usa pinturas abstractas para revelar el contenido de tu inconsciente.",
+    "A diferencia del test de Rorschach, nuestras pinturas están creadas bajo principios de entropía visual controlada.",
+    "El cerebro tiene 3 fases cronométricas de respuesta ante estímulos visuales ambiguos: Hiper-Pareidolia, Proyección Latente y Metapareidolia Profunda.",
+    "No es terapia convencional. Es ciencia aplicada al arte.",
+    "Solo observa la pintura y escribe lo que ves. Sin preparación previa, sin experiencia en arte.",
+    "En una sola sesión se revela lo que tomaría años en terapia tradicional."
+  ],
+  // Hashtags según plataforma
+  hashtags: {
+    youtube: "#MetodoCelidiano #Metapareidolia #Arteterapia #Inconsciente #PsicologiaVisual #NeuroVisual #DesarrolloPersonal #SaludMental #ArteYCiencia #AutoConocimiento",
+    social: "#MetodoCelidiano #Metapareidolia #PsicologiaVisual #Arteterapia #Inconsciente",
+    tiktok: "#MetodoCelidiano #Metapareidolia #Arteterapia #Inconsciente #AutoConocimiento"
+  }
+};
+
+// ========== ESTADO GLOBAL ==========
+const $=id=>document.getElementById(id);
+const state = {
+  file: null,
+  platforms: new Set(['tiktok','youtube','facebook','instagram']),
+  accounts: { youtube:['Canal Principal','Canal Alterno 1','Canal Alterno 2'], facebook:['Perfil Personal','Página Negocio','Página Proyecto'], instagram:['Cuenta Principal','Cuenta Secundaria'] },
+  prepared: 0
+};
+
+// ========== UTILIDADES ==========
+const rand = arr => arr[Math.floor(Math.random()*arr.length)];
+const pickN = (arr,n) => { const c=[...arr]; const out=[]; for(let i=0;i<n&&c.length;i++){out.push(c.splice(Math.floor(Math.random()*c.length),1)[0]);} return out; };
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+
+// ========== GENERADOR DE TÍTULOS ==========
+function generateTitles() {
+  const templates = [
+    () => `${rand(BRAIN.hooks)}`,
+    () => `${rand(BRAIN.anchor)} — Método Celidiano`,
+    () => `${rand(BRAIN.titles)}`,
+    () => `${rand(BRAIN.loss)}`,
+    () => `${rand(BRAIN.tribe)}`,
+    () => `${rand(BRAIN.hooks)} | ${rand(BRAIN.anchor)}`,
+    () => `${rand(BRAIN.authority).split(':')[0]}`,
+    () => `3 fases. 25 elementos. 1 revelación: ${rand(BRAIN.anchor)}`
+  ];
+  const generated = [];
+  const seen = new Set();
+  let attempts = 0;
+  while (generated.length < 5 && attempts < 50) {
+    const t = rand(templates)();
+    const clean = t.length > 95 ? t.substring(0,95)+'…' : t;
+    if (!seen.has(clean)) { seen.add(clean); generated.push(clean); }
+    attempts++;
+  }
+  return generated;
+}
+
+// ========== GENERADOR DE DESCRIPCIÓN ==========
+function generateDescription() {
+  const hook = rand(BRAIN.hooks);
+  const body = pickN(BRAIN.body, 2);
+  const authority = rand(BRAIN.authority);
+  const cta = rand(BRAIN.ctas);
+  const anchor = rand(BRAIN.anchor);
+  return `${hook}\n\n${body[0]}\n\n${body[1]}\n\n${authority}.\n\n"${anchor}."\n\n👉 ${cta}\n\n#MetodoCelidiano #Metapareidolia #Arteterapia`;
+}
+
+// ========== GENERADOR DE HASHTAGS ==========
+function generateHashtags() {
+  return BRAIN.hashtags.social;
+}
+
+// ========== UI: RENDERIZAR OPCIONES DE TÍTULO ==========
+function showTitleOptions(titles) {
+  const container = $('titleOptions');
+  container.innerHTML = '';
+  container.classList.remove('hidden');
+  const header = document.createElement('p');
+  header.className = 'text-[10px] font-tech text-slate-500 uppercase tracking-widest mb-2';
+  header.textContent = '▼ OPCIONES GENERADAS — TOCA UNA PARA USARLA';
+  container.appendChild(header);
+  titles.forEach(t => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'gen-option w-full text-left bg-black/40 border border-slate-800 rounded-lg px-3 py-2.5 text-sm text-slate-300 transition';
+    btn.textContent = t;
+    btn.onclick = () => {
+      $('videoTitle').value = t;
+      $('titleCount').textContent = t.length;
+      container.classList.add('hidden');
+    };
+    container.appendChild(btn);
+  });
+}
+
+// ========== UI: CUENTAS POR PLATAFORMA ==========
+function renderAccounts(platform) {
+  const container = document.querySelector(`.accounts-list[data-platform="${platform}"]`);
+  if (!container) return;
+  container.innerHTML = '';
+  state.accounts[platform].forEach((name, i) => {
+    const chip = document.createElement('div');
+    chip.className = 'account-chip flex items-center justify-between bg-black/30 border border-slate-800 rounded-lg px-2.5 py-1.5 text-xs';
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = name;
+    input.className = 'bg-transparent border-none outline-none text-slate-300 text-[11px] font-tech flex-1 min-w-0';
+    input.onchange = e => { state.accounts[platform][i] = e.target.value || `Cuenta ${i+1}`; };
+    const del = document.createElement('button');
+    del.type = 'button';
+    del.className = 'text-slate-600 hover:text-red-400 ml-2 text-[10px]';
+    del.textContent = '✕';
+    del.onclick = () => { state.accounts[platform].splice(i,1); renderAccounts(platform); updateAccountCount(); };
+    chip.appendChild(input);
+    chip.appendChild(del);
+    container.appendChild(chip);
+  });
+}
+
+function updateAccountCount() {
+  const total = Object.values(state.accounts).reduce((a,b)=>a+b.length,0);
+  $('statAccounts').textContent = total;
+}
+
+// ========== PERSISTENCIA (localStorage) ==========
+const STORAGE_KEY = 'nexus-dispatch-v2';
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      title: $('videoTitle').value,
+      desc: $('videoDesc').value,
+      tags: $('hashtags').value,
+      accounts: state.accounts,
+      prepared: state.prepared
+    }));
+  } catch(e) {}
+}
+function loadState() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    if (saved.title) { $('videoTitle').value = saved.title; $('titleCount').textContent = saved.title.length; }
+    if (saved.desc) { $('videoDesc').value = saved.desc; $('descCount').textContent = saved.desc.length; }
+    if (saved.tags) $('hashtags').value = saved.tags;
+    if (saved.accounts) state.accounts = saved.accounts;
+    if (saved.prepared) { state.prepared = saved.prepared; $('statVideos').textContent = saved.prepared; }
+  } catch(e) {}
+}
+
+// ========== EVENTOS: VIDEO ==========
+const dropZone = $('dropZone'), fileInput = $('videoFile');
+dropZone.onclick = () => fileInput.click();
+['dragover','dragenter'].forEach(e => dropZone.addEventListener(e, ev => { ev.preventDefault(); dropZone.classList.add('border-teal-500','bg-teal-500/5'); }));
+['dragleave','drop'].forEach(e => dropZone.addEventListener(e, ev => { ev.preventDefault(); dropZone.classList.remove('border-teal-500','bg-teal-500/5'); }));
+dropZone.addEventListener('drop', ev => { if (ev.dataTransfer.files[0]) handleFile(ev.dataTransfer.files[0]); });
+fileInput.onchange = e => { if (e.target.files[0]) handleFile(e.target.files[0]); };
+function handleFile(f) {
+  if (f.size > 100*1024*1024) { alert('El archivo supera los 100MB. Comprime el video antes de continuar.'); return; }
+  state.file = f;
+  $('dropContent').classList.add('hidden');
+  $('fileInfo').classList.remove('hidden');
+  $('fileName').textContent = f.name;
+  $('fileSize').textContent = (f.size/1024/1024).toFixed(2) + ' MB · ' + f.type;
+}
+$('removeFile').onclick = e => {
+  e.stopPropagation();
+  state.file = null; fileInput.value = '';
+  $('dropContent').classList.remove('hidden');
+  $('fileInfo').classList.add('hidden');
+};
+
+// ========== EVENTOS: CONTADORES ==========
+$('videoTitle').oninput = e => { $('titleCount').textContent = e.target.value.length; saveState(); };
+$('videoDesc').oninput = e => { $('descCount').textContent = e.target.value.length; saveState(); };
+$('hashtags').oninput = saveState;
+
+// ========== EVENTOS: GENERADORES ==========
+$('genTitleBtn').onclick = () => { showTitleOptions(generateTitles()); };
+$('genDescBtn').onclick = () => {
+  const d = generateDescription();
+  $('videoDesc').value = d;
+  $('descCount').textContent = d.length;
+  saveState();
+};
+$('genTagsBtn').onclick = () => {
+  const t = generateHashtags();
+  $('hashtags').value = t;
+  saveState();
+};
+
+// ========== HASHTAGS RÁPIDOS ==========
+const quickTags = ['#MetodoCelidiano','#Metapareidolia','#Arteterapia','#Inconsciente','#PsicologiaVisual','#NeuroVisual','#AutoConocimiento'];
+quickTags.forEach(t => {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'text-[10px] font-tech bg-teal-500/10 hover:bg-teal-500/30 border border-teal-500/30 text-teal-300 px-2.5 py-1 rounded-full transition';
+  b.textContent = t;
+  b.onclick = () => { const i = $('hashtags'); if (!i.value.includes(t)) { i.value = (i.value.trim()+' '+t).trim(); saveState(); } };
+  $('quickTags').appendChild(b);
+});
+
+// ========== EVENTOS: PLATAFORMAS ==========
+document.querySelectorAll('.platform-btn').forEach(btn => {
+  const group = btn.closest('.platform-group');
+  const p = group.dataset.platform;
+  btn.onclick = () => {
+    const check = btn.querySelector('.check'), svg = check.querySelector('svg');
+    if (state.platforms.has(p)) {
+      state.platforms.delete(p);
+      btn.classList.remove('border-teal-500','bg-teal-500/10');
+      check.classList.remove('bg-teal-500','border-teal-500');
+      svg.classList.add('hidden');
+    } else {
+      state.platforms.add(p);
+      btn.classList.add('border-teal-500','bg-teal-500/10');
+      check.classList.add('bg-teal-500','border-teal-500');
+      svg.classList.remove('hidden');
+    }
+  };
+  // Marcar iniciales
+  if (state.platforms.has(p)) {
+    btn.classList.add('border-teal-500','bg-teal-500/10');
+    const c = btn.querySelector('.check');
+    c.classList.add('bg-teal-500','border-teal-500');
+    c.querySelector('svg').classList.remove('hidden');
+  }
+});
+
+// Botones + Añadir cuenta
+document.querySelectorAll('.add-account-btn').forEach(btn => {
+  btn.onclick = () => {
+    const p = btn.dataset.platform;
+    if (!state.accounts[p]) state.accounts[p] = [];
+    state.accounts[p].push(`Cuenta ${state.accounts[p].length+1}`);
+    renderAccounts(p);
+    updateAccountCount();
+    saveState();
+  };
+});
+
+// ========== COPIAR TODO ==========
+$('copyBtn').onclick = async () => {
+  const title = $('videoTitle').value.trim();
+  const desc = $('videoDesc').value.trim();
+  const tags = $('hashtags').value.trim();
+  const full = [title, desc, tags].filter(Boolean).join('\n\n');
+  if (!full) { alert('No hay texto para copiar. Genera o escribe contenido primero.'); return; }
+  try {
+    await navigator.clipboard.writeText(full);
+    const b = $('copyBtn');
+    const orig = b.textContent;
+    b.textContent = '✓ COPIADO';
+    b.classList.add('text-teal-400');
+    setTimeout(() => { b.textContent = orig; b.classList.remove('text-teal-400'); }, 1500);
+  } catch(e) {
+    alert('No se pudo copiar automáticamente. Selecciona el texto y cópialo manualmente.');
+  }
+};
+
+// ========== CONSOLA ==========
+function log(msg, color='text-teal-300') {
+  const c = $('consoleLog');
+  c.classList.remove('hidden');
+  const p = document.createElement('p');
+  p.className = color;
+  p.textContent = '> ' + msg;
+  c.appendChild(p);
+  c.scrollTop = c.scrollHeight;
+}
+
+// ========== URLS POR PLATAFORMA ==========
+const platformUrls = {
+  tiktok: 'https://www.tiktok.com/upload',
+  youtube: 'https://www.youtube.com/upload',
+  facebook: 'https://www.facebook.com/reels/create',
+  instagram: 'https://www.instagram.com/',
+  threads: 'https://www.threads.net/',
+  kwai: 'https://www.kwai.com/'
+};
+
+// ========== DESPLEGAR ==========
+$('deployBtn').onclick = async () => {
+  const title = $('videoTitle').value.trim();
+  const desc = $('videoDesc').value.trim();
+  const tags = $('hashtags').value.trim();
+  if (!state.file) { alert('Selecciona primero un archivo de video.'); return; }
+  if (!title) { alert('El título es obligatorio. Pulsa 🎲 GENERAR 5 TÍTULOS si necesitas ideas.'); return; }
+  if (state.platforms.size === 0) { alert('Selecciona al menos una plataforma.'); return; }
+  $('consoleLog').innerHTML = '';
+  log('Inicializando protocolo NEXUS DISPATCH v2.0...');
+  await sleep(300);
+  log('Empaquetando: "' + title + '"');
+  await sleep(300);
+  const fullText = [title, desc, tags].filter(Boolean).join('\n\n');
+  log('Copy preparado (' + fullText.length + ' caracteres)');
+  await sleep(300);
+  // Contar cuentas totales
+  let totalTabs = 0;
+  state.platforms.forEach(p => { totalTabs += (state.accounts[p]?.length || 0) > 0 ? state.accounts[p].length : 1; });
+  log('Abriendo ' + totalTabs + ' pestañas (cuentas múltiples incluidas)...', 'text-emerald-400');
+  await sleep(400);
+  // Abrir pestañas
+  let tabIndex = 0;
+  state.platforms.forEach(p => {
+    const accounts = state.accounts[p]?.length ? state.accounts[p] : [`${p} principal`];
+    accounts.forEach(acc => {
+      setTimeout(() => {
+        const w = window.open(platformUrls[p], '_blank');
+        if (!w) log('⚠ Bloqueador de pop-ups detectado para ' + p, 'text-yellow-400');
+        else log('✓ ' + p.toUpperCase() + ' abierto — ' + acc);
+      }, tabIndex * 300);
+      tabIndex++;
+    });
+  });
+  // Copiar texto
+  try {
+    await navigator.clipboard.writeText(fullText);
+    log('✓ Texto copiado al portapapeles — pégalo en cada plataforma', 'text-emerald-400');
+  } catch(e) {
+    log('⚠ Copia manualmente el texto (usa el botón COPIAR TODO)', 'text-yellow-400');
+  }
+  await sleep(totalTabs * 300 + 500);
+  log('ARCHIVO DE VIDEO EN TU DISCO: ' + state.file.name, 'text-purple-400');
+  log('PEGA EL TEXTO Y SUBE EL VIDEO EN CADA PESTAÑA', 'text-purple-400');
+  state.prepared++;
+  $('statVideos').textContent = state.prepared;
+  saveState();
+  log('✓ SESIÓN COMPLETADA. Confirma la publicación en cada pestaña.', 'text-emerald-400 font-bold');
+};
+
+// ========== INICIALIZACIÓN ==========
+loadState();
+['youtube','facebook','instagram'].forEach(p => renderAccounts(p));
+updateAccountCount();
+</script></body></html>
