@@ -3,1713 +3,861 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>NEXUS DISPATCH v3 · Content Intelligence Studio</title>
-<meta name="description" content="Estudio de contenido multiplataforma con IA. Genera prompts para Google Veo, títulos, descripciones y hashtags con neuroventas."/>
+<title>NEXUS DISPATCH v4 · Content Intelligence Studio</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
-/* ========== RESET & VARIABLES ========== */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --bg-deep: #020810;
-  --bg-panel: rgba(0, 20, 50, 0.85);
-  --bg-card: rgba(0, 30, 70, 0.6);
-  --blue-core: #00d4ff;
-  --blue-mid: #0088cc;
-  --blue-dark: #004488;
-  --blue-glow: rgba(0, 212, 255, 0.15);
-  --blue-glow-strong: rgba(0, 212, 255, 0.35);
-  --orange-arc: #ff6600;
-  --orange-glow: rgba(255, 102, 0, 0.2);
-  --white: #e8f4f8;
-  --platinum: #8ab4c8;
-  --dim: #3a6080;
-  --border: rgba(0, 212, 255, 0.2);
-  --border-strong: rgba(0, 212, 255, 0.5);
-  --success: #00ff88;
-  --warning: #ffaa00;
-  --danger: #ff3366;
-  --font-tech: 'Orbitron', monospace;
-  --font-body: 'Exo 2', sans-serif;
-}
-
-html, body {
-  min-height: 100vh;
-  background: var(--bg-deep);
-  color: var(--white);
-  font-family: var(--font-body);
-  font-weight: 300;
-  overflow-x: hidden;
-}
-
-/* ========== BACKGROUND EFFECTS ========== */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(ellipse at 15% 20%, rgba(0, 100, 200, 0.12) 0%, transparent 50%),
-    radial-gradient(ellipse at 85% 80%, rgba(0, 180, 255, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 50%, rgba(0, 50, 100, 0.05) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ========== ANIMATIONS ========== */
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.3)} }
-@keyframes scan { 0%{top:0} 100%{top:100%} }
-@keyframes fadeIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
-@keyframes glow-pulse { 0%,100%{box-shadow:0 0 15px var(--blue-glow)} 50%{box-shadow:0 0 35px var(--blue-glow-strong)} }
-@keyframes rotate { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
-@keyframes flicker { 0%,100%{opacity:1} 92%{opacity:1} 93%{opacity:.8} 94%{opacity:1} 96%{opacity:.9} 97%{opacity:1} }
-@keyframes data-stream {
-  0%{transform:translateY(-100%);opacity:0}
-  10%{opacity:1}
-  90%{opacity:1}
-  100%{transform:translateY(100vh);opacity:0}
-}
-@keyframes shimmer {
-  0%{background-position:-200% 0}
-  100%{background-position:200% 0}
-}
-
-/* ========== HEADER ========== */
-header {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(2, 8, 16, 0.95);
-  border-bottom: 1px solid var(--border);
-  backdrop-filter: blur(20px);
-  padding: 12px 24px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  animation: flicker 8s infinite;
-}
-
-.header-left { display: flex; align-items: center; gap: 16px; }
-
-.arc-reactor {
-  width: 40px;
-  height: 40px;
-  position: relative;
-  flex-shrink: 0;
-}
-
-.arc-reactor-core {
-  position: absolute;
-  inset: 8px;
-  background: radial-gradient(circle, #00d4ff, #0066ff);
-  border-radius: 50%;
-  box-shadow: 0 0 12px #00d4ff, 0 0 24px rgba(0,212,255,0.5);
-  animation: pulse 2s infinite;
-}
-
-.arc-reactor-ring {
-  position: absolute;
-  inset: 2px;
-  border: 1.5px solid rgba(0,212,255,0.6);
-  border-radius: 50%;
-  animation: rotate 4s linear infinite;
-  border-top-color: #00d4ff;
-  border-right-color: transparent;
-}
-
-.brand-title {
-  font-family: var(--font-tech);
-  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
-  font-weight: 700;
-  color: var(--blue-core);
-  letter-spacing: 4px;
-  text-shadow: 0 0 20px rgba(0,212,255,0.6);
-}
-
-.brand-sub {
-  font-family: var(--font-tech);
-  font-size: 0.55rem;
-  color: var(--dim);
-  letter-spacing: 3px;
-  margin-top: 2px;
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.status-indicator {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-tech);
-  font-size: 0.6rem;
-  color: var(--platinum);
-  letter-spacing: 2px;
-}
-
-.dot-live {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--success);
-  box-shadow: 0 0 8px var(--success);
-  animation: pulse 1.5s infinite;
-}
-
-.metricool-counter {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 4px 12px;
-  font-family: var(--font-tech);
-  font-size: 0.6rem;
-  color: var(--blue-core);
-  letter-spacing: 1px;
-}
-
-.counter-bar {
-  width: 80px;
-  height: 3px;
-  background: rgba(0,212,255,0.1);
-  border-radius: 2px;
-  margin-top: 4px;
-  overflow: hidden;
-}
-
-.counter-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--blue-mid), var(--blue-core));
-  border-radius: 2px;
-  transition: width 0.5s ease;
-  box-shadow: 0 0 6px var(--blue-core);
-}
-
-/* ========== MAIN ========== */
-main {
-  position: relative;
-  z-index: 1;
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 32px 16px 80px;
-}
-
-/* ========== HERO ========== */
-.hero {
-  text-align: center;
-  margin-bottom: 40px;
-  animation: fadeIn 0.6s ease-out;
-}
-
-.hero h1 {
-  font-family: var(--font-tech);
-  font-size: clamp(1.6rem, 5vw, 2.8rem);
-  font-weight: 900;
-  letter-spacing: 4px;
-  line-height: 1.1;
-  margin-bottom: 12px;
-}
-
-.hero h1 .accent { color: var(--blue-core); text-shadow: 0 0 20px rgba(0,212,255,0.7); }
-.hero h1 .accent2 { color: var(--orange-arc); text-shadow: 0 0 20px rgba(255,102,0,0.7); }
-
-.hero-sub {
-  font-size: 0.8rem;
-  color: var(--platinum);
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  font-family: var(--font-tech);
-}
-
-.glow-line {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--blue-core), var(--orange-arc), var(--blue-core), transparent);
-  margin: 20px auto;
-  max-width: 400px;
-}
-
-/* ========== PANELS ========== */
-.panel {
-  background: var(--bg-panel);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 24px;
-  margin-bottom: 20px;
-  backdrop-filter: blur(20px);
-  position: relative;
-  overflow: hidden;
-  animation: fadeIn 0.5s ease-out;
-  animation: glow-pulse 4s ease infinite;
-}
-
-.panel::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--blue-core), transparent);
-}
-
-.panel-scan::after {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(0,212,255,0.4), transparent);
-  animation: scan 4s linear infinite;
-  pointer-events: none;
-}
-
-.panel-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.panel-label {
-  font-family: var(--font-tech);
-  font-size: 0.65rem;
-  font-weight: 600;
-  color: var(--blue-core);
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.panel-label::before {
-  content: '';
-  width: 3px;
-  height: 14px;
-  background: var(--blue-core);
-  border-radius: 2px;
-  box-shadow: 0 0 8px var(--blue-core);
-}
-
-/* ========== INPUTS ========== */
-.field-group { margin-bottom: 16px; }
-
-.field-label {
-  display: block;
-  font-family: var(--font-tech);
-  font-size: 0.6rem;
-  color: var(--blue-core);
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-  opacity: 0.8;
-}
-
-input[type="text"],
-textarea,
-select {
-  width: 100%;
-  background: rgba(0, 20, 50, 0.8);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 10px 14px;
-  color: var(--white);
-  font-family: var(--font-body);
-  font-size: 0.85rem;
-  outline: none;
-  transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-input[type="text"]:focus,
-textarea:focus,
-select:focus {
-  border-color: var(--blue-core);
-  box-shadow: 0 0 16px var(--blue-glow);
-}
-
-input::placeholder,
-textarea::placeholder { color: var(--dim); }
-
-textarea { resize: none; }
-
-select option { background: #020810; color: var(--white); }
-
-.char-count {
-  text-align: right;
-  font-family: var(--font-tech);
-  font-size: 0.55rem;
-  color: var(--dim);
-  margin-top: 4px;
-}
-
-/* ========== BUTTONS ========== */
-.btn-row {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 8px;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  border-radius: 5px;
-  border: 1px solid;
-  font-family: var(--font-tech);
-  font-size: 0.6rem;
-  font-weight: 600;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.25s;
-  white-space: nowrap;
-}
-
-.btn-gen {
-  background: rgba(0,212,255,0.1);
-  border-color: rgba(0,212,255,0.4);
-  color: var(--blue-core);
-}
-.btn-gen:hover {
-  background: rgba(0,212,255,0.2);
-  box-shadow: 0 0 20px var(--blue-glow-strong);
-  transform: translateY(-1px);
-}
-
-.btn-copy {
-  background: rgba(0,136,204,0.1);
-  border-color: rgba(0,136,204,0.4);
-  color: var(--platinum);
-}
-.btn-copy:hover { background: rgba(0,136,204,0.2); }
-.btn-copy.copied {
-  background: rgba(0,255,136,0.15);
-  border-color: rgba(0,255,136,0.4);
-  color: var(--success);
-}
-
-.btn-veo {
-  background: rgba(255,102,0,0.1);
-  border-color: rgba(255,102,0,0.4);
-  color: var(--orange-arc);
-}
-.btn-veo:hover {
-  background: rgba(255,102,0,0.2);
-  box-shadow: 0 0 20px var(--orange-glow);
-  transform: translateY(-1px);
-}
-
-.btn-deploy {
-  width: 100%;
-  padding: 16px 24px;
-  background: linear-gradient(135deg, rgba(0,100,200,0.3), rgba(0,212,255,0.2));
-  border: 1px solid var(--blue-core);
-  border-radius: 8px;
-  color: var(--blue-core);
-  font-family: var(--font-tech);
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.3s;
-  box-shadow: 0 0 20px var(--blue-glow), inset 0 0 20px rgba(0,212,255,0.05);
-  position: relative;
-  overflow: hidden;
-}
-
-.btn-deploy::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(0,212,255,0.1), transparent);
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite;
-}
-
-.btn-deploy:hover {
-  box-shadow: 0 0 40px var(--blue-glow-strong), 0 0 80px rgba(0,212,255,0.1);
-  transform: translateY(-2px);
-  color: #fff;
-}
-
-/* ========== OPTIONS LIST ========== */
-.options-list {
-  display: none;
-  margin-top: 10px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.options-list.visible { display: block; }
-
-.option-item {
-  padding: 10px 14px;
-  font-size: 0.82rem;
-  color: var(--platinum);
-  cursor: pointer;
-  border-bottom: 1px solid rgba(0,212,255,0.08);
-  transition: all 0.2s;
-  font-family: var(--font-body);
-  line-height: 1.5;
-}
-.option-item:last-child { border-bottom: none; }
-.option-item:hover {
-  background: rgba(0,212,255,0.08);
-  color: var(--white);
-  padding-left: 20px;
-}
-
-.options-header {
-  padding: 6px 14px;
-  font-family: var(--font-tech);
-  font-size: 0.55rem;
-  color: var(--dim);
-  letter-spacing: 2px;
-  background: rgba(0,212,255,0.03);
-  border-bottom: 1px solid var(--border);
-}
-
-/* ========== VIDEO TYPE SELECTOR ========== */
-.type-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
-.type-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 12px;
-  cursor: pointer;
-  transition: all 0.25s;
-  text-align: center;
-}
-
-.type-card:hover,
-.type-card.active {
-  border-color: var(--blue-core);
-  background: rgba(0,212,255,0.08);
-  box-shadow: 0 0 16px var(--blue-glow);
-}
-
-.type-card.active .type-icon { color: var(--blue-core); }
-
-.type-icon {
-  font-size: 1.4rem;
-  margin-bottom: 6px;
-  display: block;
-  transition: color 0.2s;
-}
-
-.type-name {
-  font-family: var(--font-tech);
-  font-size: 0.58rem;
-  color: var(--platinum);
-  letter-spacing: 1px;
-  line-height: 1.3;
-}
-
-/* ========== AUDIENCE SELECTOR ========== */
-.audience-row {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
-.audience-btn {
-  flex: 1;
-  padding: 8px 4px;
-  border-radius: 5px;
-  border: 1px solid var(--border);
-  background: var(--bg-card);
-  color: var(--platinum);
-  font-family: var(--font-tech);
-  font-size: 0.58rem;
-  letter-spacing: 1px;
-  text-align: center;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.audience-btn.active {
-  border-color: var(--orange-arc);
-  background: rgba(255,102,0,0.1);
-  color: var(--orange-arc);
-  box-shadow: 0 0 12px var(--orange-glow);
-}
-
-/* ========== VEO PROMPT OUTPUT ========== */
-.veo-output {
-  background: rgba(0, 10, 25, 0.9);
-  border: 1px solid rgba(255,102,0,0.3);
-  border-radius: 6px;
-  padding: 16px;
-  font-family: 'Courier New', monospace;
-  font-size: 0.78rem;
-  color: #ff9966;
-  line-height: 1.8;
-  white-space: pre-wrap;
-  display: none;
-  max-height: 320px;
-  overflow-y: auto;
-  position: relative;
-}
-
-.veo-output.visible { display: block; }
-.veo-output::-webkit-scrollbar { width: 4px; }
-.veo-output::-webkit-scrollbar-thumb { background: rgba(255,102,0,0.4); border-radius: 2px; }
-
-/* ========== CASOS ILUSTRATIVOS ========== */
-.casos-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 12px;
-}
-
-.caso-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--blue-core);
-  border-radius: 6px;
-  padding: 14px 16px;
-  position: relative;
-  cursor: pointer;
-  transition: all 0.25s;
-}
-
-.caso-card:hover {
-  border-color: var(--blue-core);
-  background: rgba(0,212,255,0.05);
-}
-
-.caso-tag {
-  font-family: var(--font-tech);
-  font-size: 0.55rem;
-  color: var(--blue-core);
-  letter-spacing: 2px;
-  margin-bottom: 6px;
-  opacity: 0.7;
-}
-
-.caso-text {
-  font-size: 0.82rem;
-  color: var(--platinum);
-  line-height: 1.7;
-  font-style: italic;
-}
-
-.caso-result {
-  margin-top: 8px;
-  font-size: 0.75rem;
-  color: var(--success);
-  font-family: var(--font-tech);
-  letter-spacing: 1px;
-}
-
-/* ========== PLATFORMS ========== */
-.platform-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-  gap: 8px;
-}
-
-.platform-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 12px;
-  cursor: pointer;
-  transition: all 0.25s;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.platform-card.selected {
-  border-color: var(--blue-core);
-  background: rgba(0,212,255,0.08);
-  box-shadow: 0 0 12px var(--blue-glow);
-}
-
-.platform-icon {
-  width: 28px;
-  height: 28px;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 0.9rem;
-  flex-shrink: 0;
-}
-
-.platform-info { flex: 1; min-width: 0; }
-
-.platform-name {
-  font-size: 0.78rem;
-  font-weight: 500;
-  color: var(--white);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.platform-type {
-  font-family: var(--font-tech);
-  font-size: 0.52rem;
-  color: var(--dim);
-  letter-spacing: 1px;
-}
-
-.platform-check {
-  width: 14px;
-  height: 14px;
-  border: 1px solid var(--dim);
-  border-radius: 3px;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-}
-
-.platform-card.selected .platform-check {
-  background: var(--blue-core);
-  border-color: var(--blue-core);
-}
-
-/* ========== HASHTAG PILLS ========== */
-.tag-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 8px;
-}
-
-.tag-pill {
-  padding: 4px 10px;
-  background: rgba(0,212,255,0.06);
-  border: 1px solid rgba(0,212,255,0.2);
-  border-radius: 20px;
-  font-family: var(--font-tech);
-  font-size: 0.58rem;
-  color: var(--blue-core);
-  cursor: pointer;
-  transition: all 0.2s;
-  letter-spacing: 1px;
-}
-
-.tag-pill:hover {
-  background: rgba(0,212,255,0.15);
-  border-color: var(--blue-core);
-}
-
-/* ========== CONSOLE ========== */
-.console {
-  display: none;
-  background: rgba(0, 5, 15, 0.95);
-  border: 1px solid rgba(0,212,255,0.2);
-  border-radius: 6px;
-  padding: 16px;
-  font-family: 'Courier New', monospace;
-  font-size: 0.75rem;
-  max-height: 200px;
-  overflow-y: auto;
-  margin-top: 12px;
-}
-
-.console.visible { display: block; }
-.console-line { color: var(--blue-core); padding: 2px 0; }
-.console-line.success { color: var(--success); }
-.console-line.warning { color: var(--warning); }
-.console-line.error { color: var(--danger); }
-.console::-webkit-scrollbar { width: 4px; }
-.console::-webkit-scrollbar-thumb { background: var(--blue-dark); border-radius: 2px; }
-
-/* ========== STATS ========== */
-.stats-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-top: 24px;
-}
-
-.stat-card {
-  background: var(--bg-panel);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 16px;
-  text-align: center;
-}
-
-.stat-number {
-  font-family: var(--font-tech);
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: var(--blue-core);
-  text-shadow: 0 0 20px rgba(0,212,255,0.5);
-  line-height: 1;
-  margin-bottom: 6px;
-}
-
-.stat-label {
-  font-family: var(--font-tech);
-  font-size: 0.55rem;
-  color: var(--dim);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
-
-/* ========== FOOTER ========== */
-footer {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  padding: 24px;
-  border-top: 1px solid var(--border);
-  margin-top: 40px;
-}
-
-footer p {
-  font-family: var(--font-tech);
-  font-size: 0.55rem;
-  color: var(--dim);
-  letter-spacing: 3px;
-  margin-bottom: 4px;
-}
-
-/* ========== SCROLLBAR ========== */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: #020810; }
-::-webkit-scrollbar-thumb { background: var(--blue-dark); border-radius: 3px; }
-
-/* ========== RESPONSIVE ========== */
-@media (max-width: 600px) {
-  .type-grid { grid-template-columns: repeat(2, 1fr); }
-  .stats-row { grid-template-columns: repeat(3, 1fr); }
-  .audience-row { flex-wrap: wrap; }
-  header { padding: 10px 14px; }
-  .brand-title { font-size: 0.8rem; letter-spacing: 2px; }
-  .metricool-counter { display: none; }
-}
+/* ===== RESET & VARIABLES ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#020810;--bg-panel:rgba(0,20,50,.85);--bg-card:rgba(0,30,70,.6);
+  --blue:#00d4ff;--blue2:#0088cc;--blue3:#004488;--glow:rgba(0,212,255,.15);
+  --glow2:rgba(0,212,255,.35);--orange:#ff6600;--oglow:rgba(255,102,0,.2);
+  --white:#e8f4f8;--plat:#8ab4c8;--dim:#3a6080;--border:rgba(0,212,255,.2);
+  --border2:rgba(0,212,255,.5);--ok:#00ff88;--warn:#ffaa00;--err:#ff3366;
+  --tech:'Orbitron',monospace;--body:'Exo 2',sans-serif;
+}
+html,body{min-height:100vh;background:var(--bg);color:var(--white);font-family:var(--body);font-weight:300;overflow-x:hidden}
+
+/* ===== BG ===== */
+body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 15% 20%,rgba(0,100,200,.12),transparent 50%),radial-gradient(ellipse at 85% 80%,rgba(0,180,255,.08),transparent 50%);pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.025) 1px,transparent 1px);background-size:50px 50px;pointer-events:none;z-index:0}
+
+/* ===== KEYFRAMES ===== */
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.3)}}
+@keyframes rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes rotate-rev{from{transform:rotate(360deg)}to{transform:rotate(0deg)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes scanY{0%{top:-2px}100%{top:100%}}
+@keyframes scanX{0%{left:-2px}100%{left:100%}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes flicker{0%,100%{opacity:1}93%{opacity:.85}94%{opacity:1}97%{opacity:.9}98%{opacity:1}}
+@keyframes datastream{0%{transform:translateY(-100%);opacity:0}10%{opacity:.6}90%{opacity:.6}100%{transform:translateY(200px);opacity:0}}
+@keyframes glow-pulse{0%,100%{box-shadow:0 0 15px var(--glow)}50%{box-shadow:0 0 35px var(--glow2)}}
+@keyframes corner-pulse{0%,100%{opacity:.4}50%{opacity:1}}
+
+/* ===== HEADER ===== */
+header{position:sticky;top:0;z-index:100;background:rgba(2,8,16,.97);border-bottom:1px solid var(--border);backdrop-filter:blur(20px);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;animation:flicker 10s infinite}
+.hdr-left{display:flex;align-items:center;gap:14px}
+
+/* Arc reactor */
+.arc{width:44px;height:44px;position:relative;flex-shrink:0}
+.arc-core{position:absolute;inset:12px;background:radial-gradient(circle,#00d4ff,#0055cc);border-radius:50%;box-shadow:0 0 14px #00d4ff,0 0 28px rgba(0,212,255,.5);animation:pulse 2s infinite}
+.arc-r1{position:absolute;inset:4px;border:1.5px solid rgba(0,212,255,.7);border-radius:50%;animation:rotate 3s linear infinite;border-top-color:transparent}
+.arc-r2{position:absolute;inset:8px;border:1px solid rgba(0,212,255,.35);border-radius:50%;animation:rotate-rev 5s linear infinite;border-right-color:transparent}
+/* Triangular notches on ring */
+.arc-notch{position:absolute;width:4px;height:4px;background:var(--blue);border-radius:50%;box-shadow:0 0 6px var(--blue)}
+.arc-notch:nth-child(3){top:2px;left:50%;transform:translateX(-50%)}
+.arc-notch:nth-child(4){bottom:2px;left:50%;transform:translateX(-50%)}
+.arc-notch:nth-child(5){left:2px;top:50%;transform:translateY(-50%)}
+.arc-notch:nth-child(6){right:2px;top:50%;transform:translateY(-50%)}
+
+.brand-title{font-family:var(--tech);font-size:clamp(.8rem,2.5vw,1.05rem);font-weight:700;color:var(--blue);letter-spacing:4px;text-shadow:0 0 20px rgba(0,212,255,.6)}
+.brand-sub{font-family:var(--tech);font-size:.5rem;color:var(--dim);letter-spacing:3px;margin-top:2px}
+.hdr-right{display:flex;align-items:center;gap:12px}
+.dot-live{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok);animation:pulse 1.5s infinite}
+.status-txt{font-family:var(--tech);font-size:.58rem;color:var(--plat);letter-spacing:2px}
+
+/* Metricool counter */
+.mc-box{background:var(--bg-card);border:1px solid var(--border);border-radius:6px;padding:5px 12px;font-family:var(--tech);font-size:.58rem;color:var(--blue);letter-spacing:1px;min-width:110px}
+.mc-bar{width:100%;height:3px;background:rgba(0,212,255,.1);border-radius:2px;margin-top:4px;overflow:hidden}
+.mc-fill{height:100%;background:linear-gradient(90deg,var(--blue2),var(--blue));border-radius:2px;transition:width .5s ease,background .5s ease;box-shadow:0 0 6px var(--blue)}
+
+/* ===== MAIN ===== */
+main{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:28px 14px 80px}
+
+/* ===== HERO ===== */
+.hero{text-align:center;margin-bottom:36px;animation:fadeIn .6s ease-out}
+.hero h1{font-family:var(--tech);font-size:clamp(1.5rem,5vw,2.6rem);font-weight:900;letter-spacing:3px;line-height:1.1;margin-bottom:10px}
+.accent{color:var(--blue);text-shadow:0 0 20px rgba(0,212,255,.7)}
+.accent2{color:var(--orange);text-shadow:0 0 20px rgba(255,102,0,.7)}
+.hero-sub{font-family:var(--tech);font-size:.58rem;color:var(--dim);letter-spacing:3px;margin-bottom:10px}
+.glow-line{height:1px;background:linear-gradient(90deg,transparent,var(--blue),var(--orange),var(--blue),transparent);margin:16px auto;max-width:400px}
+.hero-p{font-size:.78rem;color:var(--plat);max-width:480px;margin:0 auto}
+
+/* ===== PANEL ===== */
+.panel{background:var(--bg-panel);border:1px solid var(--border);border-radius:10px;padding:22px 20px;margin-bottom:18px;backdrop-filter:blur(20px);position:relative;overflow:hidden;animation:fadeIn .5s ease-out,glow-pulse 5s ease infinite}
+.panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),transparent)}
+
+/* Scan lines */
+.scan-y::after{content:'';position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(0,212,255,.3),transparent);animation:scanY 5s linear infinite;pointer-events:none}
+.scan-x::after{content:'';position:absolute;top:0;bottom:0;width:2px;background:linear-gradient(180deg,transparent,rgba(0,212,255,.3),transparent);animation:scanX 7s linear infinite;pointer-events:none}
+
+/* Corner brackets */
+.corner{position:absolute;width:12px;height:12px;animation:corner-pulse 3s ease infinite}
+.corner-tl{top:4px;left:4px;border-top:1.5px solid var(--blue);border-left:1.5px solid var(--blue)}
+.corner-tr{top:4px;right:4px;border-top:1.5px solid var(--blue);border-right:1.5px solid var(--blue)}
+.corner-bl{bottom:4px;left:4px;border-bottom:1.5px solid var(--blue);border-left:1.5px solid var(--blue)}
+.corner-br{bottom:4px;right:4px;border-bottom:1.5px solid var(--blue);border-right:1.5px solid var(--blue)}
+
+/* Data stream particles */
+.stream-container{position:absolute;top:0;left:0;right:0;bottom:0;overflow:hidden;pointer-events:none;opacity:.4}
+.stream-char{position:absolute;font-family:var(--tech);font-size:.55rem;color:var(--blue);animation:datastream 4s linear infinite}
+
+.panel-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px}
+.panel-lbl{font-family:var(--tech);font-size:.62rem;font-weight:600;color:var(--blue);letter-spacing:4px;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.panel-lbl::before{content:'';width:3px;height:14px;background:var(--blue);border-radius:2px;box-shadow:0 0 8px var(--blue)}
+.panel-note{font-size:.72rem;color:var(--dim);margin-bottom:14px;line-height:1.6}
+
+/* ===== INPUTS ===== */
+.field-grp{margin-bottom:14px}
+.field-lbl{display:block;font-family:var(--tech);font-size:.58rem;color:var(--blue);letter-spacing:3px;text-transform:uppercase;margin-bottom:7px;opacity:.8}
+input[type=text],textarea,select{width:100%;background:rgba(0,20,50,.8);border:1px solid var(--border);border-radius:6px;padding:10px 13px;color:var(--white);font-family:var(--body);font-size:.84rem;outline:none;transition:border-color .3s,box-shadow .3s}
+input[type=text]:focus,textarea:focus,select:focus{border-color:var(--blue);box-shadow:0 0 16px var(--glow)}
+input::placeholder,textarea::placeholder{color:var(--dim)}
+textarea{resize:none}
+.char-ct{text-align:right;font-family:var(--tech);font-size:.52rem;color:var(--dim);margin-top:3px}
+
+/* ===== BUTTONS ===== */
+.btn-row{display:flex;gap:7px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:5px;border:1px solid;font-family:var(--tech);font-size:.58rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .25s;white-space:nowrap;background:transparent}
+.btn-gen{border-color:rgba(0,212,255,.4);color:var(--blue);background:rgba(0,212,255,.08)}
+.btn-gen:hover{background:rgba(0,212,255,.18);box-shadow:0 0 20px var(--glow2);transform:translateY(-1px)}
+.btn-copy{border-color:rgba(0,136,204,.4);color:var(--plat);background:rgba(0,136,204,.08)}
+.btn-copy:hover{background:rgba(0,136,204,.18)}
+.btn-copy.copied{border-color:rgba(0,255,136,.4);color:var(--ok);background:rgba(0,255,136,.1)}
+.btn-veo{border-color:rgba(255,102,0,.4);color:var(--orange);background:rgba(255,102,0,.08)}
+.btn-veo:hover{background:rgba(255,102,0,.18);box-shadow:0 0 20px var(--oglow);transform:translateY(-1px)}
+.btn-lock{border-color:rgba(255,170,0,.5);color:var(--warn);background:rgba(255,170,0,.08)}
+.btn-lock.locked{border-color:rgba(0,255,136,.4);color:var(--ok);background:rgba(0,255,136,.08)}
+.btn-lock:hover{background:rgba(255,170,0,.16)}
+.btn-danger{border-color:rgba(255,51,102,.4);color:var(--err);background:rgba(255,51,102,.08)}
+.btn-danger:hover{background:rgba(255,51,102,.18)}
+.btn-deploy{width:100%;padding:15px 24px;background:linear-gradient(135deg,rgba(0,100,200,.3),rgba(0,212,255,.18));border:1px solid var(--blue);border-radius:8px;color:var(--blue);font-family:var(--tech);font-size:.78rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;cursor:pointer;transition:all .3s;box-shadow:0 0 20px var(--glow),inset 0 0 20px rgba(0,212,255,.04);position:relative;overflow:hidden}
+.btn-deploy::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(0,212,255,.08),transparent);background-size:200% 100%;animation:shimmer 2.5s infinite}
+.btn-deploy:hover{box-shadow:0 0 40px var(--glow2),0 0 80px rgba(0,212,255,.1);transform:translateY(-2px);color:#fff}
+
+/* ===== OPTIONS LIST ===== */
+.opts{display:none;margin-top:9px;border:1px solid var(--border);border-radius:6px;overflow:hidden}
+.opts.open{display:block}
+.opts-hdr{padding:5px 13px;font-family:var(--tech);font-size:.52rem;color:var(--dim);letter-spacing:2px;background:rgba(0,212,255,.03);border-bottom:1px solid var(--border)}
+.opt-item{padding:9px 13px;font-size:.82rem;color:var(--plat);cursor:pointer;border-bottom:1px solid rgba(0,212,255,.07);transition:all .2s;line-height:1.5}
+.opt-item:last-child{border-bottom:none}
+.opt-item:hover{background:rgba(0,212,255,.07);color:var(--white);padding-left:18px}
+
+/* ===== LOCKED FIELD ===== */
+.field-locked{position:relative}
+.lock-overlay{position:absolute;inset:0;background:rgba(0,255,136,.03);border:1px solid rgba(0,255,136,.2);border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:not-allowed;z-index:5;pointer-events:none}
+.lock-overlay.active{pointer-events:all}
+.lock-badge{font-family:var(--tech);font-size:.55rem;color:var(--ok);letter-spacing:2px;background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.3);border-radius:4px;padding:3px 10px}
+
+/* ===== TYPE GRID ===== */
+.type-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-bottom:14px}
+.type-card{background:var(--bg-card);border:1px solid var(--border);border-radius:6px;padding:11px;cursor:pointer;transition:all .25s;text-align:center;position:relative}
+.type-card:hover,.type-card.active{border-color:var(--blue);background:rgba(0,212,255,.07);box-shadow:0 0 14px var(--glow)}
+.type-card.active .type-name{color:var(--blue)}
+.type-icon{font-size:1.3rem;margin-bottom:5px;display:block}
+.type-name{font-family:var(--tech);font-size:.55rem;color:var(--plat);letter-spacing:1px;line-height:1.3}
+
+/* ===== AUDIENCE ===== */
+.aud-row{display:flex;gap:7px;margin-bottom:13px;flex-wrap:wrap}
+.aud-btn{flex:1;min-width:60px;padding:7px 4px;border-radius:5px;border:1px solid var(--border);background:var(--bg-card);color:var(--plat);font-family:var(--tech);font-size:.56rem;letter-spacing:1px;text-align:center;cursor:pointer;transition:all .2s}
+.aud-btn.active{border-color:var(--orange);background:rgba(255,102,0,.1);color:var(--orange);box-shadow:0 0 10px var(--oglow)}
+
+/* ===== VEO SCENES ===== */
+.scenes-wrapper{display:none}
+.scenes-wrapper.visible{display:block}
+.scene-block{background:rgba(0,10,25,.9);border:1px solid rgba(255,102,0,.25);border-radius:7px;margin-bottom:10px;overflow:hidden}
+.scene-hdr{display:flex;align-items:center;justify-content:space-between;padding:9px 13px;background:rgba(255,102,0,.07);border-bottom:1px solid rgba(255,102,0,.15)}
+.scene-title{font-family:var(--tech);font-size:.6rem;color:var(--orange);letter-spacing:2px}
+.scene-body{padding:12px 13px}
+.scene-textarea{width:100%;background:transparent;border:none;color:#ffaa77;font-family:'Courier New',monospace;font-size:.76rem;line-height:1.7;resize:vertical;min-height:80px;outline:none}
+.scene-textarea:focus{color:var(--white)}
+
+/* ===== CASES ===== */
+.casos-grid{display:grid;gap:10px}
+.caso-card{background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:6px;padding:13px 15px;cursor:pointer;transition:all .25s}
+.caso-card:hover{border-color:var(--blue);background:rgba(0,212,255,.04)}
+.caso-card.selected{border-left-color:var(--orange);background:rgba(255,102,0,.04)}
+.caso-tag{font-family:var(--tech);font-size:.52rem;color:var(--blue);letter-spacing:2px;margin-bottom:5px;opacity:.8}
+.caso-text{font-size:.8rem;color:var(--plat);line-height:1.7;font-style:italic}
+.caso-result{margin-top:7px;font-size:.72rem;color:var(--ok);font-family:var(--tech);letter-spacing:1px}
+
+/* ===== PLATFORMS ===== */
+.platform-section{margin-bottom:10px}
+.platform-header-row{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--bg-card);border:1px solid var(--border);border-radius:6px;margin-bottom:6px}
+.platform-name-row{display:flex;align-items:center;gap:9px}
+.plat-svg{width:26px;height:26px;border-radius:5px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.plat-lbl{font-size:.82rem;font-weight:500;color:var(--white)}
+.plat-type{font-family:var(--tech);font-size:.5rem;color:var(--dim);letter-spacing:1px}
+.btn-add-account{font-family:var(--tech);font-size:.55rem;color:var(--blue);border:1px dashed rgba(0,212,255,.35);background:transparent;border-radius:4px;padding:4px 10px;cursor:pointer;transition:all .2s;letter-spacing:1px}
+.btn-add-account:hover{background:rgba(0,212,255,.08);border-color:var(--blue)}
+.accounts-list{display:flex;flex-direction:column;gap:5px;padding-left:8px}
+.account-chip{display:flex;align-items:center;gap:8px;background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.15);border-radius:5px;padding:7px 10px;transition:all .2s}
+.account-chip:hover{border-color:var(--border2)}
+.chip-open{width:22px;height:22px;border-radius:50%;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);display:flex;align-items:center;justify-content:center;font-size:.7rem;cursor:pointer;transition:all .2s;flex-shrink:0}
+.chip-open:hover{background:rgba(0,212,255,.25)}
+.chip-input{flex:1;background:transparent;border:none;color:var(--white);font-family:var(--body);font-size:.8rem;outline:none;min-width:0}
+.chip-url{flex:1;background:rgba(0,0,0,.3);border:1px solid rgba(0,212,255,.15);border-radius:4px;color:var(--plat);font-family:var(--body);font-size:.7rem;padding:3px 7px;outline:none;min-width:0}
+.chip-url:focus{border-color:var(--blue)}
+.chip-del{font-size:.7rem;color:var(--dim);cursor:pointer;padding:2px 5px;transition:color .2s;flex-shrink:0}
+.chip-del:hover{color:var(--err)}
+
+/* Add account form */
+.add-form{display:none;background:rgba(0,20,50,.8);border:1px solid var(--border);border-radius:6px;padding:12px;margin-top:6px;gap:8px;flex-direction:column}
+.add-form.open{display:flex}
+.add-form input{background:rgba(0,30,70,.8);border:1px solid var(--border);border-radius:5px;padding:7px 10px;color:var(--white);font-family:var(--body);font-size:.8rem;outline:none;width:100%}
+.add-form input:focus{border-color:var(--blue)}
+.add-form-row{display:flex;gap:7px}
+
+/* ===== HASHTAG PILLS ===== */
+.tag-pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.tag-pill{padding:3px 9px;background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.2);border-radius:20px;font-family:var(--tech);font-size:.56rem;color:var(--blue);cursor:pointer;transition:all .2s;letter-spacing:1px}
+.tag-pill:hover{background:rgba(0,212,255,.14);border-color:var(--blue)}
+
+/* ===== CONSOLE ===== */
+.console{display:none;background:rgba(0,5,15,.95);border:1px solid rgba(0,212,255,.2);border-radius:6px;padding:14px;font-family:'Courier New',monospace;font-size:.72rem;max-height:180px;overflow-y:auto;margin-top:11px}
+.console.open{display:block}
+.cl{color:var(--blue);padding:2px 0}.cl.ok{color:var(--ok)}.cl.w{color:var(--warn)}.cl.e{color:var(--err)}
+.console::-webkit-scrollbar{width:4px}.console::-webkit-scrollbar-thumb{background:var(--blue3);border-radius:2px}
+
+/* ===== STATS ===== */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}
+.stat-card{background:var(--bg-panel);border:1px solid var(--border);border-radius:7px;padding:15px;text-align:center}
+.stat-n{font-family:var(--tech);font-size:1.7rem;font-weight:700;color:var(--blue);text-shadow:0 0 18px rgba(0,212,255,.5);line-height:1;margin-bottom:5px}
+.stat-l{font-family:var(--tech);font-size:.52rem;color:var(--dim);letter-spacing:2px;text-transform:uppercase}
+
+/* ===== FOOTER ===== */
+footer{position:relative;z-index:1;text-align:center;padding:22px;border-top:1px solid var(--border);margin-top:36px}
+footer p{font-family:var(--tech);font-size:.52rem;color:var(--dim);letter-spacing:3px;margin-bottom:3px}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#020810}::-webkit-scrollbar-thumb{background:var(--blue3);border-radius:3px}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:600px){.type-grid{grid-template-columns:repeat(2,1fr)}.stats{grid-template-columns:repeat(3,1fr)}.aud-row{flex-wrap:wrap}.mc-box{display:none}}
 </style>
 </head>
 <body>
 
-<!-- ========== HEADER ========== -->
+<!-- HEADER -->
 <header>
-  <div class="header-left">
-    <div class="arc-reactor">
-      <div class="arc-reactor-ring"></div>
-      <div class="arc-reactor-core"></div>
+  <div class="hdr-left">
+    <div class="arc">
+      <div class="arc-r1"></div>
+      <div class="arc-r2"></div>
+      <div class="arc-core"></div>
+      <div class="arc-notch"></div>
+      <div class="arc-notch"></div>
+      <div class="arc-notch"></div>
+      <div class="arc-notch"></div>
     </div>
     <div>
       <div class="brand-title">NEXUS DISPATCH</div>
-      <div class="brand-sub">CONTENT INTELLIGENCE STUDIO // v3.0</div>
+      <div class="brand-sub">CONTENT INTELLIGENCE STUDIO // v4.0</div>
     </div>
   </div>
-  <div class="header-right">
-    <div class="status-indicator">
+  <div class="hdr-right">
+    <div style="display:flex;align-items:center;gap:6px">
       <div class="dot-live"></div>
-      <span id="statusText">SISTEMA ACTIVO</span>
+      <span class="status-txt">SISTEMA ACTIVO</span>
     </div>
-    <div class="metricool-counter">
-      <div>METRICOOL <span id="counterNum">0</span>/20</div>
-      <div class="counter-bar">
-        <div class="counter-fill" id="counterFill" style="width:0%"></div>
-      </div>
+    <div class="mc-box">
+      <div>METRICOOL <span id="mcNum">0</span>/20</div>
+      <div class="mc-bar"><div class="mc-fill" id="mcFill" style="width:0%"></div></div>
     </div>
   </div>
 </header>
 
-<!-- ========== MAIN ========== -->
 <main>
+<!-- HERO -->
+<div class="hero">
+  <h1>CONTENT <span class="accent">INTELLIGENCE</span><br/>DEPLOYMENT <span class="accent2">STUDIO</span></h1>
+  <div class="hero-sub">POWERED BY NEUROVENTAS RAG ENGINE v4.0</div>
+  <div class="glow-line"></div>
+  <p class="hero-p">Genera prompts por escena para Google Veo, copia cada sección individualmente, y despliega en todas tus cuentas y plataformas.</p>
+</div>
 
-  <!-- HERO -->
-  <div class="hero">
-    <h1>CONTENT <span class="accent">INTELLIGENCE</span><br/>DEPLOYMENT <span class="accent2">STUDIO</span></h1>
-    <div class="brand-sub hero-sub" style="margin-bottom:12px;">POWERED BY NEUROVENTAS RAG ENGINE</div>
-    <div class="glow-line"></div>
-    <p style="font-size:0.78rem;color:var(--platinum);max-width:500px;margin:0 auto;">
-      Genera prompts para Google Veo, títulos, descripciones y hashtags con neuroventas.
-      Despliega en todas tus plataformas desde un solo panel.
-    </p>
+<!-- PANEL 01: TIPO + AUDIENCIA -->
+<div class="panel scan-y">
+  <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div><div class="corner corner-br"></div>
+  <div class="panel-hdr">
+    <div class="panel-lbl">01 · Tipo de Contenido y Audiencia</div>
   </div>
+  <div class="type-grid" id="typeGrid">
+    <div class="type-card active" data-type="gancho" onclick="selType(this)"><span class="type-icon">🧠</span><div class="type-name">Gancho Emocional</div></div>
+    <div class="type-card" data-type="ciencia" onclick="selType(this)"><span class="type-icon">🔬</span><div class="type-name">Explicación Científica</div></div>
+    <div class="type-card" data-type="caso" onclick="selType(this)"><span class="type-icon">👤</span><div class="type-name">Caso Ilustrativo</div></div>
+    <div class="type-card" data-type="proceso" onclick="selType(this)"><span class="type-icon">🎨</span><div class="type-name">Proceso Visual</div></div>
+    <div class="type-card" data-type="urgencia" onclick="selType(this)"><span class="type-icon">⚡</span><div class="type-name">Urgencia / Oferta</div></div>
+    <div class="type-card" data-type="misterio" onclick="selType(this)"><span class="type-icon">🔮</span><div class="type-name">Misterio / Intriga</div></div>
+    <div class="type-card" data-type="autoridad" onclick="selType(this)"><span class="type-icon">🏛️</span><div class="type-name">Autoridad</div></div>
+    <div class="type-card" data-type="transformacion" onclick="selType(this)"><span class="type-icon">✨</span><div class="type-name">Transformación</div></div>
+  </div>
+  <div class="field-lbl">Audiencia</div>
+  <div class="aud-row">
+    <button class="aud-btn active" data-aud="fria" onclick="selAud(this)">🧊 FRÍA</button>
+    <button class="aud-btn" data-aud="tibia" onclick="selAud(this)">🌡️ TIBIA</button>
+    <button class="aud-btn" data-aud="caliente" onclick="selAud(this)">🔥 CALIENTE</button>
+  </div>
+  <div class="field-lbl">Duración del Video</div>
+  <div class="aud-row">
+    <button class="aud-btn" data-dur="15" onclick="selDur(this)">15 SEG</button>
+    <button class="aud-btn active" data-dur="30" onclick="selDur(this)">30 SEG</button>
+    <button class="aud-btn" data-dur="60" onclick="selDur(this)">60 SEG</button>
+    <button class="aud-btn" data-dur="90" onclick="selDur(this)">90 SEG</button>
+  </div>
+</div>
 
-  <!-- PANEL 01: TIPO DE VIDEO + AUDIENCIA -->
-  <div class="panel panel-scan">
-    <div class="panel-header">
-      <div class="panel-label">01 · Tipo de Contenido</div>
-    </div>
-
-    <div class="type-grid" id="typeGrid">
-      <div class="type-card active" data-type="gancho" onclick="selectType(this)">
-        <span class="type-icon">🧠</span>
-        <div class="type-name">Gancho<br/>Emocional</div>
-      </div>
-      <div class="type-card" data-type="ciencia" onclick="selectType(this)">
-        <span class="type-icon">🔬</span>
-        <div class="type-name">Explicación<br/>Científica</div>
-      </div>
-      <div class="type-card" data-type="caso" onclick="selectType(this)">
-        <span class="type-icon">👤</span>
-        <div class="type-name">Caso<br/>Ilustrativo</div>
-      </div>
-      <div class="type-card" data-type="proceso" onclick="selectType(this)">
-        <span class="type-icon">🎨</span>
-        <div class="type-name">Proceso<br/>Visual</div>
-      </div>
-      <div class="type-card" data-type="urgencia" onclick="selectType(this)">
-        <span class="type-icon">⚡</span>
-        <div class="type-name">Urgencia<br/>/ Oferta</div>
-      </div>
-      <div class="type-card" data-type="misterio" onclick="selectType(this)">
-        <span class="type-icon">🔮</span>
-        <div class="type-name">Misterio<br/>/ Intriga</div>
-      </div>
-      <div class="type-card" data-type="autoridad" onclick="selectType(this)">
-        <span class="type-icon">🏛️</span>
-        <div class="type-name">Autoridad<br/>/ Credibilidad</div>
-      </div>
-      <div class="type-card" data-type="transformacion" onclick="selectType(this)">
-        <span class="type-icon">✨</span>
-        <div class="type-name">Transformación<br/>Personal</div>
-      </div>
-    </div>
-
-    <div class="field-label" style="margin-bottom:8px;">Audiencia Objetivo</div>
-    <div class="audience-row">
-      <button class="audience-btn active" data-aud="fria" onclick="selectAudience(this)">🧊 FRÍA</button>
-      <button class="audience-btn" data-aud="tibia" onclick="selectAudience(this)">🌡️ TIBIA</button>
-      <button class="audience-btn" data-aud="caliente" onclick="selectAudience(this)">🔥 CALIENTE</button>
-    </div>
-
-    <div class="field-label" style="margin-bottom:8px;">Duración</div>
-    <div class="audience-row">
-      <button class="audience-btn" data-dur="15" onclick="selectDuration(this)">15 SEG</button>
-      <button class="audience-btn active" data-dur="30" onclick="selectDuration(this)">30 SEG</button>
-      <button class="audience-btn" data-dur="60" onclick="selectDuration(this)">60 SEG</button>
-      <button class="audience-btn" data-dur="90" onclick="selectDuration(this)">90 SEG</button>
+<!-- PANEL 02: PROMPT VEO POR ESCENAS -->
+<div class="panel scan-x">
+  <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div><div class="corner corner-br"></div>
+  <div class="panel-hdr">
+    <div class="panel-lbl">02 · Prompt Google Veo — Por Escenas</div>
+    <div class="btn-row">
+      <button class="btn btn-veo" onclick="genVeo()">⚡ GENERAR ESCENAS</button>
+      <button class="btn btn-lock" id="veoLockBtn" onclick="toggleLock('veo')">🔓 BLOQUEAR</button>
+      <button class="btn btn-danger" id="veoResetBtn" onclick="resetVeo()" style="display:none">↺ RESET</button>
     </div>
   </div>
+  <p class="panel-note">Cada escena tiene su propio botón de copiar. Edita el texto de cada escena antes de copiar. Bloquea para evitar borrado accidental.</p>
+  <div id="scenesWrapper" class="scenes-wrapper"></div>
+</div>
 
-  <!-- PANEL 02: PROMPT GOOGLE VEO -->
-  <div class="panel">
-    <div class="panel-header">
-      <div class="panel-label">02 · Prompt Google Veo</div>
-      <div class="btn-row">
-        <button class="btn btn-veo" onclick="generateVeoPrompt()">⚡ GENERAR PROMPT</button>
-        <button class="btn btn-copy" id="copyVeoBtn" onclick="copyVeo()">📋 COPIAR</button>
-      </div>
-    </div>
-    <p style="font-size:0.75rem;color:var(--dim);margin-bottom:12px;">
-      Prompt estructurado listo para pegar en Google Veo / Flow. Incluye escenas, texto en pantalla y dirección visual.
-    </p>
-    <div class="veo-output" id="veoOutput"></div>
-  </div>
-
-  <!-- PANEL 03: TÍTULO -->
-  <div class="panel">
-    <div class="panel-header">
-      <div class="panel-label">03 · Título</div>
-      <div class="btn-row">
-        <button class="btn btn-gen" onclick="generateTitles()">🎲 GENERAR</button>
-        <button class="btn btn-copy" id="copyTitleBtn" onclick="copyField('videoTitle','copyTitleBtn')">📋 COPIAR</button>
-      </div>
-    </div>
-    <input type="text" id="videoTitle" maxlength="100" placeholder="Genera un título o escribe el tuyo aquí..." oninput="updateCount('videoTitle','titleCount');saveState()"/>
-    <div class="char-count"><span id="titleCount">0</span>/100</div>
-    <div class="options-list" id="titleOptions">
-      <div class="options-header">▼ SELECCIONA UNA OPCIÓN</div>
+<!-- PANEL 03: TÍTULO -->
+<div class="panel">
+  <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div><div class="corner corner-br"></div>
+  <div class="panel-hdr">
+    <div class="panel-lbl">03 · Título</div>
+    <div class="btn-row">
+      <button class="btn btn-gen" onclick="genTitles()">🎲 GENERAR</button>
+      <button class="btn btn-lock" id="titleLockBtn" onclick="toggleLock('title')">🔓 BLOQUEAR</button>
+      <button class="btn btn-copy" onclick="copyFld('videoTitle','cpTitle')">📋 COPIAR</button>
+      <button class="btn btn-copy" id="cpTitle"></button>
     </div>
   </div>
-
-  <!-- PANEL 04: DESCRIPCIÓN -->
-  <div class="panel">
-    <div class="panel-header">
-      <div class="panel-label">04 · Descripción / Copy</div>
-      <div class="btn-row">
-        <button class="btn btn-gen" onclick="generateDescription()">🎲 GENERAR</button>
-        <button class="btn btn-copy" id="copyDescBtn" onclick="copyField('videoDesc','copyDescBtn')">📋 COPIAR</button>
-      </div>
-    </div>
-    <textarea id="videoDesc" rows="6" maxlength="2200" placeholder="Genera una descripción o escribe tu copy aquí..." oninput="updateCount('videoDesc','descCount');saveState()"></textarea>
-    <div class="char-count"><span id="descCount">0</span>/2200</div>
+  <div class="field-locked">
+    <input type="text" id="videoTitle" maxlength="100" placeholder="Genera un título o escribe el tuyo..." oninput="updCt('videoTitle','titleCt');save()"/>
+    <div class="lock-overlay" id="titleOverlay"></div>
   </div>
+  <div class="char-ct"><span id="titleCt">0</span>/100</div>
+  <div class="opts" id="titleOpts"><div class="opts-hdr">▼ TOCA UNA OPCIÓN PARA USARLA</div></div>
+</div>
 
-  <!-- PANEL 05: HASHTAGS -->
-  <div class="panel">
-    <div class="panel-header">
-      <div class="panel-label">05 · Hashtags</div>
-      <div class="btn-row">
-        <button class="btn btn-gen" onclick="generateHashtags()">🎲 GENERAR</button>
-        <button class="btn btn-copy" id="copyTagsBtn" onclick="copyField('hashtags','copyTagsBtn')">📋 COPIAR</button>
-      </div>
-    </div>
-    <input type="text" id="hashtags" placeholder="#MetodoCelidiano #Metapareidolia #Arteterapia" oninput="saveState()"/>
-    <div class="tag-pills" id="quickTags"></div>
-  </div>
-
-  <!-- PANEL 06: CASOS ILUSTRATIVOS -->
-  <div class="panel">
-    <div class="panel-header">
-      <div class="panel-label">06 · Casos Ilustrativos</div>
-      <button class="btn btn-gen" onclick="insertCaso()">💡 INSERTAR EN COPY</button>
-    </div>
-    <p style="font-size:0.72rem;color:var(--dim);margin-bottom:14px;">
-      Historias tipo basadas en patrones de sesiones reales. Presiona una para seleccionarla e insertarla en la descripción.
-    </p>
-    <div class="casos-grid" id="casosGrid"></div>
-  </div>
-
-  <!-- PANEL 07: PLATAFORMAS -->
-  <div class="panel">
-    <div class="panel-header">
-      <div class="panel-label">07 · Plataformas de Destino</div>
-    </div>
-    <div class="platform-grid" id="platformGrid"></div>
-    <p style="font-size:0.6rem;color:var(--dim);margin-top:10px;font-family:var(--font-tech);letter-spacing:1px;">
-      TOCA PARA ALTERNAR · EL SISTEMA ABRIRÁ CADA PLATAFORMA SELECCIONADA
-    </p>
-  </div>
-
-  <!-- DEPLOY BUTTON -->
-  <button class="btn-deploy" onclick="deploy()">
-    ⚡ INICIALIZAR DESPLIEGUE MULTIPLATAFORMA
-  </button>
-
-  <!-- CONSOLE -->
-  <div class="console" id="console"></div>
-
-  <!-- STATS -->
-  <div class="stats-row">
-    <div class="stat-card">
-      <div class="stat-number" id="statDeploys">0</div>
-      <div class="stat-label">Despliegues</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number" id="statPlatforms">4</div>
-      <div class="stat-label">Plataformas</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-number" id="statMonth">0</div>
-      <div class="stat-label">Este Mes</div>
+<!-- PANEL 04: DESCRIPCIÓN -->
+<div class="panel">
+  <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div><div class="corner corner-br"></div>
+  <div class="panel-hdr">
+    <div class="panel-lbl">04 · Descripción / Copy</div>
+    <div class="btn-row">
+      <button class="btn btn-gen" onclick="genDesc()">🎲 GENERAR</button>
+      <button class="btn btn-lock" id="descLockBtn" onclick="toggleLock('desc')">🔓 BLOQUEAR</button>
+      <button class="btn btn-copy" onclick="copyFld('videoDesc','cpDesc')">📋 COPIAR</button>
+      <button class="btn btn-copy" id="cpDesc"></button>
     </div>
   </div>
+  <div class="field-locked">
+    <textarea id="videoDesc" rows="6" maxlength="2200" placeholder="Genera una descripción o escribe tu copy..." oninput="updCt('videoDesc','descCt');save()"></textarea>
+    <div class="lock-overlay" id="descOverlay"></div>
+  </div>
+  <div class="char-ct"><span id="descCt">0</span>/2200</div>
+</div>
 
+<!-- PANEL 05: HASHTAGS -->
+<div class="panel">
+  <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div><div class="corner corner-br"></div>
+  <div class="panel-hdr">
+    <div class="panel-lbl">05 · Hashtags</div>
+    <div class="btn-row">
+      <button class="btn btn-gen" onclick="genTags()">🎲 GENERAR</button>
+      <button class="btn btn-lock" id="tagsLockBtn" onclick="toggleLock('tags')">🔓 BLOQUEAR</button>
+      <button class="btn btn-copy" onclick="copyFld('hashtags','cpTags')">📋 COPIAR</button>
+      <button class="btn btn-copy" id="cpTags"></button>
+    </div>
+  </div>
+  <div class="field-locked">
+    <input type="text" id="hashtags" placeholder="#MetodoCelidiano #Metapareidolia #Arteterapia" oninput="save()"/>
+    <div class="lock-overlay" id="tagsOverlay"></div>
+  </div>
+  <div class="tag-pills" id="quickTags"></div>
+</div>
+
+<!-- PANEL 06: CASOS ILUSTRATIVOS -->
+<div class="panel">
+  <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div><div class="corner corner-br"></div>
+  <div class="panel-hdr">
+    <div class="panel-lbl">06 · Casos Ilustrativos</div>
+    <button class="btn btn-gen" onclick="insertCaso()">💡 INSERTAR EN COPY</button>
+  </div>
+  <p class="panel-note">Historias tipo basadas en patrones de sesiones. Toca una para seleccionarla, luego presiona INSERTAR EN COPY.</p>
+  <div class="casos-grid" id="casosGrid"></div>
+</div>
+
+<!-- PANEL 07: PLATAFORMAS Y CUENTAS -->
+<div class="panel">
+  <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div><div class="corner corner-br"></div>
+  <div class="panel-hdr">
+    <div class="panel-lbl">07 · Plataformas y Cuentas</div>
+    <button class="btn btn-danger" onclick="resetAccounts()">↺ RESET CUENTAS</button>
+  </div>
+  <p class="panel-note">Agrega tus cuentas por plataforma. Se guardan permanentemente. Edita el nombre y pega el link de cada página.</p>
+  <div id="platformsContainer"></div>
+</div>
+
+<!-- DEPLOY -->
+<button class="btn-deploy" onclick="deploy()">⚡ INICIALIZAR DESPLIEGUE MULTIPLATAFORMA</button>
+<div class="console" id="console"></div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat-card"><div class="stat-n" id="stDeploys">0</div><div class="stat-l">Despliegues</div></div>
+  <div class="stat-card"><div class="stat-n" id="stPlats">0</div><div class="stat-l">Cuentas Activas</div></div>
+  <div class="stat-card"><div class="stat-n" id="stMonth">0</div><div class="stat-l">Este Mes</div></div>
+</div>
 </main>
 
 <footer>
-  <p>NEXUS DISPATCH v3.0 · CONTENT INTELLIGENCE STUDIO</p>
-  <p>RAG ENGINE — MÉTODO CELIDIANO © 2026</p>
+  <p>NEXUS DISPATCH v4.0 · CONTENT INTELLIGENCE STUDIO</p>
+  <p>RAG ENGINE — MÉTODO CELIDIANO & METAPAREIDOLIA PICTÓRICA © 2026</p>
 </footer>
 
 <script>
-/* ========== CEREBRO RAG — MÉTODO CELIDIANO ========== */
-const RAG = {
-  marca: {
-    nombre: 'Método Celidiano',
-    metodologia: 'Metapareidolia Pictórica',
-    creador: 'Juan Carlos Pérez Martínez',
-    facilitadora: 'Adriana Ayala Gutiérrez',
-    ancla: 'El inconsciente no sabe mentir',
-    subtitulo: 'Descubrimiento en Percepción Neuro-Visual',
-    precio_std: '$1,999 MXN',
-    precio_prm: '$3,799 MXN',
-    whatsapp: 'https://wa.me/524494008788'
+/* ===== RAG ENGINE ===== */
+const RAG={
+  hooks:{
+    fria:["¿Qué proyecta tu mente sin que lo sepas?","¿Y si una pintura pudiera decirte lo que llevas años sin ver?","Hay algo en esta imagen que tu inconsciente ya vio.","¿Qué ves primero cuando miras esto?","Tu cerebro acaba de revelar algo sobre ti mismo.","Esto no es arte. Es un espejo de tu inconsciente.","En 30 segundos vas a saber algo sobre ti que no sabías."],
+    tibia:["La neurociencia dice que lo que ves aquí no es accidental.","Lo que proyectas en esta pintura lleva años guardado.","3 fases cerebrales. 25 elementos. 1 revelación.","¿Cuánto tiempo más vas a postergar conocerte a ti mismo?","No es psicología tradicional. Es percepción neuro-visual aplicada."],
+    caliente:["Precio de lanzamiento disponible esta semana.","Solo quedan lugares disponibles este mes.","Una sesión. Una revelación. Una decisión.","No sigas cargando lo que podrías soltar hoy.","El análisis ya está listo. Solo falta que lo actives."]
   },
+  titulos:["Lo que tu mente proyecta en una pintura revela TODO","El test psicológico más poderoso que existe (no es Rorschach)","¿Qué ves en esta pintura? Tu respuesta lo dice TODO","Descubrí mi bloqueo emocional viendo una pintura abstracta","La ciencia detrás de lo que tu inconsciente proyecta","Por qué el arte abstracto puede leer tu mente","Una sola sesión reveló lo que años de terapia no pudieron","El inconsciente no sabe mentir — Método Celidiano","3 fases cronométricas que revelan tu arquitectura emocional","25 elementos proyectivos: tu inconsciente en una pintura"],
+  ancla:["El inconsciente no sabe mentir.","La verdadera arquitectura de la mente.","Un espejo neuro-visual exacto.","Lo que tomaría años en terapia, en una sola sesión.","Decodifica lo que tu mente proyecta.","Ciencia aplicada al arte."],
+  autoridad:["11 años de investigación y práctica documentada.","Metodología con respaldo neurocientífico publicado.","Paper: Cronodinámica de la Conectividad Funcional Cerebral (2024).","El sistema más avanzado de arteterapia proyectiva en México."],
+  tribu:["Para mentes exigentes que buscan claridad absoluta.","Para líderes, ejecutivos y visionarios.","Para quienes ya agotaron la terapia convencional.","Para quienes saben que hay algo más profundo en ellos."],
+  proceso:["Solo observa la pintura y escribe lo que ves. Sin preparación previa.","Observas. Proyectas. Adriana decodifica. Tú te transformas.","10-15 minutos de observación. 25 elementos. Una revelación.","Sin experiencia en arte. Sin preparación psicológica. Solo tú y el lienzo."],
+  ctas:["Agenda tu sesión por WhatsApp en la bio.","Link en bio para tu primera sesión.","Escríbeme ARTE y te cuento cómo funciona.","Sesión privada en línea con Adriana Ayala Gutiérrez.","Reserva ahora — precio especial de lanzamiento."],
+  hashtags:{youtube:"#MetodoCelidiano #Metapareidolia #Arteterapia #Inconsciente #PsicologiaVisual #NeuroVisual #DesarrolloPersonal #SaludMental #ArteYCiencia #AutoConocimiento",social:"#MetodoCelidiano #Metapareidolia #PsicologiaVisual #Arteterapia #Inconsciente",tiktok:"#MetodoCelidiano #Metapareidolia #Arteterapia #Inconsciente #AutoConocimiento #parati"},
+  quickTags:["#MetodoCelidiano","#Metapareidolia","#Arteterapia","#Inconsciente","#PsicologiaVisual","#NeuroVisual","#AutoConocimiento","#ArteYCiencia","#parati"]
+};
 
-  frases_ancla: [
-    'El inconsciente no sabe mentir.',
-    'La verdadera arquitectura de la mente.',
-    'Un espejo neuro-visual exacto.',
-    'Lo que tomaría años en terapia, en una sola sesión.',
-    'Decodifica lo que tu mente proyecta.',
-    'Ciencia aplicada al arte.',
-    'Tu inconsciente habla — ¿estás listo para escucharlo?'
-  ],
-
-  hooks: {
-    fria: [
-      '¿Qué proyecta tu mente sin que lo sepas?',
-      'Hay algo en esta pintura que tu inconsciente ya vio.',
-      '¿Qué ves primero en esta imagen?',
-      'Tu cerebro acaba de revelar algo sobre ti mismo.',
-      'Esto no es arte. Es un espejo de tu inconsciente.',
-      'En 30 segundos vas a saber algo sobre ti que no sabías.',
-      'Hay algo que tu mente no puede ocultar cuando ve esto.',
-      '¿Y si una pintura pudiera decirte lo que llevas años sin ver?'
+/* ===== ESCENAS VEO ===== */
+function buildScenes(tipo,aud,dur){
+  const p="$1,999 MXN",h=rand(RAG.hooks[aud]),a=rand(RAG.ancla),au=rand(RAG.autoridad),c=rand(RAG.ctas);
+  const maps={
+    gancho:[
+      {t:"APERTURA DE IMPACTO (0-3s)",b:`Primer plano extremo de pintura abstracta azul oscuro y dorado.\nZoom in lento. Texto letra por letra: "${h}"\nSin música. Solo silencio dramático.\nCámara: Macro lens, dolly-in suave. Foco progresivo.`},
+      {t:"TENSIÓN Y CURIOSIDAD (3-8s)",b:`Corte a figura borrosa observando lienzo con intensidad.\nLuz tenue, atmósfera oscura elegante.\nPrimer acorde de música cinematográfica suave.\nTexto: "Tu respuesta lo revela todo."\nCámara: Medium shot, apertura f/1.8, bokeh profundo.`},
+      {t:"CONCEPTO CENTRAL (8-${Math.floor(dur*.55)}s)",b:`Animación de ondas cerebrales sobre fondo negro.\nTres fases iluminadas en secuencia: DAN → TRANSICIÓN → DMN.\nVoz en off femenina, serena: "Tu inconsciente proyecta lo que no puede ocultar."\nTexto: "3 FASES · 25 ELEMENTOS · 1 REVELACIÓN"\nCámara: Digital overlay, infografía holográfica.`},
+      {t:"AUTORIDAD (${Math.floor(dur*.7)}-${dur-6}s)",b:`Plano de Adriana Ayala Gutiérrez frente a pinturas abstractas.\nTexto: "Adriana Ayala Gutiérrez — Método Celidiano"\nSubtexto: "${au}"\nCámara: Medium close-up, luz Rembrandt lateral cálida.`},
+      {t:"CTA FINAL (${dur-6}-${dur}s)",b:`Logo CD dorado sobre fondo negro mármol. Pulso de luz.\nTexto: "MÉTODO CELIDIANO"\nSubtexto animado: "Toca Más Información ↓"\nMúsica: crescendo suave y cierre.\nCámara: Product shot, fondo desenfocado.`}
     ],
-    tibia: [
-      'La neurociencia dice que lo que ves aquí no es accidental.',
-      'Lo que proyectas en esta pintura lleva años guardado.',
-      '3 fases cerebrales. 25 elementos. 1 revelación.',
-      'El cerebro tiene fases cronométricas ante estímulos visuales — esto es lo que revelan.',
-      'No es psicología tradicional. Es percepción neuro-visual aplicada.',
-      '¿Cuánto tiempo más vas a postergar conocerte a ti mismo?'
+    ciencia:[
+      {t:"APERTURA CIENTÍFICA (0-4s)",b:`Animación de red neuronal en azul holográfico sobre negro.\nNodos que se conectan y pulsan en tiempo real.\nTexto: "¿Cómo lee tu mente una pintura abstracta?"\nCámara: Digital render, partículas de luz.`},
+      {t:"LAS 3 FASES (4-14s)",b:`Infografía animada de 3 fases:\n[FASE 1] Red DAN — "0-120 seg: Búsqueda de patrones"\n[FASE 2] Transición — "120-300 seg: El inconsciente emerge"\n[FASE 3] Red DMN — "300+ seg: Metapareidolia Profunda"\nCámara: Motion graphics, colores: azul > violeta > dorado.`},
+      {t:"EL LIENZO COMO DISPOSITIVO (14-${Math.floor(dur*.6)}s)",b:`Plano de pintura abstracta. Líneas de análisis aparecen como escáner holográfico.\nTexto superpuesto identifica elementos proyectivos.\nVoz: "El lienzo no es arte. Es un dispositivo de interacción neuro-visual."\nCámara: Overhead drone shot + digital overlay.`},
+      {t:"CREDIBILIDAD (${Math.floor(dur*.6)}-${dur-5}s)",b:`Texto del paper: "Cronodinámica de la Conectividad Funcional Cerebral (2024)"\n${au}\nCámara: Text animation, fuente académica serif sobre fondo oscuro.`},
+      {t:"CTA CIENTÍFICO (${dur-5}-${dur}s)",b:`"El sistema más avanzado de arteterapia proyectiva en México."\nLogo CD + "Método Celidiano · Sesión privada en línea"\n"${c}"\nCámara: Logo reveal con efecto luz.`}
     ],
-    caliente: [
-      'Precio de lanzamiento disponible esta semana.',
-      'Solo quedan lugares disponibles este mes.',
-      'Una sesión. Una revelación. Una decisión.',
-      'Si ya viste el video, sabes que esto es diferente.',
-      'El análisis ya está listo. Solo falta que lo actives.',
-      'No sigas cargando lo que podrías soltar hoy.'
+    caso:[
+      {t:"SETUP EMOCIONAL (0-3s)",b:`Persona de espaldas observando pintura en sala oscura elegante.\nTexto letra por letra: "Ella llevaba 5 años sin entender por qué."\nMúsica: piano suave y melancólico.\nCámara: Silhouette shot, contra-luz dramático.`},
+      {t:"LA DESCRIPCIÓN (3-10s)",b:`Voz de la persona: "Veo una figura sola, rodeada de oscuridad."\nTexto en pantalla como subtítulo estilizado en dorado.\nZoom lento al rostro de la pintura.\nCámara: Extreme close-up de textura de pintura.`},
+      {t:"LA REVELACIÓN (10-${Math.floor(dur*.6)}s)",b:`Pantalla dividida: descripción izquierda / análisis derecha.\nLíneas de conexión animadas entre palabras y diagnóstico.\nTexto del análisis aparece línea por línea.\nCámara: Split screen con motion graphics.`},
+      {t:"RESULTADO (${Math.floor(dur*.6)}-${dur-6}s)",b:`Misma persona, ahora mirando a cámara. Expresión de claridad.\nTexto: "Una sola sesión reveló lo que 5 años no pudieron."\nSubtexto: "*Historia ilustrativa basada en patrones de sesiones reales"\nCámara: Medium close-up, luz cálida, fondo suave.`},
+      {t:"CTA (${dur-6}-${dur}s)",b:`"¿Listo para tu revelación?"\nLogo CD + "Método Celidiano · ${p}"\n"${c}"\nCámara: Logo reveal dorado sobre negro.`}
+    ],
+    proceso:[
+      {t:"PRESENTACIÓN (0-3s)",b:`Plano aéreo de escritorio: pantalla con pintura, cuaderno, pluma.\nTexto: "Así funciona el Método Celidiano."\nCámara: Flat lay overhead, lente gran angular.`},
+      {t:"PASO 1 — OBSERVAS (3-8s)",b:`Pantalla mostrando pintura abstracta. Indicador de tiempo animado.\nTexto: "PASO 1: Observas la pintura durante 10-15 minutos."\n"Sin preparación. Sin experiencia en arte."\nCámara: Screen recording + close-up de pantalla.`},
+      {t:"PASO 2 — DESCRIBES (8-${Math.floor(dur*.5)}s)",b:`Manos escribiendo en teléfono. Palabras que se transforman en etiquetas flotantes.\nTexto: "PASO 2: Describes 25 elementos — todo lo que ves y sientes."\nCámara: Over-the-shoulder, macro de manos.`},
+      {t:"PASO 3 — ADRIANA DECODIFICA (${Math.floor(dur*.5)}-${dur-7}s)",b:`Pantalla de videoconferencia elegante. Adriana visible con pinturas de fondo.\nTexto: "PASO 3: Adriana decodifica en 30 minutos."\n"Cara a cara. En línea. Privado."\nCámara: Screen recording de Meet / plano de Adriana.`},
+      {t:"RESULTADO + CTA (${dur-7}-${dur}s)",b:`"3 pasos. 1 revelación. Una sola sesión."\nLogo CD + precio desde ${p}.\n"${c}"\nCámara: Logo reveal + texto animado.`}
+    ],
+    urgencia:[
+      {t:"PRECIO TACHADO (0-3s)",b:`Fondo negro mármol.\nPrecio tachado aparece: "$3,800 MXN" con línea roja.\nNuevo precio con efecto de luz: "${p}"\nTexto: "PRECIO ESPECIAL DE LANZAMIENTO"\nCámara: Texto animado sobre fondo oscuro.`},
+      {t:"QUÉ INCLUYE (3-8s)",b:`Lista con checkmarks dorados uno por uno:\n✓ Sesión privada en línea con Adriana\n✓ Análisis de 25 elementos proyectivos\n✓ Decodificación neurocientífica completa\n✓ Protocolo de integración post-sesión\nCámara: Motion list animation.`},
+      {t:"VALIDACIÓN (8-${Math.floor(dur*.55)}s)",b:`"${au}"\nSubtexto con contador de "lugares disponibles" pulsando.\nCámara: Text animation + partículas de fondo.`},
+      {t:"URGENCIA (${Math.floor(dur*.55)}-${dur-5}s)",b:`Texto con pulso de luz: "Precio de lanzamiento — tiempo limitado."\n"${rand(RAG.tribu)}"\nCámara: Countdown visual, energía creciente.`},
+      {t:"CTA DIRECTO (${dur-5}-${dur}s)",b:`Logo CD grande. "MÉTODO CELIDIANO"\n"Toca Más Información y reserva tu sesión."\nPrecio final visible: desde ${p}\nCámara: Logo reveal final con flash de luz.`}
+    ],
+    misterio:[
+      {t:"APERTURA OSCURA (0-3s)",b:`Pantalla completamente negra. Silencio total 1 segundo.\nPintura abstracta emerge lentamente con luz desde el centro.\nTexto susurrado letra por letra: "Hay algo que tu mente no puede ocultar."\nCámara: Fade in muy lento, lente gran angular.`},
+      {t:"LA PREGUNTA (3-10s)",b:`Close-up extremo de ojos observando la pintura. Pupila dilatada.\nTexto: "Cuando ves esto... ¿qué proyecta tu inconsciente?"\nPintura cambia de tonalidades lentamente. Música de tensión crece.\nCámara: Macro lens, reflejo de pintura en el ojo.`},
+      {t:"EL GIRO (10-${Math.floor(dur*.55)}s)",b:`Efecto de "escáner" holográfico sobre la pintura. Figuras identificadas.\nTexto: "Tu mente busca patrones en el caos."\n"Lo que encuentra... revela tu arquitectura emocional."\nCámara: Digital overlay + zoom lento.`},
+      {t:"INTRIGA MÁXIMA (${Math.floor(dur*.55)}-${dur-6}s)",b:`Texto fragmentado letra por letra:\n"¿ESTÁS LISTO PARA VER LO QUE TU INCONSCIENTE GUARDA?"\nFondo: ondas cerebrales. Música en crescendo.\nCámara: Glitch effect suave, partículas de luz.`},
+      {t:"REVELACIÓN + CTA (${dur-6}-${dur}s)",b:`Logo CD con efecto de luz expansiva. "${a}"\n"Método Celidiano · Descubre el tuyo."\n"Toca para más información ↓"\nCámara: Lens flare dorado sobre negro.`}
+    ],
+    autoridad:[
+      {t:"PRESENTACIÓN PROFESIONAL (0-4s)",b:`Plano de Adriana Ayala Gutiérrez en estudio con pinturas de fondo.\nTexto: "ADRIANA AYALA GUTIÉRREZ"\nSubtexto: "Especialista en Semiosis y Coaching Clínico"\nCámara: Medium shot, luz profesional tres puntos.`},
+      {t:"CREDENCIALES (4-12s)",b:`Texto animado en lista:\n"11 años de investigación documentada"\n"Paper: Cronodinámica de la Conectividad Funcional Cerebral (2024)"\n"14 disciplinas científicas integradas"\n"Creado por Juan Carlos Pérez Martínez, Lic. Artes Visuales"\nCámara: Text animation sobre fondo oscuro.`},
+      {t:"EL MÉTODO (12-${Math.floor(dur*.6)}s)",b:`Plano de pinturas de las colecciones "Dioses de la Metapareidolia" y "Ángeles del Inconsciente".\nTexto: "Metapareidolia Pictórica — la metodología más avanzada de diagnóstico proyectivo visual."\nCámara: Slow pan por las pinturas, luz lateral dramática.`},
+      {t:"DISCIPLINAS (${Math.floor(dur*.6)}-${dur-6}s)",b:`Infografía circular con disciplinas girando alrededor del logo CD.\n"Neurociencia · Neuroquímica · Psicología · Logoterapia · Sistemas Complejos..."\nCámara: Motion graphics, rotación elegante.`},
+      {t:"CTA DE AUTORIDAD (${dur-6}-${dur}s)",b:`"El sistema más avanzado de arteterapia proyectiva en México."\nLogo CD. "Sesión privada disponible — precio de lanzamiento."\n"${c}"\nCámara: Logo reveal final.`}
+    ],
+    transformacion:[
+      {t:"EL ANTES (0-3s)",b:`Silueta oscura con cabeza baja. Fondo gris oscuro y brumoso.\nTexto: "¿Cuánto tiempo llevas cargando algo que no puedes nombrar?"\nCámara: Silhouette shot, subexposición dramática.`},
+      {t:"EL PUNTO DE INFLEXIÓN (3-10s)",b:`La silueta observa pintura que se ilumina.\nOndas de color emergen de la pintura hacia la persona.\nTexto: "Lo que no puedes ver con la mente... lo proyectas en el arte."\nCámara: Long exposure + digital overlay.`},
+      {t:"EL PROCESO (10-${Math.floor(dur*.55)}s)",b:`Secuencia rápida: pintura → escritura → análisis → videoconferencia.\nTexto: "Observas. Proyectas. Adriana decodifica. Tú te transformas."\nCámara: Quick cuts 0.5s cada uno, ritmo de música.`},
+      {t:"EL DESPUÉS (${Math.floor(dur*.55)}-${dur-6}s)",b:`Misma silueta, ahora erguida, rodeada de luz dorada y pinturas.\n"Una sola sesión puede revelar lo que años no pudieron."\n"No es terapia convencional. Es percepción neuro-visual."\nCámara: Reverse silhouette, sobreexposición gradual.`},
+      {t:"CTA TRANSFORMADOR (${dur-6}-${dur}s)",b:`"¿Listo para ver lo que tu inconsciente guarda?"\nLogo CD. "Método Celidiano — desde ${p}"\n"${c}"\nCámara: Logo reveal dorado final.`}
     ]
-  },
-
-  titulos: [
-    'Lo que tu mente proyecta en una pintura revela TODO',
-    'El test psicológico más poderoso que existe (no es Rorschach)',
-    '¿Qué ves en esta pintura? Tu respuesta lo dice TODO',
-    'Descubrí mi bloqueo emocional viendo una pintura abstracta',
-    'La ciencia detrás de lo que tu inconsciente proyecta',
-    'Por qué el arte abstracto puede leer tu mente',
-    'Una sola sesión reveló lo que años de terapia no pudieron',
-    'El inconsciente no sabe mentir — Método Celidiano',
-    '3 fases cronométricas que revelan tu arquitectura emocional',
-    '25 elementos proyectivos: tu inconsciente en una pintura',
-    'Así funciona la Metapareidolia Pictórica (explicación científica)',
-    'Lo que tu nombre y fecha de nacimiento revelan de ti'
-  ],
-
-  autoridad: [
-    '11 años de investigación y práctica documentada.',
-    'Metodología con respaldo neurocientífico publicado.',
-    'Basado en el paper: Cronodinámica de la Conectividad Funcional Cerebral (2024).',
-    'El sistema más avanzado de arteterapia proyectiva en México.',
-    'Investigación respaldada por neurociencia cognitiva y 14 disciplinas científicas.'
-  ],
-
-  tribu: [
-    'Para mentes exigentes que buscan claridad absoluta.',
-    'Para líderes, ejecutivos y visionarios.',
-    'Para quienes ya agotaron la terapia convencional.',
-    'Para quienes saben que hay algo más profundo en ellos.',
-    'Diseñado para quienes toman decisiones importantes.'
-  ],
-
-  proceso: [
-    'Solo observa la pintura y escribe lo que ves. Sin preparación previa.',
-    'Observas. Proyectas. La IA y Adriana decodifican.',
-    '10-15 minutos de observación. 25 elementos. Una revelación.',
-    'Sin experiencia en arte. Sin preparación psicológica. Solo tú y el lienzo.'
-  ],
-
-  ctas: [
-    'Agenda tu sesión por WhatsApp en la bio.',
-    'Link en bio para tu primera sesión.',
-    'Escríbeme ARTE y te cuento cómo funciona.',
-    'Sesión privada en línea con Adriana Ayala Gutiérrez.',
-    'Toca Más Información y accede a la experiencia.',
-    'Reserva ahora — precio especial de lanzamiento.'
-  ],
-
-  hashtags: {
-    youtube: '#MetodoCelidiano #Metapareidolia #Arteterapia #Inconsciente #PsicologiaVisual #NeuroVisual #DesarrolloPersonal #SaludMental #ArteYCiencia #AutoConocimiento #ArteteraMexico #PercepcionVisual',
-    social: '#MetodoCelidiano #Metapareidolia #PsicologiaVisual #Arteterapia #Inconsciente',
-    tiktok: '#MetodoCelidiano #Metapareidolia #Arteterapia #Inconsciente #AutoConocimiento #parati'
-  },
-
-  quickTags: ['#MetodoCelidiano','#Metapareidolia','#Arteterapia','#Inconsciente','#PsicologiaVisual','#NeuroVisual','#AutoConocimiento','#ArteYCiencia']
-};
-
-/* ========== CASOS ILUSTRATIVOS ========== */
-const CASOS = [
-  {
-    tag: 'CASO TIPO A · EJECUTIVO · GEN X',
-    text: '"Llevaba 8 años con una sensación de bloqueo en mis decisiones de negocio. En la sesión, proyecté figuras de laberintos y muros en todas las pinturas. Adriana identificó un patrón de hipervigilancia que ni yo mismo había reconocido. Fue incómodo y liberador al mismo tiempo."',
-    result: '→ Patrón detectado: bloqueo decisional por hipervigilancia sistémica'
-  },
-  {
-    tag: 'CASO TIPO B · MUJER 35 AÑOS · MILLENNIAL',
-    text: '"Siempre supe que algo estaba bloqueando mis relaciones, pero no podía nombrarlo. Cuando observé las pinturas, lo primero que describí fue una figura sola rodeada de sombras. Adriana me dijo lo que veía antes de que yo terminara de explicarlo."',
-    result: '→ Patrón detectado: desvínculo oxitocínico, apego ansioso activo'
-  },
-  {
-    tag: 'CASO TIPO C · PROFESIONAL DE SALUD · BOOMER',
-    text: '"Soy psicóloga y llegué con escepticismo. Lo que me sorprendió fue la velocidad — en 25 elementos proyectados, el sistema identificó exactamente el área de conflicto que yo misma había evitado trabajar en terapia por años."',
-    result: '→ Patrón detectado: mecanismo de defensa intelectualización activo'
-  },
-  {
-    tag: 'CASO TIPO D · EMPRENDEDOR · GEN Z',
-    text: '"Pensé que era algo de arte y ya. Pero cuando describí lo que veía en la primera pintura, Adriana me preguntó sobre mi relación con mi padre. Nunca lo mencioné. El sistema lo detectó en mis proyecciones."',
-    result: '→ Patrón detectado: figura de autoridad paterna no resuelta'
-  },
-  {
-    tag: 'CASO TIPO E · PAREJA · 40 AÑOS',
-    text: '"Lo hicimos como pareja. Cada uno describió cosas completamente diferentes en la misma pintura. Eso solo ya fue revelador. El análisis de Adriana mostró exactamente por qué llevábamos 3 años comunicándonos en frecuencias distintas."',
-    result: '→ Patrón detectado: saturación límbica por habituación, desgaste dopaminérgico'
-  }
-];
-
-/* ========== PROMPTS GOOGLE VEO ========== */
-const VEO_PROMPTS = {
-  gancho: (aud, dur) => `PROMPT GOOGLE VEO / FLOW — TIPO: GANCHO EMOCIONAL
-DURACIÓN: ${dur} segundos | AUDIENCIA: ${aud.toUpperCase()} | FORMATO: Vertical 9:16
-
-ESCENA 1 (0-3s) — APERTURA DE IMPACTO:
-Primer plano extremo de una pintura abstracta con tonos azul oscuro y dorado. 
-La cámara hace un lento zoom in. Texto en pantalla aparece letra por letra:
-"¿QUÉ VES EN ESTA IMAGEN?"
-Tipografía: sans-serif blanca, elegante. Sin música aún.
-
-ESCENA 2 (3-8s) — TENSIÓN Y CURIOSIDAD:
-Corte rápido a imagen borrosa de una persona observando un lienzo con intensidad.
-Luz tenue, atmósfera oscura y elegante. Se escucha el primer acorde de música 
-cinematográfica suave. Texto: "Tu respuesta lo revela todo."
-
-ESCENA 3 (8-${Math.floor(dur*0.5)}s) — CONCEPTO CENTRAL:
-Animación de ondas cerebrales sobre fondo negro. Tres fases se iluminan en 
-secuencia: DAN → TRANSICIÓN → DMN. Voz en off (tono sereno, femenino):
-"Tu inconsciente proyecta lo que no puede ocultar."
-Texto en pantalla: "3 FASES CRONOMÉTRICAS · 25 ELEMENTOS · 1 REVELACIÓN"
-
-ESCENA 4 (${Math.floor(dur*0.5)}-${dur-8}s) — AUTORIDAD:
-Plano de Adriana Ayala Gutiérrez frente a pinturas abstractas doradas y azules.
-Texto: "Adriana Ayala Gutiérrez — Método Celidiano"
-Subtexto: "11 años de investigación en Percepción Neuro-Visual"
-
-ESCENA 5 (${dur-8}-${dur}s) — CTA:
-Logo CD dorado sobre fondo negro mármol. Pulso de luz.
-Texto: "MÉTODO CELIDIANO"
-Subtexto animado: "Toca Más Información ↓"
-Música: crescendo suave y cierre.
-
-DIRECCIÓN VISUAL: Estética de lujo minimalista. Negro mármol, dorado bruñido #c5a059, 
-blanco platino. Movimientos de cámara lentos y precisos. Sin efectos rápidos ni cortes 
-abruptos. La sensación debe ser: científico, elegante, misterioso.`,
-
-  ciencia: (aud, dur) => `PROMPT GOOGLE VEO / FLOW — TIPO: EXPLICACIÓN CIENTÍFICA
-DURACIÓN: ${dur} segundos | AUDIENCIA: ${aud.toUpperCase()} | FORMATO: Vertical 9:16
-
-ESCENA 1 (0-3s) — APERTURA CIENTÍFICA:
-Animación de red neuronal en azul holográfico sobre fondo negro.
-Nodos que se conectan y pulsan. Texto: "¿Cómo lee tu mente una pintura abstracta?"
-
-ESCENA 2 (3-12s) — LAS 3 FASES:
-Infografía animada de 3 fases:
-[FASE 1] Red DAN iluminada — texto: "0-120 seg: Búsqueda de patrones"
-[FASE 2] Transición — texto: "120-300 seg: El inconsciente emerge"  
-[FASE 3] Red DMN iluminada — texto: "300+ seg: Metapareidolia Profunda"
-Cada fase aparece con color diferente: azul, violeta, dorado.
-
-ESCENA 3 (12-${Math.floor(dur*0.6)}s) — EL LIENZO COMO DISPOSITIVO:
-Plano de una pintura abstracta. Líneas de análisis aparecen sobre ella como 
-un escáner holográfico. Texto superpuesto identifica elementos proyectivos.
-Voz en off: "El lienzo no es arte. Es un dispositivo de interacción neuro-visual."
-
-ESCENA 4 (${Math.floor(dur*0.6)}-${dur-5}s) — CREDIBILIDAD:
-Texto del paper: "Cronodinámica de la Conectividad Funcional Cerebral (2024)"
-Logos o menciones de disciplinas: Neurociencia · Psiquiatría · Química Cuántica.
-
-ESCENA 5 (${dur-5}-${dur}s) — CTA CIENTÍFICO:
-"El sistema más avanzado de arteterapia proyectiva en México."
-Logo CD + "Método Celidiano · Sesión privada en línea"
-
-DIRECCIÓN VISUAL: Estética tech-científica. Azul holográfico, negro profundo.
-Animaciones de datos, ondas cerebrales, líneas de análisis. Preciso y elegante.`,
-
-  caso: (aud, dur) => `PROMPT GOOGLE VEO / FLOW — TIPO: CASO ILUSTRATIVO
-DURACIÓN: ${dur} segundos | AUDIENCIA: ${aud.toUpperCase()} | FORMATO: Vertical 9:16
-
-ESCENA 1 (0-3s) — SETUP EMOCIONAL:
-Plano de una persona de espaldas observando una pintura en una sala oscura y elegante.
-Texto en pantalla letra por letra: "Ella llevaba 5 años sin entender por qué."
-Música: piano suave y melancólico.
-
-ESCENA 2 (3-10s) — EL MOMENTO:
-La persona describe en voz alta lo que ve. Su voz se escucha sola.
-Texto en pantalla (como subtítulo estilizado):
-"'Veo una figura sola, rodeada de oscuridad, buscando una salida que no existe.'"
-La cámara hace zoom lento al rostro de la pintura abstracta.
-
-ESCENA 3 (10-${Math.floor(dur*0.6)}s) — LA REVELACIÓN:
-Pantalla dividida: izquierda la descripción de la persona, derecha el análisis.
-El sistema identifica patrones con líneas de conexión animadas.
-Texto del análisis aparece línea por línea: "Apego ansioso activo · Desvínculo oxitocínico"
-
-ESCENA 4 (${Math.floor(dur*0.6)}-${dur-6}s) — RESULTADO:
-La misma persona, ahora mirando a cámara. Expresión de claridad.
-Texto: "Una sola sesión reveló lo que 5 años no pudieron."
-Subtexto: "*Historia ilustrativa basada en patrones de sesiones reales"
-
-ESCENA 5 (${dur-6}-${dur}s) — CTA:
-"¿Listo para tu revelación?"
-Logo CD + "Método Celidiano · Adriana Ayala Gutiérrez"
-Botón visual: "Más Información ↓"
-
-DIRECCIÓN VISUAL: Emocional y cinematográfico. Luz suave, sombras dramáticas.
-Colores: negro, gris cálido, destellos dorados. La historia debe sentirse real y cercana.`,
-
-  proceso: (aud, dur) => `PROMPT GOOGLE VEO / FLOW — TIPO: PROCESO VISUAL
-DURACIÓN: ${dur} segundos | AUDIENCIA: ${aud.toUpperCase()} | FORMATO: Vertical 9:16
-
-ESCENA 1 (0-3s) — PRESENTACIÓN:
-Plano aéreo de un escritorio elegante: pantalla con pintura abstracta, cuaderno, pluma.
-Texto: "Así funciona el Método Celidiano." Tipografía Playfair Display dorada.
-
-ESCENA 2 (3-8s) — PASO 1:
-Pantalla mostrando pintura abstracta. Texto animado:
-"PASO 1: Observas la pintura durante 10-15 minutos."
-Indicador de tiempo animado. Texto: "Sin preparación previa. Sin experiencia en arte."
-
-ESCENA 3 (8-${Math.floor(dur*0.5)}s) — PASO 2:
-Manos escribiendo en pantalla del teléfono. Texto aparece:
-"PASO 2: Describes 25 elementos — todo lo que ves, sientes, imaginas."
-Elementos escritos se transforman en palabras flotantes con colores de análisis.
-
-ESCENA 4 (${Math.floor(dur*0.5)}-${dur-8}s) — PASO 3:
-Pantalla de videoconferencia elegante. Adriana en pantalla con pinturas de fondo.
-"PASO 3: Adriana decodifica en 30 minutos y se conecta contigo."
-Texto: "Cara a cara. En línea. Privado."
-
-ESCENA 5 (${dur-8}-${dur}s) — RESULTADO + CTA:
-"3 pasos. 1 revelación. Una sola sesión."
-Logo CD + precio desde ${RAG.marca.precio_std}.
-"Reserva por WhatsApp ↓"`,
-
-  urgencia: (aud, dur) => `PROMPT GOOGLE VEO / FLOW — TIPO: URGENCIA / OFERTA
-DURACIÓN: ${dur} segundos | AUDIENCIA: ${aud.toUpperCase()} | FORMATO: Vertical 9:16
-
-ESCENA 1 (0-3s) — PRECIO TACHADO:
-Fondo negro mármol. Precio tachado aparece: "$3,800 MXN" (línea roja sobre él).
-Nuevo precio aparece con efecto de luz: "$1,999 MXN"
-Texto: "PRECIO ESPECIAL DE LANZAMIENTO"
-
-ESCENA 2 (3-8s) — QUÉ INCLUYE:
-Lista con checkmarks dorados aparece uno por uno:
-✓ Sesión privada en línea con Adriana
-✓ Análisis de 25 elementos proyectivos  
-✓ Decodificación neurocientífica completa
-✓ Protocolo de integración post-sesión
-
-ESCENA 3 (8-${Math.floor(dur*0.6)}s) — VALIDACIÓN:
-"Basado en 11 años de investigación."
-"Metodología con respaldo neurocientífico publicado."
-Contador de "lugares disponibles" pulsando.
-
-ESCENA 4 (${Math.floor(dur*0.6)}-${dur-5}s) — URGENCIA:
-Texto con pulso: "Precio de lanzamiento — disponible por tiempo limitado."
-"Para mentes exigentes que buscan claridad absoluta."
-
-ESCENA 5 (${dur-5}-${dur}s) — CTA DIRECTO:
-Logo CD grande. Texto: "MÉTODO CELIDIANO"
-"Toca Más Información y reserva tu sesión."
-Precio final visible: desde $1,999 MXN`,
-
-  misterio: (aud, dur) => `PROMPT GOOGLE VEO / FLOW — TIPO: MISTERIO / INTRIGA
-DURACIÓN: ${dur} segundos | AUDIENCIA: ${aud.toUpperCase()} | FORMATO: Vertical 9:16
-
-ESCENA 1 (0-3s) — APERTURA OSCURA:
-Pantalla completamente negra. Silencio. Luego: una pintura abstracta aparece lentamente
-con luz emergiendo desde el centro. Texto susurrado en pantalla:
-"Hay algo que tu mente no puede ocultar."
-
-ESCENA 2 (3-10s) — LA PREGUNTA:
-Close up de ojos observando la pintura. Pupila dilatada.
-Texto: "Cuando ves esto... ¿qué proyecta tu inconsciente?"
-La pintura cambia lentamente de tonalidades mientras la música crece en tensión.
-
-ESCENA 3 (10-${Math.floor(dur*0.55)}s) — EL GIRO:
-Efecto de "escáner" sobre la pintura. Líneas de análisis identifican figuras ocultas.
-Texto aparece: "Tu mente busca patrones en el caos."
-"Lo que encuentra... revela tu arquitectura emocional."
-
-ESCENA 4 (${Math.floor(dur*0.55)}-${dur-6}s) — INTRIGA MÁXIMA:
-Texto fragmentado aparece letra por letra:
-"¿ESTÁS LISTO PARA VER LO QUE TU INCONSCIENTE GUARDA?"
-Fondo: ondas cerebrales pulsando. Música en crescendo.
-
-ESCENA 5 (${dur-6}-${dur}s) — REVELACIÓN + CTA:
-Logo CD aparece con efecto de luz. "El inconsciente no sabe mentir."
-"Método Celidiano · Descubre el tuyo."
-Texto: "Toca para más información ↓"`,
-
-  autoridad: (aud, dur) => `PROMPT GOOGLE VEO / FLOW — TIPO: AUTORIDAD / CREDIBILIDAD
-DURACIÓN: ${dur} segundos | AUDIENCIA: ${aud.toUpperCase()} | FORMATO: Vertical 9:16
-
-ESCENA 1 (0-4s) — PRESENTACIÓN PROFESIONAL:
-Plano de Adriana Ayala Gutiérrez en estudio con pinturas de fondo.
-Texto en pantalla: "ADRIANA AYALA GUTIÉRREZ"
-Subtexto: "Especialista en Semiosis y Coaching Clínico"
-
-ESCENA 2 (4-12s) — LAS CREDENCIALES:
-Texto animado aparece en lista:
-"11 años de investigación documentada"
-"Paper publicado: Cronodinámica de la Conectividad Funcional Cerebral (2024)"
-"14 disciplinas científicas integradas"
-"Metodología creada por Juan Carlos Pérez Martínez, Licenciado en Artes Visuales"
-
-ESCENA 3 (12-${Math.floor(dur*0.6)}s) — EL MÉTODO:
-Plano de pinturas de las colecciones "Dioses de la Metapareidolia" y 
-"Ángeles del Inconsciente". Texto: "Metapareidolia Pictórica — la metodología más
-avanzada de diagnóstico proyectivo visual en México."
-
-ESCENA 4 (${Math.floor(dur*0.6)}-${dur-6}s) — DISCIPLINAS:
-Infografía circular con las 14 disciplinas girando alrededor del logo CD.
-"Neurociencia · Neuroquímica · Psicología · Logoterapia · Sistemas Complejos..."
-
-ESCENA 5 (${dur-6}-${dur}s) — CTA DE AUTORIDAD:
-"El sistema más avanzado de arteterapia proyectiva en México."
-Logo CD. "Sesión privada disponible — precio de lanzamiento."
-"Método Celidiano · Adriana Ayala Gutiérrez"`,
-
-  transformacion: (aud, dur) => `PROMPT GOOGLE VEO / FLOW — TIPO: TRANSFORMACIÓN PERSONAL
-DURACIÓN: ${dur} segundos | AUDIENCIA: ${aud.toUpperCase()} | FORMATO: Vertical 9:16
-
-ESCENA 1 (0-3s) — EL ANTES:
-Silueta oscura de una persona con cabeza baja. Fondo gris oscuro.
-Texto: "¿Cuánto tiempo llevas cargando algo que no puedes nombrar?"
-
-ESCENA 2 (3-10s) — EL PUNTO DE INFLEXIÓN:
-La silueta observa una pintura abstracta que se ilumina.
-Ondas de color emergen de la pintura hacia la persona.
-Texto: "Lo que no puedes ver con la mente... lo proyectas en el arte."
-
-ESCENA 3 (10-${Math.floor(dur*0.55)}s) — EL PROCESO:
-Secuencia rápida de: pintura → escritura → análisis → videoconferencia.
-Texto: "Observas. Proyectas. Adriana decodifica. Tú te transformas."
-
-ESCENA 4 (${Math.floor(dur*0.55)}-${dur-6}s) — EL DESPUÉS:
-La misma silueta, ahora erguida, rodeada de luz dorada y pinturas.
-"Una sola sesión puede revelar lo que años no pudieron."
-"No es terapia convencional. Es percepción neuro-visual."
-
-ESCENA 5 (${dur-6}-${dur}s) — CTA TRANSFORMADOR:
-"¿Listo para ver lo que tu inconsciente guarda?"
-Logo CD. "Método Celidiano — desde ${RAG.marca.precio_std}"
-"Toca para más información ↓"`
-};
-
-/* ========== ESTADO DE LA APP ========== */
-const state = {
-  tipo: 'gancho',
-  audiencia: 'fria',
-  duracion: 30,
-  plataformas: new Set(['facebook','instagram','tiktok','youtube']),
-  casoSelected: null,
-  deploys: 0,
-  monthPosts: 0
-};
-
-/* ========== PLATAFORMAS ========== */
-const PLATFORMS = [
-  { id:'tiktok',    name:'TikTok',    type:'REELS',    icon:'📱', bg:'#000', url:'https://www.tiktok.com/upload' },
-  { id:'youtube',   name:'YouTube',   type:'SHORTS',   icon:'▶️', bg:'#ff0000', url:'https://www.youtube.com/upload' },
-  { id:'facebook',  name:'Facebook',  type:'REELS',    icon:'📘', bg:'#1877f2', url:'https://www.facebook.com/reels/create' },
-  { id:'instagram', name:'Instagram', type:'REELS',    icon:'📸', bg:'#e1306c', url:'https://www.instagram.com/' },
-  { id:'threads',   name:'Threads',   type:'POST',     icon:'🧵', bg:'#000', url:'https://www.threads.net/' },
-  { id:'kwai',      name:'Kwai',      type:'VIDEO',    icon:'🎬', bg:'#ff6600', url:'https://www.kwai.com/' }
-];
-
-/* ========== UTILIDADES ========== */
-const $ = id => document.getElementById(id);
-const rand = arr => arr[Math.floor(Math.random()*arr.length)];
-const pickN = (arr, n) => {
-  const c=[...arr], out=[];
-  for(let i=0;i<n&&c.length;i++) out.push(c.splice(Math.floor(Math.random()*c.length),1)[0]);
-  return out;
-};
-const sleep = ms => new Promise(r=>setTimeout(r,ms));
-
-function updateCount(inputId, countId) {
-  $(countId).textContent = $(inputId).value.length;
+  };
+  return (maps[tipo]||maps.gancho).map(s=>({t:s.t,b:s.b.replace(/\$\{dur\}/g,dur).replace(/\$\{Math\.floor\(dur\*[\d.]+\)\}/g,x=>{const m=x.match(/[\d.]+/);return Math.floor(dur*parseFloat(m[0]))})}));
 }
 
-function saveState() {
-  try {
-    localStorage.setItem('nexus-v3', JSON.stringify({
-      title: $('videoTitle').value,
-      desc: $('videoDesc').value,
-      tags: $('hashtags').value,
-      deploys: state.deploys,
-      monthPosts: state.monthPosts
+/* ===== CASOS ===== */
+const CASOS=[
+  {tag:"CASO TIPO A · EJECUTIVO · GEN X",text:'"Llevaba 8 años con una sensación de bloqueo en mis decisiones de negocio. En la sesión, proyecté figuras de laberintos en todas las pinturas. Adriana identificó un patrón de hipervigilancia que ni yo mismo había reconocido."',result:"→ Patrón detectado: bloqueo decisional por hipervigilancia sistémica"},
+  {tag:"CASO TIPO B · MUJER 35 AÑOS · MILLENNIAL",text:'"Siempre supe que algo bloqueaba mis relaciones. Lo primero que describí fue una figura sola rodeada de sombras. Adriana lo identificó antes de que yo terminara de explicarlo."',result:"→ Patrón detectado: desvínculo oxitocínico, apego ansioso activo"},
+  {tag:"CASO TIPO C · PSICÓLOGA · BOOMER",text:'"Llegué con escepticismo. Lo que me sorprendió fue la velocidad — en 25 elementos, el sistema identificó exactamente el área de conflicto que yo misma había evitado trabajar por años."',result:"→ Patrón detectado: mecanismo de defensa intelectualización activo"},
+  {tag:"CASO TIPO D · EMPRENDEDOR · GEN Z",text:'"Cuando describí la primera pintura, Adriana me preguntó sobre mi relación con mi padre. Nunca lo mencioné. El sistema lo detectó en mis proyecciones."',result:"→ Patrón detectado: figura de autoridad paterna no resuelta"},
+  {tag:"CASO TIPO E · PAREJA · 40 AÑOS",text:'"Cada uno describió cosas completamente diferentes en la misma pintura. Eso solo ya fue revelador. El análisis mostró exactamente por qué llevábamos 3 años comunicándonos en frecuencias distintas."',result:"→ Patrón detectado: saturación límbica por habituación"}
+];
+
+/* ===== PLATAFORMAS ===== */
+const PLATS=[
+  {id:"tiktok",name:"TikTok",type:"REELS",url:"https://www.tiktok.com/upload",color:"#010101",
+   svg:'<svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/></svg>'},
+  {id:"youtube",name:"YouTube",type:"SHORTS",url:"https://www.youtube.com/upload",color:"#ff0000",
+   svg:'<svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>'},
+  {id:"facebook",name:"Facebook",type:"REELS",url:"https://www.facebook.com/reels/create",color:"#1877f2",
+   svg:'<svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>'},
+  {id:"instagram",name:"Instagram",type:"REELS",url:"https://www.instagram.com/",color:"#e1306c",
+   svg:'<svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>'},
+  {id:"threads",name:"Threads",type:"POST",url:"https://www.threads.net/",color:"#101010",
+   svg:'<svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.964-.065-1.19.408-2.285 1.33-3.082.88-.76 2.119-1.207 3.583-1.291a13.853 13.853 0 013.02.142c-.126-.742-.375-1.332-.75-1.757-.513-.586-1.308-.883-2.359-.89h-.029c-.844 0-1.992.232-2.721 1.32L7.734 7.847c.98-1.454 2.568-2.256 4.478-2.256h.044c3.194.02 5.097 1.975 5.287 5.388.108.046.216.094.321.142 1.49.7 2.58 1.761 3.154 3.07.797 1.82.871 4.79-1.548 7.158-1.85 1.81-4.094 2.628-7.277 2.65z"/></svg>'},
+  {id:"kwai",name:"Kwai",type:"VIDEO",url:"https://www.kwai.com/",color:"#ff6600",
+   svg:'<svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15v-4H8l4-6v4h3l-4 6z"/></svg>'}
+];
+
+/* ===== STATE ===== */
+const S={tipo:'gancho',aud:'fria',dur:30,locks:{veo:false,title:false,desc:false,tags:false},casoSel:null,deploys:0,month:0};
+
+/* ===== STORAGE KEY ===== */
+const KEY='nexus-v4';
+
+/* ===== UTILS ===== */
+const $=id=>document.getElementById(id);
+const rand=arr=>arr[Math.floor(Math.random()*arr.length)];
+const pickN=(arr,n)=>{const c=[...arr],o=[];for(let i=0;i<n&&c.length;i++)o.push(c.splice(Math.floor(Math.random()*c.length),1)[0]);return o};
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+function updCt(inp,ct){$(ct).textContent=$(inp).value.length}
+
+/* ===== SAVE / LOAD ===== */
+function save(){
+  try{
+    const accounts=PLATS.reduce((o,p)=>{o[p.id]=getAccounts(p.id);return o},{});
+    localStorage.setItem(KEY,JSON.stringify({
+      title:$('videoTitle').value,desc:$('videoDesc').value,tags:$('hashtags').value,
+      deploys:S.deploys,month:S.month,accounts
     }));
-  } catch(e){}
+  }catch(e){}
 }
 
-function loadState() {
-  try {
-    const s = JSON.parse(localStorage.getItem('nexus-v3')||'{}');
-    if(s.title){ $('videoTitle').value=s.title; $('titleCount').textContent=s.title.length; }
-    if(s.desc){ $('videoDesc').value=s.desc; $('descCount').textContent=s.desc.length; }
-    if(s.tags) $('hashtags').value=s.tags;
-    if(s.deploys){ state.deploys=s.deploys; $('statDeploys').textContent=s.deploys; }
-    if(s.monthPosts){ state.monthPosts=s.monthPosts; updateMetricool(s.monthPosts); }
-  } catch(e){}
+function load(){
+  try{
+    const d=JSON.parse(localStorage.getItem(KEY)||'{}');
+    if(d.title){$('videoTitle').value=d.title;$('titleCt').textContent=d.title.length}
+    if(d.desc){$('videoDesc').value=d.desc;$('descCt').textContent=d.desc.length}
+    if(d.tags)$('hashtags').value=d.tags;
+    if(d.deploys){S.deploys=d.deploys;$('stDeploys').textContent=d.deploys}
+    if(d.month){S.month=d.month;updateMC(d.month)}
+    if(d.accounts){
+      PLATS.forEach(p=>{
+        if(d.accounts[p.id]&&d.accounts[p.id].length){
+          d.accounts[p.id].forEach(acc=>addAccountToDOM(p.id,acc.name,acc.url));
+        }
+      });
+    }
+  }catch(e){}
 }
 
-function updateMetricool(n) {
-  state.monthPosts = n;
-  $('counterNum').textContent = n;
-  $('statMonth').textContent = n;
-  const pct = Math.min((n/20)*100, 100);
-  $('counterFill').style.width = pct+'%';
-  $('counterFill').style.background = pct>=80
-    ? 'linear-gradient(90deg,#ff6600,#ff3366)'
-    : 'linear-gradient(90deg,var(--blue-mid),var(--blue-core))';
+/* ===== METRICOOL COUNTER ===== */
+function updateMC(n){
+  S.month=n;$('mcNum').textContent=n;$('stMonth').textContent=n;
+  const pct=Math.min((n/20)*100,100);
+  $('mcFill').style.width=pct+'%';
+  $('mcFill').style.background=pct>=80?'linear-gradient(90deg,#ff6600,#ff3366)':'linear-gradient(90deg,var(--blue2),var(--blue))';
 }
 
-/* ========== SELECTORES ========== */
-function selectType(el) {
-  document.querySelectorAll('.type-card').forEach(c=>c.classList.remove('active'));
-  el.classList.add('active');
-  state.tipo = el.dataset.type;
+/* ===== SELECTORS ===== */
+function selType(el){document.querySelectorAll('.type-card').forEach(c=>c.classList.remove('active'));el.classList.add('active');S.tipo=el.dataset.type}
+function selAud(el){document.querySelectorAll('[data-aud]').forEach(b=>b.classList.remove('active'));el.classList.add('active');S.aud=el.dataset.aud}
+function selDur(el){document.querySelectorAll('[data-dur]').forEach(b=>b.classList.remove('active'));el.classList.add('active');S.dur=parseInt(el.dataset.dur)}
+
+/* ===== LOCK SYSTEM ===== */
+function toggleLock(field){
+  S.locks[field]=!S.locks[field];
+  const locked=S.locks[field];
+  if(field==='veo'){
+    const btn=$('veoLockBtn'),rb=$('veoResetBtn');
+    btn.textContent=locked?'🔒 BLOQUEADO':'🔓 BLOQUEAR';
+    btn.classList.toggle('locked',locked);
+    rb.style.display=locked?'inline-flex':'none';
+    document.querySelectorAll('.scene-textarea').forEach(ta=>ta.readOnly=locked);
+  } else {
+    const btn=$(field+'LockBtn'),ovl=$(field+'Overlay');
+    btn.textContent=locked?'🔒 BLOQUEADO':'🔓 BLOQUEAR';
+    btn.classList.toggle('locked',locked);
+    ovl.classList.toggle('active',locked);
+    if(locked){ovl.innerHTML='<span class="lock-badge">🔒 BLOQUEADO — toca BLOQUEAR para editar</span>'}
+    else ovl.innerHTML='';
+    const inp=field==='title'?'videoTitle':field==='desc'?'videoDesc':'hashtags';
+    $(inp).readOnly=locked;
+  }
 }
 
-function selectAudience(el) {
-  document.querySelectorAll('[data-aud]').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
-  state.audiencia = el.dataset.aud;
+/* ===== VEO GENERATOR ===== */
+function genVeo(){
+  if(S.locks.veo)return;
+  const scenes=buildScenes(S.tipo,S.aud,S.dur);
+  const wrapper=$('scenesWrapper');
+  wrapper.innerHTML='';
+  wrapper.classList.add('visible');
+  scenes.forEach((sc,i)=>{
+    const block=document.createElement('div');
+    block.className='scene-block';
+    block.innerHTML=`
+      <div class="scene-hdr">
+        <span class="scene-title">ESCENA ${i+1} — ${sc.t}</span>
+        <div class="btn-row">
+          <button class="btn btn-copy" onclick="copyScene(${i})">📋 COPIAR ESCENA ${i+1}</button>
+          <button class="btn btn-veo" onclick="copySceneFull(${i})">📋 + TÍTULO</button>
+        </div>
+      </div>
+      <div class="scene-body">
+        <textarea class="scene-textarea" id="scene_${i}" rows="${Math.max(4,sc.b.split('\n').length+1)}">${sc.b}</textarea>
+      </div>`;
+    wrapper.appendChild(block);
+  });
 }
 
-function selectDuration(el) {
-  document.querySelectorAll('[data-dur]').forEach(b=>b.classList.remove('active'));
-  el.classList.add('active');
-  state.duracion = parseInt(el.dataset.dur);
+function copyScene(i){
+  const txt=$(`scene_${i}`).value;
+  navigator.clipboard.writeText(txt).then(()=>{
+    const btn=document.querySelectorAll('.scene-block')[i].querySelector('.btn-copy');
+    const o=btn.textContent;btn.textContent='✓ COPIADO';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent=o;btn.classList.remove('copied')},1500);
+  }).catch(()=>alert('Copia manualmente el texto de la escena.'));
 }
 
-/* ========== GENERADORES ========== */
-function generateVeoPrompt() {
-  const fn = VEO_PROMPTS[state.tipo];
-  if(!fn){ logConsole('Tipo de video no reconocido','error'); return; }
-  const prompt = fn(state.audiencia, state.duracion);
-  const out = $('veoOutput');
-  out.textContent = prompt;
-  out.classList.add('visible');
+function copySceneFull(i){
+  const txt=`ESCENA ${i+1}:\n${$(`scene_${i}`).value}`;
+  navigator.clipboard.writeText(txt).then(()=>{
+    const btns=document.querySelectorAll('.scene-block')[i].querySelectorAll('.btn-copy');
+    const btn=btns[1];const o=btn.textContent;btn.textContent='✓ COPIADO';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent=o;btn.classList.remove('copied')},1500);
+  });
 }
 
-function copyVeo() {
-  const text = $('veoOutput').textContent;
-  if(!text.trim()){ alert('Genera primero el prompt de Veo.'); return; }
-  copyToClipboard(text, 'copyVeoBtn');
+function resetVeo(){
+  if(confirm('¿Resetear todas las escenas? Se perderá el contenido actual.')){
+    S.locks.veo=false;toggleLock('veo');
+    $('scenesWrapper').innerHTML='';$('scenesWrapper').classList.remove('visible');
+  }
 }
 
-function generateTitles() {
-  const pool = [
-    ...RAG.titulos,
-    ...RAG.hooks[state.audiencia].map(h => h.replace('?','').trim()),
-    rand(RAG.frases_ancla) + ' — Método Celidiano',
-    `${rand(RAG.tribu)} | Método Celidiano`,
-  ];
-  const titles = pickN([...new Set(pool)], 6);
-  const list = $('titleOptions');
-  list.innerHTML = '<div class="options-header">▼ SELECCIONA UNA OPCIÓN</div>';
-  titles.forEach(t => {
-    const item = document.createElement('div');
-    item.className = 'option-item';
-    item.textContent = t.length>98 ? t.substring(0,98)+'…' : t;
-    item.onclick = () => {
-      $('videoTitle').value = item.textContent;
-      $('titleCount').textContent = item.textContent.length;
-      list.classList.remove('visible');
-      saveState();
-    };
+/* ===== TITLE GENERATOR ===== */
+function genTitles(){
+  if(S.locks.title)return;
+  const pool=[...RAG.titulos,...RAG.hooks[S.aud].map(h=>h.replace('?','').trim()),rand(RAG.ancla)+' — Método Celidiano',rand(RAG.tribu)+' | Método Celidiano'];
+  const titles=pickN([...new Set(pool)],6);
+  const list=$('titleOpts');
+  list.innerHTML='<div class="opts-hdr">▼ TOCA UNA OPCIÓN PARA USARLA</div>';
+  titles.forEach(t=>{
+    const item=document.createElement('div');
+    item.className='opt-item';
+    item.textContent=t.length>98?t.substring(0,98)+'…':t;
+    item.onclick=()=>{$('videoTitle').value=item.textContent;$('titleCt').textContent=item.textContent.length;list.classList.remove('open');save()};
     list.appendChild(item);
   });
-  list.classList.add('visible');
+  list.classList.add('open');
 }
 
-function generateDescription() {
-  const hook = rand(RAG.hooks[state.audiencia]);
-  const body = pickN(RAG.proceso, 2);
-  const auth = rand(RAG.autoridad);
-  const tribe = rand(RAG.tribu);
-  const cta = rand(RAG.ctas);
-  const ancla = rand(RAG.frases_ancla);
-  const desc = `${hook}\n\n${body[0]}\n\n${body[1]}\n\n${auth}\n\n${tribe}.\n\n"${ancla}"\n\n👉 ${cta}`;
-  $('videoDesc').value = desc;
-  $('descCount').textContent = desc.length;
-  saveState();
+/* ===== DESC GENERATOR ===== */
+function genDesc(){
+  if(S.locks.desc)return;
+  const d=`${rand(RAG.hooks[S.aud])}\n\n${rand(RAG.proceso)}\n\n${rand(RAG.proceso)}\n\n${rand(RAG.autoridad)}\n\n${rand(RAG.tribu)}.\n\n"${rand(RAG.ancla)}"\n\n👉 ${rand(RAG.ctas)}`;
+  $('videoDesc').value=d;$('descCt').textContent=d.length;save();
 }
 
-function generateHashtags() {
-  const t = state.tipo === 'ciencia' || state.tipo === 'autoridad'
-    ? RAG.hashtags.youtube
-    : RAG.hashtags.social;
-  $('hashtags').value = t;
-  saveState();
+/* ===== TAGS GENERATOR ===== */
+function genTags(){
+  if(S.locks.tags)return;
+  const t=S.tipo==='ciencia'||S.tipo==='autoridad'?RAG.hashtags.youtube:S.tipo==='tiktok'?RAG.hashtags.tiktok:RAG.hashtags.social;
+  $('hashtags').value=t;save();
 }
 
-/* ========== CASOS ILUSTRATIVOS ========== */
-function renderCasos() {
-  const grid = $('casosGrid');
-  grid.innerHTML = '';
-  CASOS.forEach((c,i) => {
-    const card = document.createElement('div');
-    card.className = 'caso-card';
-    card.dataset.idx = i;
-    card.innerHTML = `
-      <div class="caso-tag">${c.tag}</div>
-      <div class="caso-text">${c.text}</div>
-      <div class="caso-result">${c.result}</div>
-    `;
-    card.onclick = () => {
-      document.querySelectorAll('.caso-card').forEach(cc=>cc.style.borderLeftColor='var(--blue-core)');
-      card.style.borderLeftColor = 'var(--orange-arc)';
-      state.casoSelected = i;
-    };
-    grid.appendChild(card);
+/* ===== COPY FIELD ===== */
+async function copyFld(inp,btn){
+  const val=$(inp).value;
+  if(!val.trim()){alert('El campo está vacío.');return}
+  try{
+    await navigator.clipboard.writeText(val);
+    const b=$(btn);if(!b)return;
+    const o=b.textContent;b.textContent='✓';b.classList.add('copied');
+    setTimeout(()=>{b.textContent=o;b.classList.remove('copied')},1500);
+  }catch(e){alert('Copia manualmente el texto.')}
+}
+
+/* ===== CASOS ===== */
+function renderCasos(){
+  const g=$('casosGrid');g.innerHTML='';
+  CASOS.forEach((c,i)=>{
+    const card=document.createElement('div');
+    card.className='caso-card';
+    card.innerHTML=`<div class="caso-tag">${c.tag}</div><div class="caso-text">${c.text}</div><div class="caso-result">${c.result}</div>`;
+    card.onclick=()=>{document.querySelectorAll('.caso-card').forEach(x=>x.classList.remove('selected'));card.classList.add('selected');S.casoSel=i};
+    g.appendChild(card);
   });
 }
 
-function insertCaso() {
-  if(state.casoSelected === null){ alert('Selecciona primero un caso tocándolo.'); return; }
-  const caso = CASOS[state.casoSelected];
-  const current = $('videoDesc').value;
-  const insert = `\n\n${caso.text}\n*Historia ilustrativa basada en patrones de sesiones reales.\n${caso.result}`;
-  $('videoDesc').value = (current + insert).substring(0, 2200);
-  $('descCount').textContent = $('videoDesc').value.length;
-  saveState();
+function insertCaso(){
+  if(S.casoSel===null){alert('Selecciona primero un caso tocándolo.');return}
+  if(S.locks.desc){alert('Desbloquea la descripción primero.');return}
+  const c=CASOS[S.casoSel];
+  const cur=$('videoDesc').value;
+  const ins=`\n\n${c.text}\n*Historia ilustrativa basada en patrones de sesiones reales.\n${c.result}`;
+  $('videoDesc').value=(cur+ins).substring(0,2200);
+  $('descCt').textContent=$('videoDesc').value.length;save();
 }
 
-/* ========== PLATAFORMAS ========== */
-function renderPlatforms() {
-  const grid = $('platformGrid');
-  grid.innerHTML = '';
-  PLATFORMS.forEach(p => {
-    const card = document.createElement('div');
-    card.className = 'platform-card' + (state.plataformas.has(p.id) ? ' selected' : '');
-    card.innerHTML = `
-      <div class="platform-icon" style="background:${p.bg}20;border:1px solid ${p.bg}40">${p.icon}</div>
-      <div class="platform-info">
-        <div class="platform-name">${p.name}</div>
-        <div class="platform-type">${p.type}</div>
+/* ===== PLATFORMS ===== */
+function getAccounts(platId){
+  const chips=document.querySelectorAll(`#accounts_${platId} .account-chip`);
+  return Array.from(chips).map(ch=>({name:ch.querySelector('.chip-input').value||'Cuenta',url:ch.querySelector('.chip-url').value||''}));
+}
+
+function addAccountToDOM(platId,name='',url=''){
+  const list=$(`accounts_${platId}`);
+  if(!list)return;
+  const chip=document.createElement('div');
+  chip.className='account-chip';
+  chip.innerHTML=`
+    <div class="chip-open" onclick="openAccount('${platId}',this)" title="Abrir">↗</div>
+    <input class="chip-input" value="${name}" placeholder="Nombre de la cuenta" oninput="save()"/>
+    <input class="chip-url" value="${url}" placeholder="URL de tu página..." oninput="save()"/>
+    <span class="chip-del" onclick="this.closest('.account-chip').remove();updAccCount();save()">✕</span>`;
+  list.appendChild(chip);
+  updAccCount();
+}
+
+function openAccount(platId,btn){
+  const chip=btn.closest('.account-chip');
+  const url=chip.querySelector('.chip-url').value.trim();
+  if(!url){alert('Agrega primero la URL de esta cuenta.');return}
+  window.open(url,'_blank');
+}
+
+function showAddForm(platId){
+  const form=$(`addForm_${platId}`);
+  form.classList.toggle('open');
+}
+
+function confirmAdd(platId){
+  const n=$(`addName_${platId}`).value.trim()||'Nueva cuenta';
+  const u=$(`addUrl_${platId}`).value.trim();
+  addAccountToDOM(platId,n,u);
+  $(`addName_${platId}`).value='';$(`addUrl_${platId}`).value='';
+  $(`addForm_${platId}`).classList.remove('open');
+  save();
+}
+
+function updAccCount(){
+  let total=0;
+  PLATS.forEach(p=>{total+=document.querySelectorAll(`#accounts_${p.id} .account-chip`).length});
+  $('stPlats').textContent=total;
+}
+
+function resetAccounts(){
+  if(!confirm('¿Eliminar todas las cuentas guardadas?'))return;
+  PLATS.forEach(p=>{const l=$(`accounts_${p.id}`);if(l)l.innerHTML=''});
+  updAccCount();save();
+}
+
+function renderPlatforms(){
+  const container=$('platformsContainer');
+  container.innerHTML='';
+  PLATS.forEach(p=>{
+    const sec=document.createElement('div');
+    sec.className='platform-section';
+    sec.innerHTML=`
+      <div class="platform-header-row">
+        <div class="platform-name-row">
+          <div class="plat-svg" style="background:${p.color}22;border:1px solid ${p.color}44">${p.svg}</div>
+          <div><div class="plat-lbl">${p.name}</div><div class="plat-type">${p.type}</div></div>
+        </div>
+        <button class="btn-add-account" onclick="showAddForm('${p.id}')">+ AGREGAR CUENTA</button>
       </div>
-      <div class="platform-check">${state.plataformas.has(p.id)?'✓':''}</div>
-    `;
-    card.onclick = () => {
-      if(state.plataformas.has(p.id)) state.plataformas.delete(p.id);
-      else state.plataformas.add(p.id);
-      renderPlatforms();
-      $('statPlatforms').textContent = state.plataformas.size;
-    };
-    grid.appendChild(card);
+      <div class="accounts-list" id="accounts_${p.id}"></div>
+      <div class="add-form" id="addForm_${p.id}">
+        <input type="text" id="addName_${p.id}" placeholder="Nombre de la cuenta (ej: Página Principal)"/>
+        <input type="text" id="addUrl_${p.id}" placeholder="URL completa de tu página (ej: https://facebook.com/mipagina)"/>
+        <div class="add-form-row">
+          <button class="btn btn-gen" onclick="confirmAdd('${p.id}')">✓ GUARDAR CUENTA</button>
+          <button class="btn btn-danger" onclick="$('addForm_${p.id}').classList.remove('open')">✕ CANCELAR</button>
+        </div>
+      </div>`;
+    container.appendChild(sec);
   });
 }
 
-/* ========== QUICK TAGS ========== */
-function renderQuickTags() {
-  const container = $('quickTags');
-  container.innerHTML = '';
-  RAG.quickTags.forEach(t => {
-    const pill = document.createElement('span');
-    pill.className = 'tag-pill';
-    pill.textContent = t;
-    pill.onclick = () => {
-      const input = $('hashtags');
-      if(!input.value.includes(t)) { input.value = (input.value.trim()+' '+t).trim(); saveState(); }
-    };
-    container.appendChild(pill);
+/* ===== QUICK TAGS ===== */
+function renderQuickTags(){
+  const c=$('quickTags');c.innerHTML='';
+  RAG.quickTags.forEach(t=>{
+    const pill=document.createElement('span');
+    pill.className='tag-pill';pill.textContent=t;
+    pill.onclick=()=>{const i=$('hashtags');if(!i.value.includes(t)){i.value=(i.value.trim()+' '+t).trim();save()}};
+    c.appendChild(pill);
   });
 }
 
-/* ========== COPY ========== */
-async function copyToClipboard(text, btnId) {
-  try {
-    await navigator.clipboard.writeText(text);
-    const btn = $(btnId);
-    if(btn){
-      const orig = btn.textContent;
-      btn.textContent = '✓ COPIADO';
-      btn.classList.add('copied');
-      setTimeout(()=>{ btn.textContent=orig; btn.classList.remove('copied'); }, 1500);
-    }
-  } catch(e) {
-    alert('No se pudo copiar automáticamente. Selecciona el texto manualmente.');
-  }
+/* ===== CONSOLE ===== */
+function log(msg,type=''){
+  const c=$('console');c.classList.add('open');
+  const l=document.createElement('div');l.className='cl '+type;l.textContent='> '+msg;
+  c.appendChild(l);c.scrollTop=c.scrollHeight;
 }
 
-async function copyField(inputId, btnId) {
-  const val = $(inputId).value;
-  if(!val.trim()){ alert('El campo está vacío. Genera o escribe contenido primero.'); return; }
-  await copyToClipboard(val, btnId);
-}
-
-/* ========== CONSOLE ========== */
-function logConsole(msg, type='') {
-  const c = $('console');
-  c.classList.add('visible');
-  const line = document.createElement('div');
-  line.className = 'console-line ' + type;
-  line.textContent = '> ' + msg;
-  c.appendChild(line);
-  c.scrollTop = c.scrollHeight;
-}
-
-/* ========== DEPLOY ========== */
-async function deploy() {
-  const title = $('videoTitle').value.trim();
-  if(!title){ alert('El título es obligatorio. Genera o escribe uno primero.'); return; }
-  if(state.plataformas.size === 0){ alert('Selecciona al menos una plataforma.'); return; }
-
-  $('console').innerHTML = '';
-  logConsole('Iniciando NEXUS DISPATCH v3.0...');
+/* ===== DEPLOY ===== */
+async function deploy(){
+  const title=$('videoTitle').value.trim();
+  if(!title){alert('El título es obligatorio.');return}
+  $('console').innerHTML='';
+  log('Iniciando NEXUS DISPATCH v4.0...');
   await sleep(200);
-  logConsole('Preparando: "' + title + '"');
-  await sleep(200);
-
-  const fullText = [$('videoTitle').value, $('videoDesc').value, $('hashtags').value]
-    .filter(Boolean).join('\n\n');
-  logConsole('Copy total: ' + fullText.length + ' caracteres');
-  await sleep(200);
-  logConsole('Abriendo plataformas seleccionadas...', 'warning');
-
-  const platArr = [...state.plataformas];
-  platArr.forEach((pid, i) => {
-    const p = PLATFORMS.find(x=>x.id===pid);
-    if(!p) return;
-    setTimeout(() => {
-      const w = window.open(p.url, '_blank');
-      if(!w) logConsole('⚠ Pop-up bloqueado: ' + p.name + ' — permite pop-ups en tu navegador', 'warning');
-      else logConsole('✓ ' + p.name.toUpperCase() + ' abierto', 'success');
-    }, i * 400);
+  log('Preparando: "'+title+'"');
+  await sleep(150);
+  const fullText=[$('videoTitle').value,$('videoDesc').value,$('hashtags').value].filter(Boolean).join('\n\n');
+  log('Copy total: '+fullText.length+' caracteres');
+  await sleep(150);
+  let opened=0,total=0;
+  PLATS.forEach(p=>{
+    const accounts=getAccounts(p.id);
+    if(accounts.length===0)return;
+    accounts.forEach((acc,i)=>{
+      setTimeout(()=>{
+        const url=acc.url||p.url;
+        const w=window.open(url,'_blank');
+        if(!w)log('⚠ Pop-up bloqueado: '+p.name+' — '+acc.name,'w');
+        else{log('✓ '+p.name.toUpperCase()+' → '+acc.name,'ok');opened++}
+      },total*350);
+      total++;
+    });
   });
-
-  try {
-    await navigator.clipboard.writeText(fullText);
-    await sleep(platArr.length * 400 + 200);
-    logConsole('✓ Texto copiado al portapapeles', 'success');
-  } catch(e) {
-    logConsole('⚠ Copia manual: usa los botones 📋 de cada campo', 'warning');
-  }
-
-  state.deploys++;
-  $('statDeploys').textContent = state.deploys;
-  updateMetricool(state.monthPosts + platArr.length);
-  saveState();
+  if(total===0){log('⚠ No hay cuentas configuradas. Agrega cuentas en el Panel 07.','w');return}
+  try{await navigator.clipboard.writeText(fullText);await sleep(total*350+200);log('✓ Texto copiado al portapapeles','ok')}
+  catch(e){log('⚠ Usa los botones 📋 de cada campo para copiar','w')}
+  S.deploys++;$('stDeploys').textContent=S.deploys;
+  updateMC(S.month+total);
+  save();
   await sleep(300);
-  logConsole('✓ DESPLIEGUE COMPLETADO — Pega el contenido en cada pestaña y sube tu video.', 'success');
+  log('✓ DESPLIEGUE COMPLETADO — Pega el contenido en cada pestaña y sube tu video.','ok');
 }
 
-/* ========== INIT ========== */
-function init() {
+/* ===== INIT ===== */
+function init(){
   renderPlatforms();
   renderQuickTags();
   renderCasos();
-  loadState();
-  $('statPlatforms').textContent = state.plataformas.size;
+  load();
 }
-
-document.addEventListener('DOMContentLoaded', init);
+document.addEventListener('DOMContentLoaded',init);
 </script>
 </body>
 </html>
