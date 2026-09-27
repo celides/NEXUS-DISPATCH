@@ -3,10 +3,9 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>NEXUS DISPATCH v4 · Content Intelligence Studio</title>
+<title>NEXUS DISPATCH v5 · Content Intelligence Studio</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <style>
-/* ===== RESET & VARIABLES ===== */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#020810;--bg-panel:rgba(0,20,50,.85);--bg-card:rgba(0,30,70,.6);
@@ -17,55 +16,45 @@
   --tech:'Orbitron',monospace;--body:'Exo 2',sans-serif;
 }
 html,body{min-height:100vh;background:var(--bg);color:var(--white);font-family:var(--body);font-weight:300;overflow-x:hidden}
-
-/* ===== BG ===== */
 body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellipse at 15% 20%,rgba(0,100,200,.12),transparent 50%),radial-gradient(ellipse at 85% 80%,rgba(0,180,255,.08),transparent 50%);pointer-events:none;z-index:0}
 body::after{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.025) 1px,transparent 1px);background-size:50px 50px;pointer-events:none;z-index:0}
 
-/* ===== KEYFRAMES ===== */
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.3)}}
 @keyframes rotate{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 @keyframes rotate-rev{from{transform:rotate(360deg)}to{transform:rotate(0deg)}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 @keyframes scanY{0%{top:-2px}100%{top:100%}}
-@keyframes scanX{0%{left:-2px}100%{left:100%}}
 @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-@keyframes flicker{0%,100%{opacity:1}93%{opacity:.85}94%{opacity:1}97%{opacity:.9}98%{opacity:1}}
-@keyframes datastream{0%{transform:translateY(-100%);opacity:0}10%{opacity:.6}90%{opacity:.6}100%{transform:translateY(200px);opacity:0}}
+@keyframes flicker{0%,100%{opacity:1}93%{opacity:.85}97%{opacity:.9}}
 @keyframes glow-pulse{0%,100%{box-shadow:0 0 15px var(--glow)}50%{box-shadow:0 0 35px var(--glow2)}}
 @keyframes corner-pulse{0%,100%{opacity:.4}50%{opacity:1}}
+@keyframes modalIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
 
-/* ===== HEADER ===== */
+/* HEADER */
 header{position:sticky;top:0;z-index:100;background:rgba(2,8,16,.97);border-bottom:1px solid var(--border);backdrop-filter:blur(20px);padding:10px 20px;display:flex;align-items:center;justify-content:space-between;animation:flicker 10s infinite}
 .hdr-left{display:flex;align-items:center;gap:14px}
-
-/* Arc reactor */
 .arc{width:44px;height:44px;position:relative;flex-shrink:0}
 .arc-core{position:absolute;inset:12px;background:radial-gradient(circle,#00d4ff,#0055cc);border-radius:50%;box-shadow:0 0 14px #00d4ff,0 0 28px rgba(0,212,255,.5);animation:pulse 2s infinite}
 .arc-r1{position:absolute;inset:4px;border:1.5px solid rgba(0,212,255,.7);border-radius:50%;animation:rotate 3s linear infinite;border-top-color:transparent}
 .arc-r2{position:absolute;inset:8px;border:1px solid rgba(0,212,255,.35);border-radius:50%;animation:rotate-rev 5s linear infinite;border-right-color:transparent}
-/* Triangular notches on ring */
 .arc-notch{position:absolute;width:4px;height:4px;background:var(--blue);border-radius:50%;box-shadow:0 0 6px var(--blue)}
 .arc-notch:nth-child(3){top:2px;left:50%;transform:translateX(-50%)}
 .arc-notch:nth-child(4){bottom:2px;left:50%;transform:translateX(-50%)}
 .arc-notch:nth-child(5){left:2px;top:50%;transform:translateY(-50%)}
 .arc-notch:nth-child(6){right:2px;top:50%;transform:translateY(-50%)}
-
 .brand-title{font-family:var(--tech);font-size:clamp(.8rem,2.5vw,1.05rem);font-weight:700;color:var(--blue);letter-spacing:4px;text-shadow:0 0 20px rgba(0,212,255,.6)}
 .brand-sub{font-family:var(--tech);font-size:.5rem;color:var(--dim);letter-spacing:3px;margin-top:2px}
 .hdr-right{display:flex;align-items:center;gap:12px}
 .dot-live{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok);animation:pulse 1.5s infinite}
 .status-txt{font-family:var(--tech);font-size:.58rem;color:var(--plat);letter-spacing:2px}
-
-/* Metricool counter */
 .mc-box{background:var(--bg-card);border:1px solid var(--border);border-radius:6px;padding:5px 12px;font-family:var(--tech);font-size:.58rem;color:var(--blue);letter-spacing:1px;min-width:110px}
 .mc-bar{width:100%;height:3px;background:rgba(0,212,255,.1);border-radius:2px;margin-top:4px;overflow:hidden}
 .mc-fill{height:100%;background:linear-gradient(90deg,var(--blue2),var(--blue));border-radius:2px;transition:width .5s ease,background .5s ease;box-shadow:0 0 6px var(--blue)}
 
-/* ===== MAIN ===== */
+/* MAIN */
 main{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:28px 14px 80px}
 
-/* ===== HERO ===== */
+/* HERO */
 .hero{text-align:center;margin-bottom:36px;animation:fadeIn .6s ease-out}
 .hero h1{font-family:var(--tech);font-size:clamp(1.5rem,5vw,2.6rem);font-weight:900;letter-spacing:3px;line-height:1.1;margin-bottom:10px}
 .accent{color:var(--blue);text-shadow:0 0 20px rgba(0,212,255,.7)}
@@ -74,31 +63,21 @@ main{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:28px 14px
 .glow-line{height:1px;background:linear-gradient(90deg,transparent,var(--blue),var(--orange),var(--blue),transparent);margin:16px auto;max-width:400px}
 .hero-p{font-size:.78rem;color:var(--plat);max-width:480px;margin:0 auto}
 
-/* ===== PANEL ===== */
+/* PANEL */
 .panel{background:var(--bg-panel);border:1px solid var(--border);border-radius:10px;padding:22px 20px;margin-bottom:18px;backdrop-filter:blur(20px);position:relative;overflow:hidden;animation:fadeIn .5s ease-out,glow-pulse 5s ease infinite}
 .panel::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),transparent)}
-
-/* Scan lines */
 .scan-y::after{content:'';position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(0,212,255,.3),transparent);animation:scanY 5s linear infinite;pointer-events:none}
-.scan-x::after{content:'';position:absolute;top:0;bottom:0;width:2px;background:linear-gradient(180deg,transparent,rgba(0,212,255,.3),transparent);animation:scanX 7s linear infinite;pointer-events:none}
-
-/* Corner brackets */
 .corner{position:absolute;width:12px;height:12px;animation:corner-pulse 3s ease infinite}
 .corner-tl{top:4px;left:4px;border-top:1.5px solid var(--blue);border-left:1.5px solid var(--blue)}
 .corner-tr{top:4px;right:4px;border-top:1.5px solid var(--blue);border-right:1.5px solid var(--blue)}
 .corner-bl{bottom:4px;left:4px;border-bottom:1.5px solid var(--blue);border-left:1.5px solid var(--blue)}
 .corner-br{bottom:4px;right:4px;border-bottom:1.5px solid var(--blue);border-right:1.5px solid var(--blue)}
-
-/* Data stream particles */
-.stream-container{position:absolute;top:0;left:0;right:0;bottom:0;overflow:hidden;pointer-events:none;opacity:.4}
-.stream-char{position:absolute;font-family:var(--tech);font-size:.55rem;color:var(--blue);animation:datastream 4s linear infinite}
-
 .panel-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:8px}
 .panel-lbl{font-family:var(--tech);font-size:.62rem;font-weight:600;color:var(--blue);letter-spacing:4px;text-transform:uppercase;display:flex;align-items:center;gap:8px}
 .panel-lbl::before{content:'';width:3px;height:14px;background:var(--blue);border-radius:2px;box-shadow:0 0 8px var(--blue)}
 .panel-note{font-size:.72rem;color:var(--dim);margin-bottom:14px;line-height:1.6}
 
-/* ===== INPUTS ===== */
+/* INPUTS */
 .field-grp{margin-bottom:14px}
 .field-lbl{display:block;font-family:var(--tech);font-size:.58rem;color:var(--blue);letter-spacing:3px;text-transform:uppercase;margin-bottom:7px;opacity:.8}
 input[type=text],textarea,select{width:100%;background:rgba(0,20,50,.8);border:1px solid var(--border);border-radius:6px;padding:10px 13px;color:var(--white);font-family:var(--body);font-size:.84rem;outline:none;transition:border-color .3s,box-shadow .3s}
@@ -107,7 +86,7 @@ input::placeholder,textarea::placeholder{color:var(--dim)}
 textarea{resize:none}
 .char-ct{text-align:right;font-family:var(--tech);font-size:.52rem;color:var(--dim);margin-top:3px}
 
-/* ===== BUTTONS ===== */
+/* BUTTONS */
 .btn-row{display:flex;gap:7px;flex-wrap:wrap}
 .btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:5px;border:1px solid;font-family:var(--tech);font-size:.58rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;transition:all .25s;white-space:nowrap;background:transparent}
 .btn-gen{border-color:rgba(0,212,255,.4);color:var(--blue);background:rgba(0,212,255,.08)}
@@ -119,60 +98,65 @@ textarea{resize:none}
 .btn-veo:hover{background:rgba(255,102,0,.18);box-shadow:0 0 20px var(--oglow);transform:translateY(-1px)}
 .btn-lock{border-color:rgba(255,170,0,.5);color:var(--warn);background:rgba(255,170,0,.08)}
 .btn-lock.locked{border-color:rgba(0,255,136,.4);color:var(--ok);background:rgba(0,255,136,.08)}
-.btn-lock:hover{background:rgba(255,170,0,.16)}
 .btn-danger{border-color:rgba(255,51,102,.4);color:var(--err);background:rgba(255,51,102,.08)}
-.btn-danger:hover{background:rgba(255,51,102,.18)}
+.btn-img{border-color:rgba(170,0,255,.4);color:#bb66ff;background:rgba(170,0,255,.08)}
+.btn-img:hover{background:rgba(170,0,255,.18);box-shadow:0 0 20px rgba(170,0,255,.2);transform:translateY(-1px)}
 .btn-deploy{width:100%;padding:15px 24px;background:linear-gradient(135deg,rgba(0,100,200,.3),rgba(0,212,255,.18));border:1px solid var(--blue);border-radius:8px;color:var(--blue);font-family:var(--tech);font-size:.78rem;font-weight:700;letter-spacing:4px;text-transform:uppercase;cursor:pointer;transition:all .3s;box-shadow:0 0 20px var(--glow),inset 0 0 20px rgba(0,212,255,.04);position:relative;overflow:hidden}
 .btn-deploy::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(0,212,255,.08),transparent);background-size:200% 100%;animation:shimmer 2.5s infinite}
 .btn-deploy:hover{box-shadow:0 0 40px var(--glow2),0 0 80px rgba(0,212,255,.1);transform:translateY(-2px);color:#fff}
 
-/* ===== OPTIONS LIST ===== */
-.opts{display:none;margin-top:9px;border:1px solid var(--border);border-radius:6px;overflow:hidden}
-.opts.open{display:block}
-.opts-hdr{padding:5px 13px;font-family:var(--tech);font-size:.52rem;color:var(--dim);letter-spacing:2px;background:rgba(0,212,255,.03);border-bottom:1px solid var(--border)}
-.opt-item{padding:9px 13px;font-size:.82rem;color:var(--plat);cursor:pointer;border-bottom:1px solid rgba(0,212,255,.07);transition:all .2s;line-height:1.5}
-.opt-item:last-child{border-bottom:none}
-.opt-item:hover{background:rgba(0,212,255,.07);color:var(--white);padding-left:18px}
-
-/* ===== LOCKED FIELD ===== */
-.field-locked{position:relative}
-.lock-overlay{position:absolute;inset:0;background:rgba(0,255,136,.03);border:1px solid rgba(0,255,136,.2);border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:not-allowed;z-index:5;pointer-events:none}
-.lock-overlay.active{pointer-events:all}
-.lock-badge{font-family:var(--tech);font-size:.55rem;color:var(--ok);letter-spacing:2px;background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.3);border-radius:4px;padding:3px 10px}
-
-/* ===== TYPE GRID ===== */
+/* TYPE GRID */
 .type-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px;margin-bottom:14px}
-.type-card{background:var(--bg-card);border:1px solid var(--border);border-radius:6px;padding:11px;cursor:pointer;transition:all .25s;text-align:center;position:relative}
+.type-card{background:var(--bg-card);border:1px solid var(--border);border-radius:6px;padding:11px;cursor:pointer;transition:all .25s;text-align:center}
 .type-card:hover,.type-card.active{border-color:var(--blue);background:rgba(0,212,255,.07);box-shadow:0 0 14px var(--glow)}
 .type-card.active .type-name{color:var(--blue)}
 .type-icon{font-size:1.3rem;margin-bottom:5px;display:block}
 .type-name{font-family:var(--tech);font-size:.55rem;color:var(--plat);letter-spacing:1px;line-height:1.3}
 
-/* ===== AUDIENCE ===== */
+/* AUDIENCE */
 .aud-row{display:flex;gap:7px;margin-bottom:13px;flex-wrap:wrap}
 .aud-btn{flex:1;min-width:60px;padding:7px 4px;border-radius:5px;border:1px solid var(--border);background:var(--bg-card);color:var(--plat);font-family:var(--tech);font-size:.56rem;letter-spacing:1px;text-align:center;cursor:pointer;transition:all .2s}
 .aud-btn.active{border-color:var(--orange);background:rgba(255,102,0,.1);color:var(--orange);box-shadow:0 0 10px var(--oglow)}
 
-/* ===== VEO SCENES ===== */
+/* SCENES */
 .scenes-wrapper{display:none}
 .scenes-wrapper.visible{display:block}
 .scene-block{background:rgba(0,10,25,.9);border:1px solid rgba(255,102,0,.25);border-radius:7px;margin-bottom:10px;overflow:hidden}
-.scene-hdr{display:flex;align-items:center;justify-content:space-between;padding:9px 13px;background:rgba(255,102,0,.07);border-bottom:1px solid rgba(255,102,0,.15)}
+.scene-hdr{display:flex;align-items:center;justify-content:space-between;padding:9px 13px;background:rgba(255,102,0,.07);border-bottom:1px solid rgba(255,102,0,.15);flex-wrap:wrap;gap:6px}
 .scene-title{font-family:var(--tech);font-size:.6rem;color:var(--orange);letter-spacing:2px}
 .scene-body{padding:12px 13px}
 .scene-textarea{width:100%;background:transparent;border:none;color:#ffaa77;font-family:'Courier New',monospace;font-size:.76rem;line-height:1.7;resize:vertical;min-height:80px;outline:none}
 .scene-textarea:focus{color:var(--white)}
 
-/* ===== CASES ===== */
-.casos-grid{display:grid;gap:10px}
-.caso-card{background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:6px;padding:13px 15px;cursor:pointer;transition:all .25s}
-.caso-card:hover{border-color:var(--blue);background:rgba(0,212,255,.04)}
-.caso-card.selected{border-left-color:var(--orange);background:rgba(255,102,0,.04)}
-.caso-tag{font-family:var(--tech);font-size:.52rem;color:var(--blue);letter-spacing:2px;margin-bottom:5px;opacity:.8}
-.caso-text{font-size:.8rem;color:var(--plat);line-height:1.7;font-style:italic}
-.caso-result{margin-top:7px;font-size:.72rem;color:var(--ok);font-family:var(--tech);letter-spacing:1px}
+/* TITLE BUTTONS */
+.title-btn-grid{display:none;flex-direction:column;gap:6px;margin-top:10px}
+.title-btn-grid.visible{display:flex}
+.title-select-btn{background:rgba(0,212,255,.06);border:1px solid var(--border);border-radius:6px;padding:10px 14px;color:var(--plat);font-size:.82rem;cursor:pointer;transition:all .2s;text-align:left;font-family:var(--body)}
+.title-select-btn:hover{background:rgba(0,212,255,.14);border-color:var(--blue);color:var(--white);padding-left:18px}
 
-/* ===== PLATFORMS ===== */
+/* IMAGE PROMPT PANEL */
+.img-prompt-wrapper{display:none;margin-top:12px}
+.img-prompt-wrapper.visible{display:block}
+.img-prompt-box{background:rgba(80,0,120,.15);border:1px solid rgba(170,0,255,.3);border-radius:6px;padding:14px}
+.img-prompt-label{font-family:var(--tech);font-size:.58rem;color:#bb66ff;letter-spacing:3px;margin-bottom:8px}
+.img-prompt-disclaimer{font-size:.7rem;color:rgba(170,0,255,.6);font-style:italic;margin-bottom:10px;line-height:1.5}
+.img-prompt-text{width:100%;background:rgba(0,0,0,.4);border:1px solid rgba(170,0,255,.2);border-radius:4px;padding:10px;color:#ddaaff;font-family:'Courier New',monospace;font-size:.75rem;line-height:1.6;resize:vertical;min-height:80px;outline:none}
+
+/* TESTIMONY VIDEO PROMPTS */
+.testimony-card{background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--blue);border-radius:6px;padding:13px 15px;margin-bottom:10px}
+.testimony-card.selected{border-left-color:var(--orange);background:rgba(255,102,0,.04)}
+.test-tag{font-family:var(--tech);font-size:.52rem;color:var(--blue);letter-spacing:2px;margin-bottom:5px;opacity:.8}
+.test-text{font-size:.8rem;color:var(--plat);line-height:1.7;font-style:italic;margin-bottom:8px}
+.test-result{font-size:.72rem;color:var(--ok);font-family:var(--tech);letter-spacing:1px;margin-bottom:10px}
+.test-veo{display:none;background:rgba(0,10,25,.9);border:1px solid rgba(255,102,0,.2);border-radius:5px;padding:10px;font-family:'Courier New',monospace;font-size:.7rem;color:#ffaa77;line-height:1.6;white-space:pre-wrap;margin-top:8px}
+.test-veo.visible{display:block}
+
+/* HASHTAG PILLS */
+.tag-pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.tag-pill{padding:3px 9px;background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.2);border-radius:20px;font-family:var(--tech);font-size:.56rem;color:var(--blue);cursor:pointer;transition:all .2s;letter-spacing:1px}
+.tag-pill:hover{background:rgba(0,212,255,.14);border-color:var(--blue)}
+
+/* PLATFORMS */
 .platform-section{margin-bottom:10px}
 .platform-header-row{display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:var(--bg-card);border:1px solid var(--border);border-radius:6px;margin-bottom:6px}
 .platform-name-row{display:flex;align-items:center;gap:9px}
@@ -183,7 +167,6 @@ textarea{resize:none}
 .btn-add-account:hover{background:rgba(0,212,255,.08);border-color:var(--blue)}
 .accounts-list{display:flex;flex-direction:column;gap:5px;padding-left:8px}
 .account-chip{display:flex;align-items:center;gap:8px;background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.15);border-radius:5px;padding:7px 10px;transition:all .2s}
-.account-chip:hover{border-color:var(--border2)}
 .chip-open{width:22px;height:22px;border-radius:50%;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);display:flex;align-items:center;justify-content:center;font-size:.7rem;cursor:pointer;transition:all .2s;flex-shrink:0}
 .chip-open:hover{background:rgba(0,212,255,.25)}
 .chip-input{flex:1;background:transparent;border:none;color:var(--white);font-family:var(--body);font-size:.8rem;outline:none;min-width:0}
@@ -191,40 +174,38 @@ textarea{resize:none}
 .chip-url:focus{border-color:var(--blue)}
 .chip-del{font-size:.7rem;color:var(--dim);cursor:pointer;padding:2px 5px;transition:color .2s;flex-shrink:0}
 .chip-del:hover{color:var(--err)}
-
-/* Add account form */
 .add-form{display:none;background:rgba(0,20,50,.8);border:1px solid var(--border);border-radius:6px;padding:12px;margin-top:6px;gap:8px;flex-direction:column}
 .add-form.open{display:flex}
 .add-form input{background:rgba(0,30,70,.8);border:1px solid var(--border);border-radius:5px;padding:7px 10px;color:var(--white);font-family:var(--body);font-size:.8rem;outline:none;width:100%}
 .add-form input:focus{border-color:var(--blue)}
 .add-form-row{display:flex;gap:7px}
 
-/* ===== HASHTAG PILLS ===== */
-.tag-pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
-.tag-pill{padding:3px 9px;background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.2);border-radius:20px;font-family:var(--tech);font-size:.56rem;color:var(--blue);cursor:pointer;transition:all .2s;letter-spacing:1px}
-.tag-pill:hover{background:rgba(0,212,255,.14);border-color:var(--blue)}
-
-/* ===== CONSOLE ===== */
+/* CONSOLE */
 .console{display:none;background:rgba(0,5,15,.95);border:1px solid rgba(0,212,255,.2);border-radius:6px;padding:14px;font-family:'Courier New',monospace;font-size:.72rem;max-height:180px;overflow-y:auto;margin-top:11px}
 .console.open{display:block}
 .cl{color:var(--blue);padding:2px 0}.cl.ok{color:var(--ok)}.cl.w{color:var(--warn)}.cl.e{color:var(--err)}
-.console::-webkit-scrollbar{width:4px}.console::-webkit-scrollbar-thumb{background:var(--blue3);border-radius:2px}
 
-/* ===== STATS ===== */
+/* STATS */
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}
 .stat-card{background:var(--bg-panel);border:1px solid var(--border);border-radius:7px;padding:15px;text-align:center}
 .stat-n{font-family:var(--tech);font-size:1.7rem;font-weight:700;color:var(--blue);text-shadow:0 0 18px rgba(0,212,255,.5);line-height:1;margin-bottom:5px}
 .stat-l{font-family:var(--tech);font-size:.52rem;color:var(--dim);letter-spacing:2px;text-transform:uppercase}
 
-/* ===== FOOTER ===== */
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,5,20,.85);backdrop-filter:blur(8px);z-index:500;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal-box{background:var(--bg-panel);border:1px solid var(--border);border-radius:10px;padding:28px 24px;max-width:560px;width:100%;animation:modalIn .3s ease-out;position:relative}
+.modal-box::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--blue),transparent)}
+.modal-title{font-family:var(--tech);font-size:.7rem;color:var(--blue);letter-spacing:3px;margin-bottom:16px}
+.modal-content{background:rgba(0,20,50,.8);border:1px solid var(--border);border-radius:6px;padding:14px;font-size:.88rem;color:var(--white);line-height:1.6;margin-bottom:16px;min-height:60px}
+.modal-close{position:absolute;top:14px;right:16px;background:none;border:none;color:var(--dim);cursor:pointer;font-size:1.1rem;transition:color .2s}
+.modal-close:hover{color:var(--err)}
+.modal-actions{display:flex;gap:8px}
+
 footer{position:relative;z-index:1;text-align:center;padding:22px;border-top:1px solid var(--border);margin-top:36px}
 footer p{font-family:var(--tech);font-size:.52rem;color:var(--dim);letter-spacing:3px;margin-bottom:3px}
-
-/* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#020810}::-webkit-scrollbar-thumb{background:var(--blue3);border-radius:3px}
-
-/* ===== RESPONSIVE ===== */
-@media(max-width:600px){.type-grid{grid-template-columns:repeat(2,1fr)}.stats{grid-template-columns:repeat(3,1fr)}.aud-row{flex-wrap:wrap}.mc-box{display:none}}
+@media(max-width:600px){.type-grid{grid-template-columns:repeat(2,1fr)}.stats{grid-template-columns:repeat(3,1fr)}.aud-row{flex-wrap:wrap}}
 </style>
 </head>
 <body>
@@ -233,47 +214,32 @@ footer p{font-family:var(--tech);font-size:.52rem;color:var(--dim);letter-spacin
 <header>
   <div class="hdr-left">
     <div class="arc">
-      <div class="arc-r1"></div>
-      <div class="arc-r2"></div>
-      <div class="arc-core"></div>
-      <div class="arc-notch"></div>
-      <div class="arc-notch"></div>
-      <div class="arc-notch"></div>
-      <div class="arc-notch"></div>
+      <div class="arc-r1"></div><div class="arc-r2"></div><div class="arc-core"></div>
+      <div class="arc-notch"></div><div class="arc-notch"></div><div class="arc-notch"></div><div class="arc-notch"></div>
     </div>
     <div>
       <div class="brand-title">NEXUS DISPATCH</div>
-      <div class="brand-sub">CONTENT INTELLIGENCE STUDIO // v4.0</div>
+      <div class="brand-sub">CONTENT INTELLIGENCE STUDIO // v5.0 — METAPAREIDOLIA EDITION</div>
     </div>
   </div>
   <div class="hdr-right">
-    <div style="display:flex;align-items:center;gap:6px">
-      <div class="dot-live"></div>
-      <span class="status-txt">SISTEMA ACTIVO</span>
-    </div>
-    <div class="mc-box">
-      <div>METRICOOL <span id="mcNum">0</span>/20</div>
-      <div class="mc-bar"><div class="mc-fill" id="mcFill" style="width:0%"></div></div>
-    </div>
+    <div style="display:flex;align-items:center;gap:6px"><div class="dot-live"></div><span class="status-txt">SISTEMA ACTIVO</span></div>
+    <div class="mc-box"><div>METRICOOL <span id="mcNum">0</span>/20</div><div class="mc-bar"><div class="mc-fill" id="mcFill" style="width:0%"></div></div></div>
   </div>
 </header>
 
 <main>
-<!-- HERO -->
 <div class="hero">
   <h1>CONTENT <span class="accent">INTELLIGENCE</span><br/>DEPLOYMENT <span class="accent2">STUDIO</span></h1>
-  <div class="hero-sub">POWERED BY NEUROVENTAS RAG ENGINE v4.0</div>
+  <div class="hero-sub">METAPAREIDOLIA PICTÓRICA EDITION — JUAN CARLOS PÉREZ MARTÍNEZ © 2026</div>
   <div class="glow-line"></div>
-  <p class="hero-p">Genera prompts por escena para Google Veo, copia cada sección individualmente, y despliega en todas tus cuentas y plataformas.</p>
+  <p class="hero-p">Genera prompts por escena para Google Flow/Veo con pinturas abstractas reales, selector de títulos, prompts de imagen y testimonios ficticios cinematográficos.</p>
 </div>
 
 <!-- PANEL 01: TIPO + AUDIENCIA -->
 <div class="panel scan-y">
-  <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
-  <div class="corner corner-bl"></div><div class="corner corner-br"></div>
-  <div class="panel-hdr">
-    <div class="panel-lbl">01 · Tipo de Contenido y Audiencia</div>
-  </div>
+  <div class="corner corner-tl"></div><div class="corner corner-tr"></div><div class="corner corner-bl"></div><div class="corner corner-br"></div>
+  <div class="panel-hdr"><div class="panel-lbl">01 · Tipo de Contenido y Audiencia</div></div>
   <div class="type-grid" id="typeGrid">
     <div class="type-card active" data-type="gancho" onclick="selType(this)"><span class="type-icon">🧠</span><div class="type-name">Gancho Emocional</div></div>
     <div class="type-card" data-type="ciencia" onclick="selType(this)"><span class="type-icon">🔬</span><div class="type-name">Explicación Científica</div></div>
@@ -290,7 +256,7 @@ footer p{font-family:var(--tech);font-size:.52rem;color:var(--dim);letter-spacin
     <button class="aud-btn" data-aud="tibia" onclick="selAud(this)">🌡️ TIBIA</button>
     <button class="aud-btn" data-aud="caliente" onclick="selAud(this)">🔥 CALIENTE</button>
   </div>
-  <div class="field-lbl">Duración del Video</div>
+  <div class="field-lbl">Duración</div>
   <div class="aud-row">
     <button class="aud-btn" data-dur="15" onclick="selDur(this)">15 SEG</button>
     <button class="aud-btn active" data-dur="30" onclick="selDur(this)">30 SEG</button>
@@ -299,253 +265,558 @@ footer p{font-family:var(--tech);font-size:.52rem;color:var(--dim);letter-spacin
   </div>
 </div>
 
-<!-- PANEL 02: PROMPT VEO POR ESCENAS -->
-<div class="panel scan-x">
-  <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
-  <div class="corner corner-bl"></div><div class="corner corner-br"></div>
+<!-- PANEL 02: VEO ESCENAS -->
+<div class="panel">
+  <div class="corner corner-tl"></div><div class="corner corner-tr"></div><div class="corner corner-bl"></div><div class="corner corner-br"></div>
   <div class="panel-hdr">
-    <div class="panel-lbl">02 · Prompt Google Veo — Por Escenas</div>
+    <div class="panel-lbl">02 · Prompt Google Flow/Veo — Por Escenas</div>
     <div class="btn-row">
       <button class="btn btn-veo" onclick="genVeo()">⚡ GENERAR ESCENAS</button>
       <button class="btn btn-lock" id="veoLockBtn" onclick="toggleLock('veo')">🔓 BLOQUEAR</button>
       <button class="btn btn-danger" id="veoResetBtn" onclick="resetVeo()" style="display:none">↺ RESET</button>
     </div>
   </div>
-  <p class="panel-note">Cada escena tiene su propio botón de copiar. Edita el texto de cada escena antes de copiar. Bloquea para evitar borrado accidental.</p>
+  <p class="panel-note">Cada escena tiene su botón de copiar individual. Las pinturas son abstractas con entropía visual controlada — manchas orgánicas doradas y azules que provocan pareidolia. Sin música, solo efectos ambientales.</p>
   <div id="scenesWrapper" class="scenes-wrapper"></div>
-</div>
 
-<!-- PANEL 03: TÍTULO -->
-<div class="panel">
-  <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
-  <div class="corner corner-bl"></div><div class="corner corner-br"></div>
-  <div class="panel-hdr">
-    <div class="panel-lbl">03 · Título</div>
+  <!-- PROMPT DE IMAGEN -->
+  <div style="margin-top:14px">
     <div class="btn-row">
-      <button class="btn btn-gen" onclick="genTitles()">🎲 GENERAR</button>
-      <button class="btn btn-lock" id="titleLockBtn" onclick="toggleLock('title')">🔓 BLOQUEAR</button>
-      <button class="btn btn-copy" onclick="copyFld('videoTitle','cpTitle')">📋 COPIAR</button>
-      <button class="btn btn-copy" id="cpTitle"></button>
+      <button class="btn btn-img" onclick="genImgPrompt()">🖼️ GENERAR PROMPT DE IMAGEN</button>
+      <button class="btn btn-copy" onclick="copyImgPrompt()">📋 COPIAR IMAGEN</button>
+    </div>
+    <div class="img-prompt-wrapper" id="imgPromptWrapper">
+      <div class="img-prompt-box">
+        <div class="img-prompt-label">PROMPT PARA MIDJOURNEY / ADOBE FIREFLY / DALL-E</div>
+        <div class="img-prompt-disclaimer">⚠️ Imagen de referencia ficticia con fines ilustrativos del Método Celidiano. No representa a personas reales ni sesiones documentadas.</div>
+        <textarea class="img-prompt-text" id="imgPromptText" rows="4"></textarea>
+      </div>
     </div>
   </div>
-  <div class="field-locked">
-    <input type="text" id="videoTitle" maxlength="100" placeholder="Genera un título o escribe el tuyo..." oninput="updCt('videoTitle','titleCt');save()"/>
-    <div class="lock-overlay" id="titleOverlay"></div>
+</div>
+
+<!-- PANEL 03: TÍTULO CON SELECTOR MODAL -->
+<div class="panel">
+  <div class="corner corner-tl"></div><div class="corner corner-tr"></div><div class="corner corner-bl"></div><div class="corner corner-br"></div>
+  <div class="panel-hdr">
+    <div class="panel-lbl">03 · Título — Selector Visual</div>
+    <div class="btn-row">
+      <button class="btn btn-gen" onclick="genTitles()">🎲 GENERAR OPCIONES</button>
+      <button class="btn btn-lock" id="titleLockBtn" onclick="toggleLock('title')">🔓 BLOQUEAR</button>
+    </div>
   </div>
+  <p class="panel-note">Toca cualquier título generado para abrirlo en una ventana y copiarlo fácilmente.</p>
+  <input type="text" id="videoTitle" maxlength="100" placeholder="Toca una opción abajo o escribe tu título..." oninput="updCt('videoTitle','titleCt');save()" readonly/>
   <div class="char-ct"><span id="titleCt">0</span>/100</div>
-  <div class="opts" id="titleOpts"><div class="opts-hdr">▼ TOCA UNA OPCIÓN PARA USARLA</div></div>
+  <div class="title-btn-grid" id="titleBtnGrid"></div>
 </div>
 
 <!-- PANEL 04: DESCRIPCIÓN -->
 <div class="panel">
-  <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
-  <div class="corner corner-bl"></div><div class="corner corner-br"></div>
+  <div class="corner corner-tl"></div><div class="corner corner-tr"></div><div class="corner corner-bl"></div><div class="corner corner-br"></div>
   <div class="panel-hdr">
     <div class="panel-lbl">04 · Descripción / Copy</div>
     <div class="btn-row">
       <button class="btn btn-gen" onclick="genDesc()">🎲 GENERAR</button>
       <button class="btn btn-lock" id="descLockBtn" onclick="toggleLock('desc')">🔓 BLOQUEAR</button>
-      <button class="btn btn-copy" onclick="copyFld('videoDesc','cpDesc')">📋 COPIAR</button>
-      <button class="btn btn-copy" id="cpDesc"></button>
+      <button class="btn btn-copy" id="cpDesc" onclick="copyFld('videoDesc','cpDesc')">📋 COPIAR</button>
     </div>
   </div>
-  <div class="field-locked">
-    <textarea id="videoDesc" rows="6" maxlength="2200" placeholder="Genera una descripción o escribe tu copy..." oninput="updCt('videoDesc','descCt');save()"></textarea>
-    <div class="lock-overlay" id="descOverlay"></div>
-  </div>
+  <textarea id="videoDesc" rows="6" maxlength="2200" placeholder="Genera una descripción o escribe tu copy..." oninput="updCt('videoDesc','descCt');save()"></textarea>
   <div class="char-ct"><span id="descCt">0</span>/2200</div>
 </div>
 
 <!-- PANEL 05: HASHTAGS -->
 <div class="panel">
-  <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
-  <div class="corner corner-bl"></div><div class="corner corner-br"></div>
+  <div class="corner corner-tl"></div><div class="corner corner-tr"></div><div class="corner corner-bl"></div><div class="corner corner-br"></div>
   <div class="panel-hdr">
     <div class="panel-lbl">05 · Hashtags</div>
     <div class="btn-row">
       <button class="btn btn-gen" onclick="genTags()">🎲 GENERAR</button>
       <button class="btn btn-lock" id="tagsLockBtn" onclick="toggleLock('tags')">🔓 BLOQUEAR</button>
-      <button class="btn btn-copy" onclick="copyFld('hashtags','cpTags')">📋 COPIAR</button>
-      <button class="btn btn-copy" id="cpTags"></button>
+      <button class="btn btn-copy" id="cpTags" onclick="copyFld('hashtags','cpTags')">📋 COPIAR</button>
     </div>
   </div>
-  <div class="field-locked">
-    <input type="text" id="hashtags" placeholder="#MetodoCelidiano #Metapareidolia #Arteterapia" oninput="save()"/>
-    <div class="lock-overlay" id="tagsOverlay"></div>
-  </div>
+  <input type="text" id="hashtags" placeholder="#MetodoCelidiano #Metapareidolia #Arteterapia" oninput="save()"/>
   <div class="tag-pills" id="quickTags"></div>
 </div>
 
-<!-- PANEL 06: CASOS ILUSTRATIVOS -->
+<!-- PANEL 06: TESTIMONIOS CON PROMPT DE VIDEO -->
 <div class="panel">
-  <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
-  <div class="corner corner-bl"></div><div class="corner corner-br"></div>
+  <div class="corner corner-tl"></div><div class="corner corner-tr"></div><div class="corner corner-bl"></div><div class="corner corner-br"></div>
   <div class="panel-hdr">
-    <div class="panel-lbl">06 · Casos Ilustrativos</div>
+    <div class="panel-lbl">06 · Casos Ilustrativos + Prompt de Video</div>
     <button class="btn btn-gen" onclick="insertCaso()">💡 INSERTAR EN COPY</button>
   </div>
-  <p class="panel-note">Historias tipo basadas en patrones de sesiones. Toca una para seleccionarla, luego presiona INSERTAR EN COPY.</p>
-  <div class="casos-grid" id="casosGrid"></div>
+  <p class="panel-note">Casos ficticios realistas basados en la metodología. Cada uno incluye un prompt de Google Flow/Veo para generar el video del testimonio. Todos son ficticios con fines ilustrativos.</p>
+  <div id="casosGrid"></div>
 </div>
 
-<!-- PANEL 07: PLATAFORMAS Y CUENTAS -->
+<!-- PANEL 07: PLATAFORMAS -->
 <div class="panel">
-  <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
-  <div class="corner corner-bl"></div><div class="corner corner-br"></div>
+  <div class="corner corner-tl"></div><div class="corner corner-tr"></div><div class="corner corner-bl"></div><div class="corner corner-br"></div>
   <div class="panel-hdr">
     <div class="panel-lbl">07 · Plataformas y Cuentas</div>
     <button class="btn btn-danger" onclick="resetAccounts()">↺ RESET CUENTAS</button>
   </div>
-  <p class="panel-note">Agrega tus cuentas por plataforma. Se guardan permanentemente. Edita el nombre y pega el link de cada página.</p>
+  <p class="panel-note">Agrega tus cuentas permanentemente. Se guardan aunque cierres el navegador.</p>
   <div id="platformsContainer"></div>
 </div>
 
-<!-- DEPLOY -->
 <button class="btn-deploy" onclick="deploy()">⚡ INICIALIZAR DESPLIEGUE MULTIPLATAFORMA</button>
 <div class="console" id="console"></div>
-
-<!-- STATS -->
 <div class="stats">
   <div class="stat-card"><div class="stat-n" id="stDeploys">0</div><div class="stat-l">Despliegues</div></div>
-  <div class="stat-card"><div class="stat-n" id="stPlats">0</div><div class="stat-l">Cuentas Activas</div></div>
+  <div class="stat-card"><div class="stat-n" id="stPlats">0</div><div class="stat-l">Cuentas</div></div>
   <div class="stat-card"><div class="stat-n" id="stMonth">0</div><div class="stat-l">Este Mes</div></div>
 </div>
 </main>
 
 <footer>
-  <p>NEXUS DISPATCH v4.0 · CONTENT INTELLIGENCE STUDIO</p>
-  <p>RAG ENGINE — MÉTODO CELIDIANO & METAPAREIDOLIA PICTÓRICA © 2026</p>
+  <p>NEXUS DISPATCH v5.0 · METAPAREIDOLIA PICTÓRICA EDITION</p>
+  <p>Juan Carlos Pérez Martínez & Adriana Ayala Gutiérrez © 2026</p>
 </footer>
 
+<!-- MODAL TÍTULO -->
+<div class="modal-overlay" id="titleModal">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal('titleModal')">✕</button>
+    <div class="modal-title">TÍTULO SELECCIONADO — LISTO PARA COPIAR</div>
+    <div class="modal-content" id="modalTitleText"></div>
+    <div class="modal-actions">
+      <button class="btn btn-copy" id="modalCopyBtn" onclick="copyModalTitle()">📋 COPIAR TÍTULO</button>
+      <button class="btn btn-gen" onclick="closeModal('titleModal')">← VOLVER</button>
+    </div>
+  </div>
+</div>
+
 <script>
+/* ===== DESCRIPCIÓN DE PINTURAS ABSTRACTAS ===== */
+const PINTURAS = [
+  "una pintura abstracta de gran formato con manchas orgánicas en capas de acrílico. Tonos dorado bruñido (#c5a059), azul profundo marino y negro intenso. Las manchas forman figuras ambiguas — siluetas que podrían ser rostros, figuras humanas o paisajes — con suficiente entropía visual para provocar pareidolia. Textura rugosa con empastes y veladuras superpuestas. Iluminada con luz lateral dramática que acentúa las texturas.",
+  "un lienzo abstracto de 150x120cm con técnica mixta. Superficie de manchas gestuales en dorado, blanco roto y azul oscuro profundo. Las capas de pintura forman formas ambiguas que el ojo convierte en figuras: un anciano, alas, un mapa, una galaxia. Pinceladas amplias que crean movimiento visual. Fotografiado con luz cálida de galería.",
+  "obra de abstraccionismo proyectivo con entropía visual controlada. Fondo negro profundo con manchas de dorado bruñido, azul cobalto y blanco nacarado. Las formas sugieren sin confirmar — el espectador proyecta lo que su inconsciente necesita ver. Técnica de dripping y veladura. Marco negro elegante.",
+  "pintura abstracta de la colección Metapareidolia Pictórica. Manchas de pintura acrílica en tonos tierra dorados, azules nocturnos y grises plateados que forman figuras ambiguas visibles solo en la proyección del observador. Superficie con craquelado orgánico y texturas de materia. Luz de galería suave."
+];
+
+const rand = arr => arr[Math.floor(Math.random()*arr.length)];
+const PINTURA = () => rand(PINTURAS);
+
 /* ===== RAG ENGINE ===== */
 const RAG={
   hooks:{
-    fria:["¿Qué proyecta tu mente sin que lo sepas?","¿Y si una pintura pudiera decirte lo que llevas años sin ver?","Hay algo en esta imagen que tu inconsciente ya vio.","¿Qué ves primero cuando miras esto?","Tu cerebro acaba de revelar algo sobre ti mismo.","Esto no es arte. Es un espejo de tu inconsciente.","En 30 segundos vas a saber algo sobre ti que no sabías."],
-    tibia:["La neurociencia dice que lo que ves aquí no es accidental.","Lo que proyectas en esta pintura lleva años guardado.","3 fases cerebrales. 25 elementos. 1 revelación.","¿Cuánto tiempo más vas a postergar conocerte a ti mismo?","No es psicología tradicional. Es percepción neuro-visual aplicada."],
-    caliente:["Precio de lanzamiento disponible esta semana.","Solo quedan lugares disponibles este mes.","Una sesión. Una revelación. Una decisión.","No sigas cargando lo que podrías soltar hoy.","El análisis ya está listo. Solo falta que lo actives."]
+    fria:["¿Qué proyecta tu mente sin que lo sepas?","¿Y si una pintura pudiera decirte lo que llevas años sin ver?","Hay algo en esta imagen que tu inconsciente ya vio.","Tu cerebro acaba de revelar algo sobre ti mismo.","Esto no es arte. Es un espejo de tu inconsciente.","En 30 segundos vas a saber algo sobre ti que no sabías."],
+    tibia:["La neurociencia dice que lo que ves aquí no es accidental.","Lo que proyectas en esta pintura lleva años guardado.","3 fases cerebrales. 25 elementos. 1 revelación.","¿Cuánto tiempo más vas a postergar conocerte a ti mismo?"],
+    caliente:["Precio de lanzamiento disponible esta semana.","Solo quedan lugares disponibles este mes.","Una sesión. Una revelación. Una decisión.","No sigas cargando lo que podrías soltar hoy."]
   },
-  titulos:["Lo que tu mente proyecta en una pintura revela TODO","El test psicológico más poderoso que existe (no es Rorschach)","¿Qué ves en esta pintura? Tu respuesta lo dice TODO","Descubrí mi bloqueo emocional viendo una pintura abstracta","La ciencia detrás de lo que tu inconsciente proyecta","Por qué el arte abstracto puede leer tu mente","Una sola sesión reveló lo que años de terapia no pudieron","El inconsciente no sabe mentir — Método Celidiano","3 fases cronométricas que revelan tu arquitectura emocional","25 elementos proyectivos: tu inconsciente en una pintura"],
+  titulos:["Lo que tu mente proyecta en una pintura revela TODO","El test psicológico más poderoso (no es Rorschach)","¿Qué ves en esta pintura? Tu respuesta lo dice TODO","Descubrí mi bloqueo emocional viendo una pintura abstracta","La ciencia detrás de lo que tu inconsciente proyecta","Por qué el arte abstracto puede leer tu mente","Una sola sesión reveló lo que años de terapia no pudieron","El inconsciente no sabe mentir — Método Celidiano","3 fases cronométricas que revelan tu arquitectura emocional","25 elementos proyectivos: tu inconsciente en una pintura"],
   ancla:["El inconsciente no sabe mentir.","La verdadera arquitectura de la mente.","Un espejo neuro-visual exacto.","Lo que tomaría años en terapia, en una sola sesión.","Decodifica lo que tu mente proyecta.","Ciencia aplicada al arte."],
   autoridad:["11 años de investigación y práctica documentada.","Metodología con respaldo neurocientífico publicado.","Paper: Cronodinámica de la Conectividad Funcional Cerebral (2024).","El sistema más avanzado de arteterapia proyectiva en México."],
   tribu:["Para mentes exigentes que buscan claridad absoluta.","Para líderes, ejecutivos y visionarios.","Para quienes ya agotaron la terapia convencional.","Para quienes saben que hay algo más profundo en ellos."],
   proceso:["Solo observa la pintura y escribe lo que ves. Sin preparación previa.","Observas. Proyectas. Adriana decodifica. Tú te transformas.","10-15 minutos de observación. 25 elementos. Una revelación.","Sin experiencia en arte. Sin preparación psicológica. Solo tú y el lienzo."],
-  ctas:["Agenda tu sesión por WhatsApp en la bio.","Link en bio para tu primera sesión.","Escríbeme ARTE y te cuento cómo funciona.","Sesión privada en línea con Adriana Ayala Gutiérrez.","Reserva ahora — precio especial de lanzamiento."],
+  ctas:["Agenda tu sesión por WhatsApp en la bio.","Link en bio para tu primera sesión.","Sesión privada en línea con Adriana Ayala Gutiérrez.","Reserva ahora — precio especial de lanzamiento."],
   hashtags:{youtube:"#MetodoCelidiano #Metapareidolia #Arteterapia #Inconsciente #PsicologiaVisual #NeuroVisual #DesarrolloPersonal #SaludMental #ArteYCiencia #AutoConocimiento",social:"#MetodoCelidiano #Metapareidolia #PsicologiaVisual #Arteterapia #Inconsciente",tiktok:"#MetodoCelidiano #Metapareidolia #Arteterapia #Inconsciente #AutoConocimiento #parati"},
   quickTags:["#MetodoCelidiano","#Metapareidolia","#Arteterapia","#Inconsciente","#PsicologiaVisual","#NeuroVisual","#AutoConocimiento","#ArteYCiencia","#parati"]
 };
 
-/* ===== ESCENAS VEO ===== */
+/* ===== CASOS FICTICIOS CON PROMPTS DE VIDEO VEO ===== */
+const CASOS=[
+  {
+    tag:"CASO FICTICIO A · EJECUTIVA · GEN X · BLOQUEO DECISIONAL",
+    text:'"Llevaba 8 años tomando decisiones por todos menos por mí. Cuando observé la pintura, lo primero que vi fue un laberinto sin salida y una figura encadenada. Adriana identificó algo que yo no podía nombrar."',
+    result:"→ Detectado: hipervigilancia sistémica, bloqueo decisional, Gen X patrón latchkey",
+    veo:`PROMPT GOOGLE FLOW/VEO — TESTIMONIO FICTICIO A
+DURACIÓN: 20 segundos | FORMATO: Vertical 9:16
+⚠️ CONTENIDO FICTICIO CON FINES ILUSTRATIVOS
+
+ESCENA 1 (0-4s):
+Oficina ejecutiva elegante, luz cálida de tarde. Mujer de ~45 años,
+traje oscuro, cabello recogido, observa ${PINTURA().split('.')[0]}.
+Silencio total. Solo el sonido de su respiración.
+Sin música. Efectos: sonido ambiente de oficina lejano.
+Cámara: medium shot frontal, profundidad de campo estrecha.
+
+ESCENA 2 (4-12s):
+Sus ojos se mueven lentamente por el lienzo. Close-up de manos
+sosteniendo un cuaderno donde escribe sin apartar la vista.
+Efecto holográfico suave: palabras flotantes emergen de la pintura.
+Sin música. Efectos: sonido de bolígrafo sobre papel.
+Cámara: over-the-shoulder + macro de manos.
+
+ESCENA 3 (12-18s):
+Pantalla dividida: ella escribiendo / análisis digital aparece.
+Expresión de reconocimiento genuino en su rostro.
+Sin música. Efecto: sonido de data processing suave.
+
+ESCENA 4 (18-20s):
+Logo CD dorado. Texto: "Método Celidiano — Caso Ilustrativo"
+Subtexto: "*Recreación ficticia basada en patrones clínicos reales"`
+  },
+  {
+    tag:"CASO FICTICIO B · PAREJA · MILLENNIALS · SATURACIÓN LÍMBICA",
+    text:'"Llevábamos 4 años juntos y algo se había apagado. Cada uno vio cosas completamente distintas en la misma pintura. Eso solo ya fue el diagnóstico."',
+    result:"→ Detectado: saturación límbica por habituación, desgaste dopaminérgico, t_rel=48 meses",
+    veo:`PROMPT GOOGLE FLOW/VEO — TESTIMONIO FICTICIO B
+DURACIÓN: 25 segundos | FORMATO: Vertical 9:16
+⚠️ CONTENIDO FICTICIO CON FINES ILUSTRATIVOS
+
+ESCENA 1 (0-5s):
+Sala minimalista elegante. Pareja de ~32-35 años frente a
+${PINTURA().split('.')[0]}. Sentados separados, cada uno absorto.
+Sin música. Efectos: silencio doméstico, tic de reloj lejano.
+Cámara: wide shot que muestra la distancia física entre ellos.
+
+ESCENA 2 (5-14s):
+Split screen: él ve una figura solitaria / ella ve dos figuras
+separadas por un abismo. Sus listas en papel son completamente distintas.
+Sin música. Efectos: sonido de escritura, respiraciones.
+Cámara: close-up alternado de cada lista.
+
+ESCENA 3 (14-22s):
+Videoconferencia con Adriana. Adriana señala algo en pantalla.
+La pareja se mira por primera vez con curiosidad renovada.
+Sin música. Efectos: sonido de videollamada, notificación suave.
+Cámara: screen recording + reacción de la pareja.
+
+ESCENA 4 (22-25s):
+Logo CD. Texto: "Método Celidiano — Caso Ilustrativo Pareja"
+"*Recreación ficticia basada en patrones relacionales documentados"`
+  },
+  {
+    tag:"CASO FICTICIO C · PSICÓLOGA · BOOMER · ESCEPTICISMO → REVELACIÓN",
+    text:'"Llegué con escepticismo profesional. Me fui con una pregunta que tardé 3 días en responderme."',
+    result:"→ Detectado: mecanismo defensa intelectualización, patrón Boomer autoridad-logro",
+    veo:`PROMPT GOOGLE FLOW/VEO — TESTIMONIO FICTICIO C
+DURACIÓN: 20 segundos | FORMATO: Vertical 9:16
+⚠️ CONTENIDO FICTICIO CON FINES ILUSTRATIVOS
+
+ESCENA 1 (0-4s):
+Consultorio profesional. Mujer de ~58 años, blusa azul marino,
+cabello con canas elegantes, postura escéptica frente a
+${PINTURA().split('.')[0]}. Brazos cruzados al inicio.
+Sin música. Efectos: silencio de consultorio, aire acondicionado lejano.
+Cámara: medium shot, iluminación clínica fría.
+
+ESCENA 2 (4-13s):
+Lentamente baja los brazos. Su postura cambia. Se inclina hacia
+la pintura. Close-up de sus ojos: pupilas que se dilatan.
+Toma el cuaderno. Escribe rápido, páginas llenándose.
+Sin música. Efectos: sonido de pluma, papeles.
+Cámara: macro de manos escribiendo + perfil de rostro.
+
+ESCENA 3 (13-18s):
+Mira a cámara. Expresión de alguien que acaba de descubrir algo.
+Texto en pantalla: "27 elementos identificados en 12 minutos."
+Sin música. Efectos: silencio dramático.
+
+ESCENA 4 (18-20s):
+Logo CD. "*Recreación ficticia — caso tipo basado en patrones observados"`
+  },
+  {
+    tag:"CASO FICTICIO D · EMPRENDEDOR · GEN Z · FIGURA PATERNA",
+    text:'"Vi un árbol partido en dos, una figura que perseguía a otra más pequeña, y algo que parecía una puerta cerrada con candado. No entendía por qué. Adriana sí."',
+    result:"→ Detectado: figura de autoridad paterna no resuelta, Gen Z patrón hipervigilancia digital",
+    veo:`PROMPT GOOGLE FLOW/VEO — TESTIMONIO FICTICIO D
+DURACIÓN: 18 segundos | FORMATO: Vertical 9:16
+⚠️ CONTENIDO FICTICIO CON FINES ILUSTRATIVOS
+
+ESCENA 1 (0-4s):
+Espacio de coworking moderno. Joven de ~25 años, hoodie oscuro,
+audífonos alrededor del cuello. Observa ${PINTURA().split('.')[0]}
+en pantalla de laptop en lugar de lienzo físico.
+Sin música. Efectos: sonido ambiente coworking, teclados lejanos.
+Cámara: angle ligeramente superior, estilo documental.
+
+ESCENA 2 (4-12s):
+Dicta por voz al teléfono lo que ve. Las palabras se transcriben
+en pantalla. Cada elemento proyectado aparece como tag flotante.
+Sin música. Efectos: sonido de transcripción, notificaciones suaves.
+Cámara: screen recording del teléfono + reacción facial.
+
+ESCENA 3 (12-16s):
+WhatsApp con Adriana visible. Ella responde con la interpretación.
+El joven lee. Sus ojos se detienen en una línea. Pausa larga.
+Sin música. Efectos: sonido de mensaje recibido, silencio.
+
+ESCENA 4 (16-18s):
+Logo CD. "*Recreación ficticia — patrones generacionales ilustrativos"`
+  },
+  {
+    tag:"CASO FICTICIO E · DIRECTIVO · MILLENNIAL · PROPÓSITO DE VIDA",
+    text:'"Tenía todo: el cargo, el sueldo, los viajes. Y una sensación de vacío que no podía explicarle a nadie porque en el papel todo estaba perfecto."',
+    result:"→ Detectado: vacío existencial Frankl, Fase 3 DMN activa, desvínculo oxitocínico sublimado",
+    veo:`PROMPT GOOGLE FLOW/VEO — TESTIMONIO FICTICIO E
+DURACIÓN: 22 segundos | FORMATO: Vertical 9:16
+⚠️ CONTENIDO FICTICIO CON FINES ILUSTRATIVOS
+
+ESCENA 1 (0-5s):
+Penthouse con vista a ciudad nocturna. Hombre de ~38 años,
+camisa blanca sin corbata. De pie frente a ${PINTURA().split('.')[0]}
+colgada en la pared. Ciudad brillante detrás de él.
+Sin música. Efectos: viento suave exterior, ciudad lejana.
+Cámara: wide shot — él pequeño frente al lienzo grande.
+
+ESCENA 2 (5-14s):
+Se acerca lentamente. Extiende la mano pero no toca.
+Saca el teléfono y empieza a escribir. La lista es larga.
+Elementos que proyecta: vacío, horizonte, figura sola, luz lejana.
+Sin música. Efectos: silencio de altura, respiración.
+Cámara: slow dolly-in hacia su mano y el teléfono.
+
+ESCENA 3 (14-20s):
+Videoconferencia elegante. Adriana en pantalla. Él escucha.
+Un momento: cierra los ojos. Asiente lentamente.
+Sin música. Efectos: sonido de videollamada, silencio interior.
+Cámara: close-up de su rostro en el momento de comprensión.
+
+ESCENA 4 (20-22s):
+Logo CD sobre la vista nocturna de la ciudad.
+"*Recreación ficticia — caso tipo vacío existencial documentado"`
+  }
+];
+
+/* ===== PROMPTS VEO POR TIPO ===== */
 function buildScenes(tipo,aud,dur){
   const p="$1,999 MXN",h=rand(RAG.hooks[aud]),a=rand(RAG.ancla),au=rand(RAG.autoridad),c=rand(RAG.ctas);
+  const PIN=PINTURA();
+
   const maps={
     gancho:[
-      {t:"APERTURA DE IMPACTO (0-3s)",b:`Primer plano extremo de pintura abstracta azul oscuro y dorado.\nZoom in lento. Texto letra por letra: "${h}"\nSin música. Solo silencio dramático.\nCámara: Macro lens, dolly-in suave. Foco progresivo.`},
-      {t:"TENSIÓN Y CURIOSIDAD (3-8s)",b:`Corte a figura borrosa observando lienzo con intensidad.\nLuz tenue, atmósfera oscura elegante.\nPrimer acorde de música cinematográfica suave.\nTexto: "Tu respuesta lo revela todo."\nCámara: Medium shot, apertura f/1.8, bokeh profundo.`},
-      {t:"CONCEPTO CENTRAL (8-${Math.floor(dur*.55)}s)",b:`Animación de ondas cerebrales sobre fondo negro.\nTres fases iluminadas en secuencia: DAN → TRANSICIÓN → DMN.\nVoz en off femenina, serena: "Tu inconsciente proyecta lo que no puede ocultar."\nTexto: "3 FASES · 25 ELEMENTOS · 1 REVELACIÓN"\nCámara: Digital overlay, infografía holográfica.`},
-      {t:"AUTORIDAD (${Math.floor(dur*.7)}-${dur-6}s)",b:`Plano de Adriana Ayala Gutiérrez frente a pinturas abstractas.\nTexto: "Adriana Ayala Gutiérrez — Método Celidiano"\nSubtexto: "${au}"\nCámara: Medium close-up, luz Rembrandt lateral cálida.`},
-      {t:"CTA FINAL (${dur-6}-${dur}s)",b:`Logo CD dorado sobre fondo negro mármol. Pulso de luz.\nTexto: "MÉTODO CELIDIANO"\nSubtexto animado: "Toca Más Información ↓"\nMúsica: crescendo suave y cierre.\nCámara: Product shot, fondo desenfocado.`}
-    ],
-    ciencia:[
-      {t:"APERTURA CIENTÍFICA (0-4s)",b:`Animación de red neuronal en azul holográfico sobre negro.\nNodos que se conectan y pulsan en tiempo real.\nTexto: "¿Cómo lee tu mente una pintura abstracta?"\nCámara: Digital render, partículas de luz.`},
-      {t:"LAS 3 FASES (4-14s)",b:`Infografía animada de 3 fases:\n[FASE 1] Red DAN — "0-120 seg: Búsqueda de patrones"\n[FASE 2] Transición — "120-300 seg: El inconsciente emerge"\n[FASE 3] Red DMN — "300+ seg: Metapareidolia Profunda"\nCámara: Motion graphics, colores: azul > violeta > dorado.`},
-      {t:"EL LIENZO COMO DISPOSITIVO (14-${Math.floor(dur*.6)}s)",b:`Plano de pintura abstracta. Líneas de análisis aparecen como escáner holográfico.\nTexto superpuesto identifica elementos proyectivos.\nVoz: "El lienzo no es arte. Es un dispositivo de interacción neuro-visual."\nCámara: Overhead drone shot + digital overlay.`},
-      {t:"CREDIBILIDAD (${Math.floor(dur*.6)}-${dur-5}s)",b:`Texto del paper: "Cronodinámica de la Conectividad Funcional Cerebral (2024)"\n${au}\nCámara: Text animation, fuente académica serif sobre fondo oscuro.`},
-      {t:"CTA CIENTÍFICO (${dur-5}-${dur}s)",b:`"El sistema más avanzado de arteterapia proyectiva en México."\nLogo CD + "Método Celidiano · Sesión privada en línea"\n"${c}"\nCámara: Logo reveal con efecto luz.`}
+      {t:`APERTURA DE IMPACTO (0-3s)`,b:`Primer plano extremo de ${PIN}
+La cámara hace un lento zoom in revelando figuras ambiguas en la textura.
+Texto letra por letra: "${h}"
+Sin música. Solo el sonido de ambiente: galería silenciosa, respiración.
+Cámara: Macro lens, dolly-in suave. Foco progresivo sobre la pintura.`},
+      {t:`TENSIÓN Y CURIOSIDAD (3-8s)`,b:`Corte a figura borrosa — persona observando el lienzo con intensidad.
+Luz tenue de galería, atmósfera oscura y elegante.
+Las manchas de la pintura parecen moverse levemente (efecto de parallax).
+Sin música. Efectos: sonido de ambiente de galería, pasos lejanos.
+Texto: "Tu respuesta lo revela todo."
+Cámara: Medium shot, apertura f/1.8, bokeh profundo del fondo.`},
+      {t:`CONCEPTO CENTRAL (8-${Math.floor(dur*.55)}s)`,b:`Animación de ondas cerebrales sobre fondo negro.
+Tres fases se iluminan en secuencia: DAN → TRANSICIÓN → DMN.
+La pintura abstracta aparece superpuesta como fondo translúcido.
+Sin música. Efectos: sonido de procesamiento neural suave, pulso.
+Texto: "3 FASES CRONOMÉTRICAS · 25 ELEMENTOS · 1 REVELACIÓN"
+Cámara: Digital overlay holográfico sobre la pintura.`},
+      {t:`AUTORIDAD (${Math.floor(dur*.7)}-${dur-5}s)`,b:`Plano de Adriana Ayala Gutiérrez con ${PIN} al fondo desenfocado.
+Texto: "Adriana Ayala Gutiérrez — Método Celidiano"
+Subtexto: "${au}"
+Sin música. Efectos: silencio elegante, eco lejano de galería.
+Cámara: Medium close-up, luz Rembrandt lateral cálida y dorada.`},
+      {t:`CTA FINAL (${dur-5}-${dur}s)`,b:`Logo CD dorado sobre fondo negro mármol. Pulso de luz suave.
+Texto animado: "MÉTODO CELIDIANO"
+Subtexto: "Toca Más Información ↓"
+Sin música. Efectos: pulso de luz, fade out.
+Cámara: Product shot estático con fondo desenfocado.`}
     ],
     caso:[
-      {t:"SETUP EMOCIONAL (0-3s)",b:`Persona de espaldas observando pintura en sala oscura elegante.\nTexto letra por letra: "Ella llevaba 5 años sin entender por qué."\nMúsica: piano suave y melancólico.\nCámara: Silhouette shot, contra-luz dramático.`},
-      {t:"LA DESCRIPCIÓN (3-10s)",b:`Voz de la persona: "Veo una figura sola, rodeada de oscuridad."\nTexto en pantalla como subtítulo estilizado en dorado.\nZoom lento al rostro de la pintura.\nCámara: Extreme close-up de textura de pintura.`},
-      {t:"LA REVELACIÓN (10-${Math.floor(dur*.6)}s)",b:`Pantalla dividida: descripción izquierda / análisis derecha.\nLíneas de conexión animadas entre palabras y diagnóstico.\nTexto del análisis aparece línea por línea.\nCámara: Split screen con motion graphics.`},
-      {t:"RESULTADO (${Math.floor(dur*.6)}-${dur-6}s)",b:`Misma persona, ahora mirando a cámara. Expresión de claridad.\nTexto: "Una sola sesión reveló lo que 5 años no pudieron."\nSubtexto: "*Historia ilustrativa basada en patrones de sesiones reales"\nCámara: Medium close-up, luz cálida, fondo suave.`},
-      {t:"CTA (${dur-6}-${dur}s)",b:`"¿Listo para tu revelación?"\nLogo CD + "Método Celidiano · ${p}"\n"${c}"\nCámara: Logo reveal dorado sobre negro.`}
-    ],
-    proceso:[
-      {t:"PRESENTACIÓN (0-3s)",b:`Plano aéreo de escritorio: pantalla con pintura, cuaderno, pluma.\nTexto: "Así funciona el Método Celidiano."\nCámara: Flat lay overhead, lente gran angular.`},
-      {t:"PASO 1 — OBSERVAS (3-8s)",b:`Pantalla mostrando pintura abstracta. Indicador de tiempo animado.\nTexto: "PASO 1: Observas la pintura durante 10-15 minutos."\n"Sin preparación. Sin experiencia en arte."\nCámara: Screen recording + close-up de pantalla.`},
-      {t:"PASO 2 — DESCRIBES (8-${Math.floor(dur*.5)}s)",b:`Manos escribiendo en teléfono. Palabras que se transforman en etiquetas flotantes.\nTexto: "PASO 2: Describes 25 elementos — todo lo que ves y sientes."\nCámara: Over-the-shoulder, macro de manos.`},
-      {t:"PASO 3 — ADRIANA DECODIFICA (${Math.floor(dur*.5)}-${dur-7}s)",b:`Pantalla de videoconferencia elegante. Adriana visible con pinturas de fondo.\nTexto: "PASO 3: Adriana decodifica en 30 minutos."\n"Cara a cara. En línea. Privado."\nCámara: Screen recording de Meet / plano de Adriana.`},
-      {t:"RESULTADO + CTA (${dur-7}-${dur}s)",b:`"3 pasos. 1 revelación. Una sola sesión."\nLogo CD + precio desde ${p}.\n"${c}"\nCámara: Logo reveal + texto animado.`}
-    ],
-    urgencia:[
-      {t:"PRECIO TACHADO (0-3s)",b:`Fondo negro mármol.\nPrecio tachado aparece: "$3,800 MXN" con línea roja.\nNuevo precio con efecto de luz: "${p}"\nTexto: "PRECIO ESPECIAL DE LANZAMIENTO"\nCámara: Texto animado sobre fondo oscuro.`},
-      {t:"QUÉ INCLUYE (3-8s)",b:`Lista con checkmarks dorados uno por uno:\n✓ Sesión privada en línea con Adriana\n✓ Análisis de 25 elementos proyectivos\n✓ Decodificación neurocientífica completa\n✓ Protocolo de integración post-sesión\nCámara: Motion list animation.`},
-      {t:"VALIDACIÓN (8-${Math.floor(dur*.55)}s)",b:`"${au}"\nSubtexto con contador de "lugares disponibles" pulsando.\nCámara: Text animation + partículas de fondo.`},
-      {t:"URGENCIA (${Math.floor(dur*.55)}-${dur-5}s)",b:`Texto con pulso de luz: "Precio de lanzamiento — tiempo limitado."\n"${rand(RAG.tribu)}"\nCámara: Countdown visual, energía creciente.`},
-      {t:"CTA DIRECTO (${dur-5}-${dur}s)",b:`Logo CD grande. "MÉTODO CELIDIANO"\n"Toca Más Información y reserva tu sesión."\nPrecio final visible: desde ${p}\nCámara: Logo reveal final con flash de luz.`}
+      {t:`SETUP — EL ANTES (0-4s)`,b:`Persona de espaldas en sala oscura frente a ${PIN}
+Postura tensa, brazos cruzados o manos en los bolsillos.
+Sin música. Efectos: silencio, respiración audible, madera crujiendo.
+Texto: "Llevaba años sin poder nombrar lo que sentía."
+Cámara: Silhouette shot, contra-luz dramático.`},
+      {t:`LA OBSERVACIÓN (4-12s)`,b:`La persona se acerca. Sus ojos recorren la pintura abstracta.
+Las manchas doradas y azules capturan su mirada — ve algo.
+Toma un cuaderno. Empieza a escribir sin apartar los ojos del lienzo.
+Sin música. Efectos: sonido de pluma sobre papel, silencio.
+Cámara: Over-the-shoulder + macro de lo que escribe.`},
+      {t:`LA PROYECCIÓN (12-${Math.floor(dur*.65)}s)`,b:`Las palabras que escribe aparecen como texto flotante sobre la pintura.
+25 elementos emergen: figuras, emociones, memorias proyectadas.
+Efecto digital: conexiones entre los elementos como red neuronal.
+Sin música. Efectos: sonido de datos procesándose.
+Cámara: Split screen escritura / análisis digital.`},
+      {t:`LA REVELACIÓN (${Math.floor(dur*.65)}-${dur-5}s)`,b:`Videoconferencia. Adriana en pantalla, la pintura como fondo.
+La persona escucha. Un momento de reconocimiento genuino.
+Sin música. Efectos: sonido de videollamada, silencio interior.
+Cámara: Close-up de rostro en el momento exacto de comprensión.`},
+      {t:`CTA (${dur-5}-${dur}s)`,b:`Logo CD. Texto: "Una sesión. Una revelación."
+"*Recreación ficticia basada en patrones de sesiones reales"
+"${c}"
+Sin música. Efectos: fade a negro, pulso de luz dorada.`}
     ],
     misterio:[
-      {t:"APERTURA OSCURA (0-3s)",b:`Pantalla completamente negra. Silencio total 1 segundo.\nPintura abstracta emerge lentamente con luz desde el centro.\nTexto susurrado letra por letra: "Hay algo que tu mente no puede ocultar."\nCámara: Fade in muy lento, lente gran angular.`},
-      {t:"LA PREGUNTA (3-10s)",b:`Close-up extremo de ojos observando la pintura. Pupila dilatada.\nTexto: "Cuando ves esto... ¿qué proyecta tu inconsciente?"\nPintura cambia de tonalidades lentamente. Música de tensión crece.\nCámara: Macro lens, reflejo de pintura en el ojo.`},
-      {t:"EL GIRO (10-${Math.floor(dur*.55)}s)",b:`Efecto de "escáner" holográfico sobre la pintura. Figuras identificadas.\nTexto: "Tu mente busca patrones en el caos."\n"Lo que encuentra... revela tu arquitectura emocional."\nCámara: Digital overlay + zoom lento.`},
-      {t:"INTRIGA MÁXIMA (${Math.floor(dur*.55)}-${dur-6}s)",b:`Texto fragmentado letra por letra:\n"¿ESTÁS LISTO PARA VER LO QUE TU INCONSCIENTE GUARDA?"\nFondo: ondas cerebrales. Música en crescendo.\nCámara: Glitch effect suave, partículas de luz.`},
-      {t:"REVELACIÓN + CTA (${dur-6}-${dur}s)",b:`Logo CD con efecto de luz expansiva. "${a}"\n"Método Celidiano · Descubre el tuyo."\n"Toca para más información ↓"\nCámara: Lens flare dorado sobre negro.`}
+      {t:`APERTURA OSCURA (0-3s)`,b:`Pantalla negra. Silencio absoluto 2 segundos.
+${PIN} emerge lentamente con luz desde el centro.
+Sin música. Sin efectos. Solo silencio total hasta que aparece la pintura.
+Cámara: Fade in extremadamente lento.`},
+      {t:`LA PREGUNTA (3-10s)`,b:`Close-up extremo de ojos observando la pintura. Pupila dilatada.
+Las manchas abstractas danzas levemente — efecto parallax.
+Sin música. Efectos: latido cardíaco suave y creciente.
+Texto: "Cuando ves esto... ¿qué proyecta tu inconsciente?"
+Cámara: Macro lens, reflejo de la pintura en el iris.`},
+      {t:`EL GIRO (10-${Math.floor(dur*.55)}s)`,b:`Efecto de escáner holográfico sobre la pintura abstracta.
+Figuras se identifican automáticamente — pero son diferentes para cada persona.
+Sin música. Efectos: sonido de análisis digital, glitch suave.
+Texto: "Tu mente busca patrones en el caos."
+Cámara: Digital overlay + zoom lento sobre textura de pintura.`},
+      {t:`INTRIGA MÁXIMA (${Math.floor(dur*.55)}-${dur-5}s)`,b:`Texto fragmentado aparece letra por letra:
+"¿ESTÁS LISTO PARA VER LO QUE TU INCONSCIENTE GUARDA?"
+Fondo: ondas cerebrales pulsando sobre la pintura abstracta.
+Sin música. Efectos: pulso cardíaco aumenta, silencio súbito.
+Cámara: Glitch effect suave, partículas de luz.`},
+      {t:`REVELACIÓN + CTA (${dur-5}-${dur}s)`,b:`Logo CD con efecto de luz expansiva. "${a}"
+"Método Celidiano · Descubre el tuyo."
+Sin música. Efectos: lens flare dorado sobre negro.`}
+    ],
+    proceso:[
+      {t:`PRESENTACIÓN (0-3s)`,b:`Plano aéreo de espacio elegante: ${PIN} en caballete,
+cuaderno de piel, pluma, taza de café. Luz natural.
+Sin música. Efectos: sonido de ambiente matutino suave.
+Texto: "Así funciona el Método Celidiano."
+Cámara: Flat lay overhead, lente gran angular.`},
+      {t:`PASO 1 — OBSERVAS (3-8s)`,b:`Persona frente al lienzo abstracto. Indicador de tiempo animado.
+La pintura con sus manchas doradas y azules llena el campo visual.
+Sin música. Efectos: respiración, ambiente silencioso de galería.
+Texto: "PASO 1: Observas 10-15 minutos."
+"Sin preparación. Sin experiencia en arte necesaria."
+Cámara: Close-up de la pintura + perfil de la persona.`},
+      {t:`PASO 2 — DESCRIBES (8-${Math.floor(dur*.5)}s)`,b:`Manos escribiendo o dictando al teléfono. 25 elementos proyectados.
+Cada palabra escrita aparece como tag flotante desde la pintura.
+Sin música. Efectos: sonido de escritura, dictado de voz.
+Texto: "PASO 2: Describes 25 elementos — todo lo que ves y sientes."
+Cámara: Over-the-shoulder, macro de manos.`},
+      {t:`PASO 3 — ADRIANA (${Math.floor(dur*.5)}-${dur-6}s)`,b:`Videoconferencia con Adriana. Ella con pinturas abstractas de fondo.
+Cara a cara, cámara abierta, conexión humana real.
+Sin música. Efectos: sonido de videollamada, presencia humana.
+Texto: "PASO 3: Adriana decodifica en 30 minutos."
+"Face to face. En línea. La experiencia más recomendada."
+Cámara: Screen recording + reacción de la persona.`},
+      {t:`CTA (${dur-6}-${dur}s)`,b:`"3 pasos. 1 revelación."
+Logo CD + precio desde ${p}.
+"${c}"
+Sin música. Efectos: fade dorado.`}
+    ],
+    urgencia:[
+      {t:`PRECIO TACHADO (0-3s)`,b:`Fondo negro mármol con ${PIN} desenfocada al fondo.
+Precio tachado: "$3,800 MXN" con línea roja.
+Nuevo precio con efecto de luz: "${p}"
+Sin música. Efectos: sonido de impacto suave al aparecer el precio.
+Texto: "PRECIO ESPECIAL DE LANZAMIENTO"`},
+      {t:`QUÉ INCLUYE (3-8s)`,b:`Lista con checkmarks dorados apareciendo uno por uno:
+✓ Sesión privada en línea face to face con Adriana
+✓ Análisis de 25 elementos proyectivos en pintura abstracta
+✓ Decodificación neurocientífica personalizada
+✓ Protocolo de integración post-sesión
+Sin música. Efectos: sonido de check suave por cada item.`},
+      {t:`VALIDACIÓN (8-${Math.floor(dur*.6)}s)`,b:`"${au}"
+Contador animado de lugares disponibles esta semana.
+Sin música. Efectos: sonido de cuenta regresiva sutil.
+La pintura abstracta aparece brevemente — belleza del estímulo.`},
+      {t:`URGENCIA (${Math.floor(dur*.6)}-${dur-5}s)`,b:`"Precio de lanzamiento — tiempo limitado."
+"${rand(RAG.tribu)}"
+Sin música. Efectos: pulso de urgencia visual, no sonoro.`},
+      {t:`CTA (${dur-5}-${dur}s)`,b:`Logo CD. "MÉTODO CELIDIANO"
+"Toca Más Información y reserva tu sesión."
+Precio: desde ${p}
+Sin música. Efectos: fade de luz dorada.`}
+    ],
+    ciencia:[
+      {t:`APERTURA CIENTÍFICA (0-4s)`,b:`Animación de red neuronal en azul holográfico sobre negro.
+La red se transforma en la textura de ${PIN}
+Sin música. Efectos: sonido de procesamiento neural, pulsos.
+Texto: "¿Cómo lee tu mente una pintura abstracta?"
+Cámara: Digital render, partículas de luz.`},
+      {t:`LAS 3 FASES (4-14s)`,b:`Infografía animada de 3 fases cronométricas:
+[FASE 1] Red DAN — "0-120 seg: El cerebro busca patrones en la pintura"
+[FASE 2] Transición — "120-300 seg: El inconsciente toma el control"
+[FASE 3] Red DMN — "300+ seg: Metapareidolia Profunda"
+La pintura abstracta aparece como fondo de cada fase.
+Sin música. Efectos: sonido de activación neural por fase.
+Cámara: Motion graphics, colores de fase: azul > violeta > dorado.`},
+      {t:`EL LIENZO COMO DISPOSITIVO (14-${Math.floor(dur*.6)}s)`,b:`Plano de ${PIN}
+Líneas de análisis aparecen sobre la pintura como escáner holográfico.
+Figuras identificadas emergen de las manchas abstractas.
+Sin música. Efectos: sonido de escáner digital suave.
+Texto: "El lienzo no es arte. Es un dispositivo de interacción neuro-visual."
+Cámara: Overhead + digital overlay.`},
+      {t:`CREDIBILIDAD (${Math.floor(dur*.6)}-${dur-5}s)`,b:`"Cronodinámica de la Conectividad Funcional Cerebral (2024)"
+"${au}"
+Sin música. Efectos: texto aparece como si fuera impreso digitalmente.
+Cámara: Text animation sobre fondo oscuro.`},
+      {t:`CTA (${dur-5}-${dur}s)`,b:`Logo CD. "Sesión privada disponible."
+"${c}"
+Sin música. Efectos: logo reveal con efecto luz.`}
     ],
     autoridad:[
-      {t:"PRESENTACIÓN PROFESIONAL (0-4s)",b:`Plano de Adriana Ayala Gutiérrez en estudio con pinturas de fondo.\nTexto: "ADRIANA AYALA GUTIÉRREZ"\nSubtexto: "Especialista en Semiosis y Coaching Clínico"\nCámara: Medium shot, luz profesional tres puntos.`},
-      {t:"CREDENCIALES (4-12s)",b:`Texto animado en lista:\n"11 años de investigación documentada"\n"Paper: Cronodinámica de la Conectividad Funcional Cerebral (2024)"\n"14 disciplinas científicas integradas"\n"Creado por Juan Carlos Pérez Martínez, Lic. Artes Visuales"\nCámara: Text animation sobre fondo oscuro.`},
-      {t:"EL MÉTODO (12-${Math.floor(dur*.6)}s)",b:`Plano de pinturas de las colecciones "Dioses de la Metapareidolia" y "Ángeles del Inconsciente".\nTexto: "Metapareidolia Pictórica — la metodología más avanzada de diagnóstico proyectivo visual."\nCámara: Slow pan por las pinturas, luz lateral dramática.`},
-      {t:"DISCIPLINAS (${Math.floor(dur*.6)}-${dur-6}s)",b:`Infografía circular con disciplinas girando alrededor del logo CD.\n"Neurociencia · Neuroquímica · Psicología · Logoterapia · Sistemas Complejos..."\nCámara: Motion graphics, rotación elegante.`},
-      {t:"CTA DE AUTORIDAD (${dur-6}-${dur}s)",b:`"El sistema más avanzado de arteterapia proyectiva en México."\nLogo CD. "Sesión privada disponible — precio de lanzamiento."\n"${c}"\nCámara: Logo reveal final.`}
+      {t:`PRESENTACIÓN (0-4s)`,b:`Adriana Ayala Gutiérrez frente a ${PIN}
+Traje profesional oscuro. Luz de galería lateral cálida.
+Sin música. Efectos: silencio elegante de galería.
+Texto: "ADRIANA AYALA GUTIÉRREZ"
+Subtexto: "Especialista en Semiosis y Coaching Clínico"
+Cámara: Medium shot, iluminación tres puntos.`},
+      {t:`CREDENCIALES (4-12s)`,b:`Lista animada sobre fondo negro con la pintura desenfocada:
+"11 años de investigación documentada"
+"Paper: Cronodinámica de la Conectividad Funcional Cerebral (2024)"
+"14 disciplinas científicas integradas"
+"Creado por Juan Carlos Pérez Martínez, Lic. Artes Visuales"
+Sin música. Efectos: cada línea aparece con sonido de impresora elegante.`},
+      {t:`EL MÉTODO EN ACCIÓN (12-${Math.floor(dur*.65)}s)`,b:`Plano de ${PIN} con persona observando.
+Las manchas abstractas revelan figuras al mirar fijamente — la pareidolia visible.
+Sin música. Efectos: respiración, ambiente de galería.
+Texto: "Metapareidolia Pictórica — 11 años. 500+ sesiones."
+Cámara: Slow pan por la pintura + reacción del observador.`},
+      {t:`CTA (${Math.floor(dur*.65)}-${dur}s)`,b:`"El sistema más avanzado de arteterapia proyectiva en México."
+Logo CD. "Sesión privada disponible."
+"${c}"
+Sin música. Efectos: logo reveal final.`}
     ],
     transformacion:[
-      {t:"EL ANTES (0-3s)",b:`Silueta oscura con cabeza baja. Fondo gris oscuro y brumoso.\nTexto: "¿Cuánto tiempo llevas cargando algo que no puedes nombrar?"\nCámara: Silhouette shot, subexposición dramática.`},
-      {t:"EL PUNTO DE INFLEXIÓN (3-10s)",b:`La silueta observa pintura que se ilumina.\nOndas de color emergen de la pintura hacia la persona.\nTexto: "Lo que no puedes ver con la mente... lo proyectas en el arte."\nCámara: Long exposure + digital overlay.`},
-      {t:"EL PROCESO (10-${Math.floor(dur*.55)}s)",b:`Secuencia rápida: pintura → escritura → análisis → videoconferencia.\nTexto: "Observas. Proyectas. Adriana decodifica. Tú te transformas."\nCámara: Quick cuts 0.5s cada uno, ritmo de música.`},
-      {t:"EL DESPUÉS (${Math.floor(dur*.55)}-${dur-6}s)",b:`Misma silueta, ahora erguida, rodeada de luz dorada y pinturas.\n"Una sola sesión puede revelar lo que años no pudieron."\n"No es terapia convencional. Es percepción neuro-visual."\nCámara: Reverse silhouette, sobreexposición gradual.`},
-      {t:"CTA TRANSFORMADOR (${dur-6}-${dur}s)",b:`"¿Listo para ver lo que tu inconsciente guarda?"\nLogo CD. "Método Celidiano — desde ${p}"\n"${c}"\nCámara: Logo reveal dorado final.`}
+      {t:`EL ANTES (0-3s)`,b:`Silueta oscura con cabeza baja. Fondo gris.
+Sin música. Efectos: silencio pesado, ambiente opresivo.
+Texto: "¿Cuánto tiempo llevas cargando algo que no puedes nombrar?"
+Cámara: Silhouette shot, subexposición dramática.`},
+      {t:`EL ENCUENTRO (3-10s)`,b:`La silueta se acerca a ${PIN}
+La pintura abstracta se ilumina al ser observada.
+Ondas de color emergen del lienzo hacia la persona.
+Sin música. Efectos: resonancia suave, como un eco visual.
+Texto: "Lo que no puedes ver con la mente... lo proyectas en el arte."
+Cámara: Long exposure + digital overlay de ondas.`},
+      {t:`EL PROCESO (10-${Math.floor(dur*.55)}s)`,b:`Secuencia: pintura → escritura → análisis → videollamada con Adriana.
+La pintura abstracta aparece en cada transición como el hilo conductor.
+Sin música. Efectos: quick cuts con sonidos específicos de cada acción.
+Texto: "Observas. Proyectas. Adriana decodifica. Tú te transformas."
+Cámara: Quick cuts 0.5s cada uno.`},
+      {t:`EL DESPUÉS (${Math.floor(dur*.55)}-${dur-5}s)`,b:`La misma silueta, ahora erguida, rodeada de luz dorada.
+La pintura abstracta al fondo, ahora familiar y sin amenaza.
+Sin música. Efectos: luz que crece suavemente.
+Texto: "Una sola sesión. Lo que años no pudieron."
+Cámara: Reverse silhouette, sobreexposición gradual.`},
+      {t:`CTA (${dur-5}-${dur}s)`,b:`Logo CD. "¿Listo para ver lo que tu inconsciente guarda?"
+"Método Celidiano — desde ${p}"
+"${c}"
+Sin música. Efectos: logo dorado sobre negro.`}
     ]
   };
-  return (maps[tipo]||maps.gancho).map(s=>({t:s.t,b:s.b.replace(/\$\{dur\}/g,dur).replace(/\$\{Math\.floor\(dur\*[\d.]+\)\}/g,x=>{const m=x.match(/[\d.]+/);return Math.floor(dur*parseFloat(m[0]))})}));
+  return (maps[tipo]||maps.gancho).map(s=>({t:s.t,b:s.b}));
 }
 
-/* ===== CASOS ===== */
-const CASOS=[
-  {tag:"CASO TIPO A · EJECUTIVO · GEN X",text:'"Llevaba 8 años con una sensación de bloqueo en mis decisiones de negocio. En la sesión, proyecté figuras de laberintos en todas las pinturas. Adriana identificó un patrón de hipervigilancia que ni yo mismo había reconocido."',result:"→ Patrón detectado: bloqueo decisional por hipervigilancia sistémica"},
-  {tag:"CASO TIPO B · MUJER 35 AÑOS · MILLENNIAL",text:'"Siempre supe que algo bloqueaba mis relaciones. Lo primero que describí fue una figura sola rodeada de sombras. Adriana lo identificó antes de que yo terminara de explicarlo."',result:"→ Patrón detectado: desvínculo oxitocínico, apego ansioso activo"},
-  {tag:"CASO TIPO C · PSICÓLOGA · BOOMER",text:'"Llegué con escepticismo. Lo que me sorprendió fue la velocidad — en 25 elementos, el sistema identificó exactamente el área de conflicto que yo misma había evitado trabajar por años."',result:"→ Patrón detectado: mecanismo de defensa intelectualización activo"},
-  {tag:"CASO TIPO D · EMPRENDEDOR · GEN Z",text:'"Cuando describí la primera pintura, Adriana me preguntó sobre mi relación con mi padre. Nunca lo mencioné. El sistema lo detectó en mis proyecciones."',result:"→ Patrón detectado: figura de autoridad paterna no resuelta"},
-  {tag:"CASO TIPO E · PAREJA · 40 AÑOS",text:'"Cada uno describió cosas completamente diferentes en la misma pintura. Eso solo ya fue revelador. El análisis mostró exactamente por qué llevábamos 3 años comunicándonos en frecuencias distintas."',result:"→ Patrón detectado: saturación límbica por habituación"}
-];
+/* ===== PROMPT DE IMAGEN ===== */
+function buildImgPrompt(tipo,aud){
+  const PIN=PINTURA();
+  const prompts={
+    gancho:`Photorealistic cinematic still. Person of indeterminate gender, 35-45 years old, standing in front of a large abstract painting (${PIN}). The painting dominates the frame. The person's face shows a moment of profound recognition — eyes slightly widened, lips parted. Dramatic gallery lighting. Dark background. Style: editorial photography, 85mm lens, shallow depth of field. NO text overlay. Ultra-detailed.`,
+    caso:`Documentary-style photograph. Person writing in a leather notebook while looking at ${PIN}. Hands in focus, notebook visible with handwritten words. Abstract painting fills background. Warm gallery lighting. Authentic, not staged. Style: reportage photography, 50mm lens, natural light. Emotional, introspective mood.`,
+    misterio:`Dark cinematic still. Close-up of human eye reflecting ${PIN}. The abstract painting's shapes visible in the iris. Deep black background. Single dramatic light source. Style: fine art photography, macro lens, ultra-detailed. Mysterious, hypnotic mood.`,
+    proceso:`Clean editorial layout. Professional workspace with ${PIN} on easel, leather notebook open, pen, minimal objects. Overhead shot. Warm neutral tones. Style: lifestyle photography, flat lay, natural light. Elegant and professional.`,
+    urgencia:`Split composition. Left: abstract painting ${PIN} on white gallery wall. Right: person's hand holding phone showing the analysis. Golden hour light. Style: commercial photography, vibrant but elegant. Clear visual narrative.`,
+    ciencia:`Scientific visualization. Brain scan hologram overlaid on ${PIN}. Neural pathways light up in blue. Dark background. Style: medical/scientific visualization merged with fine art photography. Futuristic and credible.`,
+    autoridad:`Professional portrait. Adriana Ayala Gutiérrez (Latina woman, professional attire, confident posture) standing beside ${PIN}. Gallery setting. Three-point lighting. Style: executive portrait photography, 85mm lens. Authoritative and warm.`,
+    transformacion:`Diptych. Left panel: silhouette person in shadow. Right panel: same person bathed in warm golden light, abstract painting visible behind them. Style: conceptual fine art photography. Emotional transformation narrative.`
+  };
+  return prompts[tipo]||prompts.gancho;
+}
 
-/* ===== PLATAFORMAS ===== */
-const PLATS=[
-  {id:"tiktok",name:"TikTok",type:"REELS",url:"https://www.tiktok.com/upload",color:"#010101",
-   svg:'<svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/></svg>'},
-  {id:"youtube",name:"YouTube",type:"SHORTS",url:"https://www.youtube.com/upload",color:"#ff0000",
-   svg:'<svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>'},
-  {id:"facebook",name:"Facebook",type:"REELS",url:"https://www.facebook.com/reels/create",color:"#1877f2",
-   svg:'<svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>'},
-  {id:"instagram",name:"Instagram",type:"REELS",url:"https://www.instagram.com/",color:"#e1306c",
-   svg:'<svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>'},
-  {id:"threads",name:"Threads",type:"POST",url:"https://www.threads.net/",color:"#101010",
-   svg:'<svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.964-.065-1.19.408-2.285 1.33-3.082.88-.76 2.119-1.207 3.583-1.291a13.853 13.853 0 013.02.142c-.126-.742-.375-1.332-.75-1.757-.513-.586-1.308-.883-2.359-.89h-.029c-.844 0-1.992.232-2.721 1.32L7.734 7.847c.98-1.454 2.568-2.256 4.478-2.256h.044c3.194.02 5.097 1.975 5.287 5.388.108.046.216.094.321.142 1.49.7 2.58 1.761 3.154 3.07.797 1.82.871 4.79-1.548 7.158-1.85 1.81-4.094 2.628-7.277 2.65z"/></svg>'},
-  {id:"kwai",name:"Kwai",type:"VIDEO",url:"https://www.kwai.com/",color:"#ff6600",
-   svg:'<svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15v-4H8l4-6v4h3l-4 6z"/></svg>'}
-];
-
-/* ===== STATE ===== */
+/* ===== ESTADO ===== */
 const S={tipo:'gancho',aud:'fria',dur:30,locks:{veo:false,title:false,desc:false,tags:false},casoSel:null,deploys:0,month:0};
-
-/* ===== STORAGE KEY ===== */
-const KEY='nexus-v4';
-
-/* ===== UTILS ===== */
+const KEY='nexus-v5';
 const $=id=>document.getElementById(id);
-const rand=arr=>arr[Math.floor(Math.random()*arr.length)];
 const pickN=(arr,n)=>{const c=[...arr],o=[];for(let i=0;i<n&&c.length;i++)o.push(c.splice(Math.floor(Math.random()*c.length),1)[0]);return o};
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 function updCt(inp,ct){$(ct).textContent=$(inp).value.length}
 
-/* ===== SAVE / LOAD ===== */
 function save(){
-  try{
-    const accounts=PLATS.reduce((o,p)=>{o[p.id]=getAccounts(p.id);return o},{});
-    localStorage.setItem(KEY,JSON.stringify({
-      title:$('videoTitle').value,desc:$('videoDesc').value,tags:$('hashtags').value,
-      deploys:S.deploys,month:S.month,accounts
-    }));
-  }catch(e){}
+  try{localStorage.setItem(KEY,JSON.stringify({title:$('videoTitle').value,desc:$('videoDesc').value,tags:$('hashtags').value,deploys:S.deploys,month:S.month,accounts:getAccountsAll()}));}catch(e){}
 }
 
 function load(){
@@ -556,17 +827,10 @@ function load(){
     if(d.tags)$('hashtags').value=d.tags;
     if(d.deploys){S.deploys=d.deploys;$('stDeploys').textContent=d.deploys}
     if(d.month){S.month=d.month;updateMC(d.month)}
-    if(d.accounts){
-      PLATS.forEach(p=>{
-        if(d.accounts[p.id]&&d.accounts[p.id].length){
-          d.accounts[p.id].forEach(acc=>addAccountToDOM(p.id,acc.name,acc.url));
-        }
-      });
-    }
+    if(d.accounts){PLATS.forEach(p=>{if(d.accounts[p.id])d.accounts[p.id].forEach(a=>addAccDOM(p.id,a.name,a.url))});}
   }catch(e){}
 }
 
-/* ===== METRICOOL COUNTER ===== */
 function updateMC(n){
   S.month=n;$('mcNum').textContent=n;$('stMonth').textContent=n;
   const pct=Math.min((n/20)*100,100);
@@ -574,12 +838,12 @@ function updateMC(n){
   $('mcFill').style.background=pct>=80?'linear-gradient(90deg,#ff6600,#ff3366)':'linear-gradient(90deg,var(--blue2),var(--blue))';
 }
 
-/* ===== SELECTORS ===== */
+/* SELECTORES */
 function selType(el){document.querySelectorAll('.type-card').forEach(c=>c.classList.remove('active'));el.classList.add('active');S.tipo=el.dataset.type}
 function selAud(el){document.querySelectorAll('[data-aud]').forEach(b=>b.classList.remove('active'));el.classList.add('active');S.aud=el.dataset.aud}
 function selDur(el){document.querySelectorAll('[data-dur]').forEach(b=>b.classList.remove('active'));el.classList.add('active');S.dur=parseInt(el.dataset.dur)}
 
-/* ===== LOCK SYSTEM ===== */
+/* LOCK */
 function toggleLock(field){
   S.locks[field]=!S.locks[field];
   const locked=S.locks[field];
@@ -590,24 +854,20 @@ function toggleLock(field){
     rb.style.display=locked?'inline-flex':'none';
     document.querySelectorAll('.scene-textarea').forEach(ta=>ta.readOnly=locked);
   } else {
-    const btn=$(field+'LockBtn'),ovl=$(field+'Overlay');
+    const btn=$(field+'LockBtn');
     btn.textContent=locked?'🔒 BLOQUEADO':'🔓 BLOQUEAR';
     btn.classList.toggle('locked',locked);
-    ovl.classList.toggle('active',locked);
-    if(locked){ovl.innerHTML='<span class="lock-badge">🔒 BLOQUEADO — toca BLOQUEAR para editar</span>'}
-    else ovl.innerHTML='';
     const inp=field==='title'?'videoTitle':field==='desc'?'videoDesc':'hashtags';
     $(inp).readOnly=locked;
   }
 }
 
-/* ===== VEO GENERATOR ===== */
+/* VEO */
 function genVeo(){
   if(S.locks.veo)return;
   const scenes=buildScenes(S.tipo,S.aud,S.dur);
   const wrapper=$('scenesWrapper');
-  wrapper.innerHTML='';
-  wrapper.classList.add('visible');
+  wrapper.innerHTML='';wrapper.classList.add('visible');
   scenes.forEach((sc,i)=>{
     const block=document.createElement('div');
     block.className='scene-block';
@@ -616,11 +876,10 @@ function genVeo(){
         <span class="scene-title">ESCENA ${i+1} — ${sc.t}</span>
         <div class="btn-row">
           <button class="btn btn-copy" onclick="copyScene(${i})">📋 COPIAR ESCENA ${i+1}</button>
-          <button class="btn btn-veo" onclick="copySceneFull(${i})">📋 + TÍTULO</button>
         </div>
       </div>
       <div class="scene-body">
-        <textarea class="scene-textarea" id="scene_${i}" rows="${Math.max(4,sc.b.split('\n').length+1)}">${sc.b}</textarea>
+        <textarea class="scene-textarea" id="scene_${i}" rows="${Math.max(5,sc.b.split('\n').length+2)}">${sc.b}</textarea>
       </div>`;
     wrapper.appendChild(block);
   });
@@ -629,152 +888,188 @@ function genVeo(){
 function copyScene(i){
   const txt=$(`scene_${i}`).value;
   navigator.clipboard.writeText(txt).then(()=>{
-    const btn=document.querySelectorAll('.scene-block')[i].querySelector('.btn-copy');
-    const o=btn.textContent;btn.textContent='✓ COPIADO';btn.classList.add('copied');
+    const btns=document.querySelectorAll('.scene-block')[i].querySelectorAll('.btn-copy');
+    const btn=btns[0];const o=btn.textContent;btn.textContent='✓ COPIADO';btn.classList.add('copied');
     setTimeout(()=>{btn.textContent=o;btn.classList.remove('copied')},1500);
   }).catch(()=>alert('Copia manualmente el texto de la escena.'));
 }
 
-function copySceneFull(i){
-  const txt=`ESCENA ${i+1}:\n${$(`scene_${i}`).value}`;
-  navigator.clipboard.writeText(txt).then(()=>{
-    const btns=document.querySelectorAll('.scene-block')[i].querySelectorAll('.btn-copy');
-    const btn=btns[1];const o=btn.textContent;btn.textContent='✓ COPIADO';btn.classList.add('copied');
-    setTimeout(()=>{btn.textContent=o;btn.classList.remove('copied')},1500);
-  });
-}
-
 function resetVeo(){
-  if(confirm('¿Resetear todas las escenas? Se perderá el contenido actual.')){
+  if(confirm('¿Resetear todas las escenas?')){
     S.locks.veo=false;toggleLock('veo');
     $('scenesWrapper').innerHTML='';$('scenesWrapper').classList.remove('visible');
+    $('imgPromptWrapper').classList.remove('visible');
   }
 }
 
-/* ===== TITLE GENERATOR ===== */
+/* IMAGEN PROMPT */
+function genImgPrompt(){
+  const txt=buildImgPrompt(S.tipo,S.aud);
+  $('imgPromptText').value=txt;
+  $('imgPromptWrapper').classList.add('visible');
+}
+
+function copyImgPrompt(){
+  const txt=$('imgPromptText').value;
+  if(!txt.trim()){alert('Genera primero el prompt de imagen.');return}
+  navigator.clipboard.writeText(txt).then(()=>alert('✓ Prompt de imagen copiado.')).catch(()=>alert('Copia manualmente.'));
+}
+
+/* TÍTULOS CON MODAL */
 function genTitles(){
   if(S.locks.title)return;
   const pool=[...RAG.titulos,...RAG.hooks[S.aud].map(h=>h.replace('?','').trim()),rand(RAG.ancla)+' — Método Celidiano',rand(RAG.tribu)+' | Método Celidiano'];
   const titles=pickN([...new Set(pool)],6);
-  const list=$('titleOpts');
-  list.innerHTML='<div class="opts-hdr">▼ TOCA UNA OPCIÓN PARA USARLA</div>';
+  const grid=$('titleBtnGrid');
+  grid.innerHTML='';
   titles.forEach(t=>{
-    const item=document.createElement('div');
-    item.className='opt-item';
-    item.textContent=t.length>98?t.substring(0,98)+'…':t;
-    item.onclick=()=>{$('videoTitle').value=item.textContent;$('titleCt').textContent=item.textContent.length;list.classList.remove('open');save()};
-    list.appendChild(item);
+    const btn=document.createElement('button');
+    btn.className='title-select-btn';
+    btn.textContent=t.length>98?t.substring(0,98)+'…':t;
+    btn.onclick=()=>openTitleModal(btn.textContent);
+    grid.appendChild(btn);
   });
-  list.classList.add('open');
+  grid.classList.add('visible');
 }
 
-/* ===== DESC GENERATOR ===== */
+function openTitleModal(title){
+  $('modalTitleText').textContent=title;
+  $('titleModal').classList.add('open');
+}
+
+function copyModalTitle(){
+  const txt=$('modalTitleText').textContent;
+  navigator.clipboard.writeText(txt).then(()=>{
+    $('videoTitle').value=txt;$('titleCt').textContent=txt.length;
+    const btn=$('modalCopyBtn');const o=btn.textContent;
+    btn.textContent='✓ TÍTULO APLICADO';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent=o;btn.classList.remove('copied')},1500);
+    save();
+  }).catch(()=>alert('Copia manualmente el título.'));
+}
+
+function closeModal(id){$(id).classList.remove('open')}
+$('titleModal').addEventListener('click',e=>{if(e.target===$('titleModal'))closeModal('titleModal')});
+
+/* DESC Y TAGS */
 function genDesc(){
   if(S.locks.desc)return;
   const d=`${rand(RAG.hooks[S.aud])}\n\n${rand(RAG.proceso)}\n\n${rand(RAG.proceso)}\n\n${rand(RAG.autoridad)}\n\n${rand(RAG.tribu)}.\n\n"${rand(RAG.ancla)}"\n\n👉 ${rand(RAG.ctas)}`;
   $('videoDesc').value=d;$('descCt').textContent=d.length;save();
 }
 
-/* ===== TAGS GENERATOR ===== */
 function genTags(){
   if(S.locks.tags)return;
-  const t=S.tipo==='ciencia'||S.tipo==='autoridad'?RAG.hashtags.youtube:S.tipo==='tiktok'?RAG.hashtags.tiktok:RAG.hashtags.social;
+  const t=S.tipo==='ciencia'||S.tipo==='autoridad'?RAG.hashtags.youtube:RAG.hashtags.social;
   $('hashtags').value=t;save();
 }
 
-/* ===== COPY FIELD ===== */
 async function copyFld(inp,btn){
   const val=$(inp).value;
   if(!val.trim()){alert('El campo está vacío.');return}
   try{
     await navigator.clipboard.writeText(val);
-    const b=$(btn);if(!b)return;
-    const o=b.textContent;b.textContent='✓';b.classList.add('copied');
+    const b=$(btn);const o=b.textContent;b.textContent='✓ COPIADO';b.classList.add('copied');
     setTimeout(()=>{b.textContent=o;b.classList.remove('copied')},1500);
-  }catch(e){alert('Copia manualmente el texto.')}
+  }catch(e){alert('Copia manualmente.')}
 }
 
-/* ===== CASOS ===== */
+/* CASOS CON VEO */
 function renderCasos(){
   const g=$('casosGrid');g.innerHTML='';
   CASOS.forEach((c,i)=>{
     const card=document.createElement('div');
-    card.className='caso-card';
-    card.innerHTML=`<div class="caso-tag">${c.tag}</div><div class="caso-text">${c.text}</div><div class="caso-result">${c.result}</div>`;
-    card.onclick=()=>{document.querySelectorAll('.caso-card').forEach(x=>x.classList.remove('selected'));card.classList.add('selected');S.casoSel=i};
+    card.className='testimony-card';
+    card.innerHTML=`
+      <div class="test-tag">${c.tag}</div>
+      <div class="test-text">${c.text}</div>
+      <div class="test-result">${c.result}</div>
+      <div class="btn-row" style="margin-bottom:6px">
+        <button class="btn btn-gen" onclick="toggleVeoTest(${i})">⚡ VER PROMPT VEO</button>
+        <button class="btn btn-copy" onclick="copyVeoTest(${i})">📋 COPIAR PROMPT</button>
+        <button class="btn btn-veo" onclick="insertCaso(${i})">💡 INSERTAR EN COPY</button>
+      </div>
+      <div class="test-veo" id="testVeo_${i}">${c.veo}</div>`;
     g.appendChild(card);
   });
 }
 
-function insertCaso(){
-  if(S.casoSel===null){alert('Selecciona primero un caso tocándolo.');return}
+function toggleVeoTest(i){
+  const el=$(`testVeo_${i}`);
+  el.classList.toggle('visible');
+  const card=el.closest('.testimony-card');
+  card.classList.toggle('selected');
+}
+
+function copyVeoTest(i){
+  navigator.clipboard.writeText(CASOS[i].veo).then(()=>alert(`✓ Prompt Veo del caso ${i+1} copiado.`)).catch(()=>alert('Copia manualmente.'));
+}
+
+function insertCaso(i){
   if(S.locks.desc){alert('Desbloquea la descripción primero.');return}
-  const c=CASOS[S.casoSel];
+  const c=CASOS[i];
   const cur=$('videoDesc').value;
   const ins=`\n\n${c.text}\n*Historia ilustrativa basada en patrones de sesiones reales.\n${c.result}`;
   $('videoDesc').value=(cur+ins).substring(0,2200);
   $('descCt').textContent=$('videoDesc').value.length;save();
 }
 
-/* ===== PLATFORMS ===== */
-function getAccounts(platId){
-  const chips=document.querySelectorAll(`#accounts_${platId} .account-chip`);
-  return Array.from(chips).map(ch=>({name:ch.querySelector('.chip-input').value||'Cuenta',url:ch.querySelector('.chip-url').value||''}));
+/* QUICK TAGS */
+function renderQuickTags(){
+  const c=$('quickTags');c.innerHTML='';
+  RAG.quickTags.forEach(t=>{
+    const pill=document.createElement('span');
+    pill.className='tag-pill';pill.textContent=t;
+    pill.onclick=()=>{const i=$('hashtags');if(!i.value.includes(t)){i.value=(i.value.trim()+' '+t).trim();save()}};
+    c.appendChild(pill);
+  });
 }
 
-function addAccountToDOM(platId,name='',url=''){
-  const list=$(`accounts_${platId}`);
-  if(!list)return;
-  const chip=document.createElement('div');
-  chip.className='account-chip';
-  chip.innerHTML=`
-    <div class="chip-open" onclick="openAccount('${platId}',this)" title="Abrir">↗</div>
-    <input class="chip-input" value="${name}" placeholder="Nombre de la cuenta" oninput="save()"/>
-    <input class="chip-url" value="${url}" placeholder="URL de tu página..." oninput="save()"/>
-    <span class="chip-del" onclick="this.closest('.account-chip').remove();updAccCount();save()">✕</span>`;
-  list.appendChild(chip);
-  updAccCount();
+/* PLATFORMS */
+const PLATS=[
+  {id:"tiktok",name:"TikTok",type:"REELS",url:"https://www.tiktok.com/upload",color:"#010101",svg:'<svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/></svg>'},
+  {id:"youtube",name:"YouTube",type:"SHORTS",url:"https://www.youtube.com/upload",color:"#ff0000",svg:'<svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>'},
+  {id:"facebook",name:"Facebook",type:"REELS",url:"https://www.facebook.com/reels/create",color:"#1877f2",svg:'<svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>'},
+  {id:"instagram",name:"Instagram",type:"REELS",url:"https://www.instagram.com/",color:"#e1306c",svg:'<svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>'},
+  {id:"threads",name:"Threads",type:"POST",url:"https://www.threads.net/",color:"#101010",svg:'<svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.964-.065-1.19.408-2.285 1.33-3.082.88-.76 2.119-1.207 3.583-1.291a13.853 13.853 0 013.02.142c-.126-.742-.375-1.332-.75-1.757-.513-.586-1.308-.883-2.359-.89h-.029c-.844 0-1.992.232-2.721 1.32L7.734 7.847c.98-1.454 2.568-2.256 4.478-2.256h.044c3.194.02 5.097 1.975 5.287 5.388.108.046.216.094.321.142 1.49.7 2.58 1.761 3.154 3.07.797 1.82.871 4.79-1.548 7.158-1.85 1.81-4.094 2.628-7.277 2.65z"/></svg>'},
+  {id:"kwai",name:"Kwai",type:"VIDEO",url:"https://www.kwai.com/",color:"#ff6600",svg:'<svg viewBox="0 0 24 24" fill="white" width="16" height="16"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15v-4H8l4-6v4h3l-4 6z"/></svg>'}
+];
+
+function getAccountsAll(){
+  return PLATS.reduce((o,p)=>{
+    const chips=document.querySelectorAll(`#accounts_${p.id} .account-chip`);
+    o[p.id]=Array.from(chips).map(ch=>({name:ch.querySelector('.chip-input').value||'Cuenta',url:ch.querySelector('.chip-url').value||''}));
+    return o;
+  },{});
 }
 
-function openAccount(platId,btn){
-  const chip=btn.closest('.account-chip');
-  const url=chip.querySelector('.chip-url').value.trim();
-  if(!url){alert('Agrega primero la URL de esta cuenta.');return}
-  window.open(url,'_blank');
+function addAccDOM(platId,name='',url=''){
+  const list=$(`accounts_${platId}`);if(!list)return;
+  const chip=document.createElement('div');chip.className='account-chip';
+  chip.innerHTML=`<div class="chip-open" onclick="openAcc(this)" title="Abrir">↗</div><input class="chip-input" value="${name}" placeholder="Nombre de la cuenta" oninput="save()"/><input class="chip-url" value="${url}" placeholder="URL de tu página..." oninput="save()"/><span class="chip-del" onclick="this.closest('.account-chip').remove();updAccCount();save()">✕</span>`;
+  list.appendChild(chip);updAccCount();
 }
 
-function showAddForm(platId){
-  const form=$(`addForm_${platId}`);
-  form.classList.toggle('open');
-}
-
-function confirmAdd(platId){
-  const n=$(`addName_${platId}`).value.trim()||'Nueva cuenta';
-  const u=$(`addUrl_${platId}`).value.trim();
-  addAccountToDOM(platId,n,u);
-  $(`addName_${platId}`).value='';$(`addUrl_${platId}`).value='';
-  $(`addForm_${platId}`).classList.remove('open');
-  save();
+function openAcc(btn){
+  const url=btn.closest('.account-chip').querySelector('.chip-url').value.trim();
+  if(!url){alert('Agrega primero la URL.');return}window.open(url,'_blank');
 }
 
 function updAccCount(){
-  let total=0;
-  PLATS.forEach(p=>{total+=document.querySelectorAll(`#accounts_${p.id} .account-chip`).length});
-  $('stPlats').textContent=total;
+  let t=0;PLATS.forEach(p=>{t+=document.querySelectorAll(`#accounts_${p.id} .account-chip`).length});
+  $('stPlats').textContent=t;
 }
 
 function resetAccounts(){
-  if(!confirm('¿Eliminar todas las cuentas guardadas?'))return;
+  if(!confirm('¿Eliminar todas las cuentas?'))return;
   PLATS.forEach(p=>{const l=$(`accounts_${p.id}`);if(l)l.innerHTML=''});
   updAccCount();save();
 }
 
 function renderPlatforms(){
-  const container=$('platformsContainer');
-  container.innerHTML='';
+  const container=$('platformsContainer');container.innerHTML='';
   PLATS.forEach(p=>{
-    const sec=document.createElement('div');
-    sec.className='platform-section';
+    const sec=document.createElement('div');sec.className='platform-section';
     sec.innerHTML=`
       <div class="platform-header-row">
         <div class="platform-name-row">
@@ -786,77 +1081,67 @@ function renderPlatforms(){
       <div class="accounts-list" id="accounts_${p.id}"></div>
       <div class="add-form" id="addForm_${p.id}">
         <input type="text" id="addName_${p.id}" placeholder="Nombre de la cuenta (ej: Página Principal)"/>
-        <input type="text" id="addUrl_${p.id}" placeholder="URL completa de tu página (ej: https://facebook.com/mipagina)"/>
+        <input type="text" id="addUrl_${p.id}" placeholder="URL completa (ej: https://facebook.com/mipagina)"/>
         <div class="add-form-row">
-          <button class="btn btn-gen" onclick="confirmAdd('${p.id}')">✓ GUARDAR CUENTA</button>
-          <button class="btn btn-danger" onclick="$('addForm_${p.id}').classList.remove('open')">✕ CANCELAR</button>
+          <button class="btn btn-gen" onclick="confirmAdd('${p.id}')">✓ GUARDAR</button>
+          <button class="btn btn-danger" onclick="$('addForm_${p.id}').classList.remove('open')">✕</button>
         </div>
       </div>`;
     container.appendChild(sec);
   });
 }
 
-/* ===== QUICK TAGS ===== */
-function renderQuickTags(){
-  const c=$('quickTags');c.innerHTML='';
-  RAG.quickTags.forEach(t=>{
-    const pill=document.createElement('span');
-    pill.className='tag-pill';pill.textContent=t;
-    pill.onclick=()=>{const i=$('hashtags');if(!i.value.includes(t)){i.value=(i.value.trim()+' '+t).trim();save()}};
-    c.appendChild(pill);
-  });
+function showAddForm(pid){$(`addForm_${pid}`).classList.toggle('open')}
+
+function confirmAdd(pid){
+  const n=$(`addName_${pid}`).value.trim()||'Nueva cuenta';
+  const u=$(`addUrl_${pid}`).value.trim();
+  addAccDOM(pid,n,u);
+  $(`addName_${pid}`).value='';$(`addUrl_${pid}`).value='';
+  $(`addForm_${pid}`).classList.remove('open');save();
 }
 
-/* ===== CONSOLE ===== */
+/* CONSOLE */
 function log(msg,type=''){
   const c=$('console');c.classList.add('open');
   const l=document.createElement('div');l.className='cl '+type;l.textContent='> '+msg;
   c.appendChild(l);c.scrollTop=c.scrollHeight;
 }
 
-/* ===== DEPLOY ===== */
+/* DEPLOY */
 async function deploy(){
   const title=$('videoTitle').value.trim();
   if(!title){alert('El título es obligatorio.');return}
   $('console').innerHTML='';
-  log('Iniciando NEXUS DISPATCH v4.0...');
-  await sleep(200);
-  log('Preparando: "'+title+'"');
-  await sleep(150);
+  log('Iniciando NEXUS DISPATCH v5.0...');await sleep(200);
+  log('Preparando: "'+title+'"');await sleep(150);
   const fullText=[$('videoTitle').value,$('videoDesc').value,$('hashtags').value].filter(Boolean).join('\n\n');
-  log('Copy total: '+fullText.length+' caracteres');
-  await sleep(150);
-  let opened=0,total=0;
+  log('Copy total: '+fullText.length+' caracteres');await sleep(150);
+  const accounts=getAccountsAll();
+  let total=0;
+  PLATS.forEach(p=>{if(accounts[p.id]&&accounts[p.id].length)total+=accounts[p.id].length});
+  if(total===0){log('⚠ No hay cuentas configuradas. Agrega cuentas en el Panel 07.','w');return}
+  log('Abriendo '+total+' cuentas...','w');
   PLATS.forEach(p=>{
-    const accounts=getAccounts(p.id);
-    if(accounts.length===0)return;
-    accounts.forEach((acc,i)=>{
+    (accounts[p.id]||[]).forEach((acc,i)=>{
       setTimeout(()=>{
         const url=acc.url||p.url;
         const w=window.open(url,'_blank');
         if(!w)log('⚠ Pop-up bloqueado: '+p.name+' — '+acc.name,'w');
-        else{log('✓ '+p.name.toUpperCase()+' → '+acc.name,'ok');opened++}
-      },total*350);
-      total++;
+        else log('✓ '+p.name+' → '+acc.name,'ok');
+      },i*350);
     });
   });
-  if(total===0){log('⚠ No hay cuentas configuradas. Agrega cuentas en el Panel 07.','w');return}
   try{await navigator.clipboard.writeText(fullText);await sleep(total*350+200);log('✓ Texto copiado al portapapeles','ok')}
   catch(e){log('⚠ Usa los botones 📋 de cada campo para copiar','w')}
   S.deploys++;$('stDeploys').textContent=S.deploys;
-  updateMC(S.month+total);
-  save();
+  updateMC(S.month+total);save();
   await sleep(300);
-  log('✓ DESPLIEGUE COMPLETADO — Pega el contenido en cada pestaña y sube tu video.','ok');
+  log('✓ DESPLIEGUE COMPLETADO — Pega el contenido en cada pestaña.','ok');
 }
 
-/* ===== INIT ===== */
-function init(){
-  renderPlatforms();
-  renderQuickTags();
-  renderCasos();
-  load();
-}
+/* INIT */
+function init(){renderPlatforms();renderQuickTags();renderCasos();load()}
 document.addEventListener('DOMContentLoaded',init);
 </script>
 </body>
